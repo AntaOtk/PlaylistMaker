@@ -2,92 +2,97 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    >
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp">
+        android:padding = "20dp">
 
+        <ImageView
+            android:layout_width="16dp"
+            android:layout_height="16dp"
+            android:src="@drawable/back"
+            android:layout_gravity="center_vertical"/>
 
         <TextView
-            android:paddingLeft="12dp"
             android:layout_width="wrap_content"
-            android:layout_height="26dp"
+            android:layout_height="wrap_content"
             android:layout_gravity="start"
-            android:text="@string/settigs_button"
+            android:paddingStart="28dp"
+            android:text="@string/settings_button"
             android:textColor="@color/black"
-            android:textSize="22sp"/>
+            android:textSize="@dimen/header_size" />
     </LinearLayout>
 
 
     <Switch
+        android:paddingVertical="@dimen/vertical_padding"
+        android:paddingHorizontal="16dp"
         android:id="@+id/switch1"
         android:layout_width="match_parent"
-        android:layout_height="61dp"
+        android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
-        android:layout_marginStart="16dp"
         android:layout_marginTop="40dp"
-        android:paddingRight="16dp"
-        android:text="@string/thema_seting"
+        android:text="@string/thema_setting"
         android:textColor="@color/black"
         android:textSize="16sp"/>
 
 
-    <LinearLayout
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="61dp">
-
+        android:layout_height="wrap_content"
+        android:paddingVertical="@dimen/vertical_padding"
+        android:paddingHorizontal="16dp">
 
         <TextView
-            android:padding="16dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="start"
-            android:text="@string/teilen_seting"
+            android:text="@string/teilen_setting"
             android:textColor="@color/black"
             android:textSize="16sp" />
 
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingRight="23dp"
-            android:layout_gravity="center_vertical"
+            android:layout_gravity="end"
+            android:src="@drawable/share"
+            android:contentDescription="@string/teilen_setting"/>
+    </FrameLayout>
 
-            android:src="@drawable/share"/>
-    </LinearLayout>
-
-    <LinearLayout
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="61dp">
-
+        android:layout_height="wrap_content"
+        android:paddingVertical="@dimen/vertical_padding"
+        android:paddingHorizontal="16dp">
 
         <TextView
-            android:padding="16dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:text="@string/support_seting"
+            android:layout_gravity="start"
+            android:text="@string/support_setting"
             android:textColor="@color/black"
             android:textSize="16sp" />
 
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
+            android:layout_gravity="end"
             android:src="@drawable/support"/>
-    </LinearLayout>
+    </FrameLayout>
 
-    <LinearLayout
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="61dp">
-
+        android:layout_height="wrap_content"
+        android:paddingVertical="@dimen/vertical_padding"
+        android:paddingHorizontal="16dp">
 
         <TextView
-            android:padding="16dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
+            android:layout_gravity="start"
             android:text="@string/contract_button"
             android:textColor="@color/black"
             android:textSize="16sp" />
@@ -95,9 +100,9 @@
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
+            android:layout_gravity="end"
             android:src="@drawable/forward"/>
-    </LinearLayout>
+    </FrameLayout>
 
 
 </LinearLayout>

@@ -12,9 +12,9 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val find_button = findViewById<Button>(R.id.find_button)
+        val find_button = findViewById<Button>(R.id.search_button)
         val library_button = findViewById<Button>(R.id.library_button)
-        val settigs_button = findViewById<Button>(R.id.settigs_button)
+        val settigs_button = findViewById<Button>(R.id.settings_button)
 
         find_button.setOnClickListener {
             Toast.makeText(this@MainActivity, "Нажали на кнопку Поиск!", Toast.LENGTH_SHORT).show()
