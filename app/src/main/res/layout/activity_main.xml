@@ -4,7 +4,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/mein_screen"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:paddingHorizontal="@dimen/paddingClassic">
 
 
     <TextView
@@ -13,7 +14,6 @@
         android:text="@string/app_name"
         android:textColor="@color/white"
         android:textSize="@dimen/header_size"
-        android:paddingHorizontal="16dp"
         android:layout_marginTop="14dp"
         />
 
@@ -21,8 +21,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="40dp"
-        android:layout_marginEnd="15dp"
-        android:layout_marginStart="17dp"
         android:layout_marginBottom="28dp"
         android:orientation="vertical">
 
@@ -35,7 +33,7 @@
             app:cornerRadius="@dimen/button_corner_radius"
             android:text="@string/search_button"
             android:textColor="@color/black"
-            android:textSize="22sp"
+            android:textSize="@dimen/button_text_size"
             android:textAllCaps="false"
             app:icon="@drawable/search"
             app:iconTint="@color/black"
@@ -50,7 +48,7 @@
             app:cornerRadius="@dimen/button_corner_radius"
             android:text="@string/library_button"
             android:textColor="@color/black"
-            android:textSize="22sp"
+            android:textSize="@dimen/button_text_size"
             android:textAllCaps="false"
             app:icon="@drawable/library"
             app:iconTint="@color/black"
@@ -65,7 +63,7 @@
             app:cornerRadius="@dimen/button_corner_radius"
             android:text="@string/settings_button"
             android:textColor="@color/black"
-            android:textSize="22sp"
+            android:textSize="@dimen/button_text_size"
             android:textAllCaps="false"
             app:icon="@drawable/settings"
             app:iconTint="@color/black"
