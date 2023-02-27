@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="20dp">
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_vertical"
+            android:src="@drawable/back"
+            android:contentDescription="@string/app_name" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start"
+            android:paddingStart="28dp"
+            android:text="@string/settings_button"
+            android:textColor="@color/black"
+            android:textSize="@dimen/header_size" />
+    </LinearLayout>
+
+    <Switch
+        android:layout_marginTop="20dp"
+        android:paddingVertical="@dimen/vertical_padding"
+        android:paddingHorizontal="@dimen/paddingClassic"
+        android:id="@+id/switch1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:text="@string/thema_setting"
+        android:textColor="@color/black"
+        android:textSize="@dimen/menu_text_size"/>
+
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingVertical="@dimen/vertical_padding"
+            android:paddingHorizontal="@dimen/paddingClassic"
+            android:layout_gravity="start"
+            android:text="@string/teilen_setting"
+            android:textColor="@color/black"
+            android:textSize="@dimen/menu_text_size"
+            app:drawableEndCompat="@drawable/share"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingVertical="@dimen/vertical_padding"
+            android:paddingHorizontal="@dimen/paddingClassic"
+            android:layout_gravity="start"
+            android:text="@string/support_setting"
+            android:textColor="@color/black"
+            android:textSize="@dimen/menu_text_size"
+            app:drawableEndCompat="@drawable/support"/>
+
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingVertical="@dimen/vertical_padding"
+            android:paddingHorizontal="@dimen/paddingClassic"
+            android:layout_gravity="start"
+            android:text="@string/contract_button"
+            android:textColor="@color/black"
+            android:textSize="@dimen/menu_text_size"
+            app:drawableEndCompat="@drawable/forward"/>
+
+
+</LinearLayout>
