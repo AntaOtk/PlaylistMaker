@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="MenuSettingStyle">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:fontFamily">@font/ys_display_regular</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textSize">@dimen/menu_text_size</item>
+        <item name="android:paddingVertical">@dimen/vertical_padding</item>
+        <item name="android:paddingHorizontal">@dimen/paddingClassic</item>
+        <item name="android:layout_gravity">start</item>
+        <item name="drawableTint">@color/icon_color</item>
+    </style>
+    <style name="StartScreenStyle">
+        <item name="android:background">@color/mein_screen</item>
+    </style>
+    <style name="HeadStyle">
+        <item name="android:fontFamily">@font/ys_display_medium</item>
+        <item name="android:textFontWeight">500</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textSize">@dimen/header_size</item>
+        <item name="tint">@color/black</item>
+    </style>
+    <style name="StartButtomStyle"  parent="Widget.MaterialComponents.Button">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:fontFamily">@font/ys_display_medium</item>
+        <item name="android:textFontWeight">500</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textSize">@dimen/button_text_size</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:backgroundTint">@color/white</item>
+        <item name="cornerRadius">@dimen/button_corner_radius</item>
+        <item name="iconGravity">textStart</item>
+        <item name="iconTint">@color/black</item>
+        <item name="android:shadowRadius">0</item>
+    </style>
+    <style name="EditTextStyle">
+        <item name="android:fontFamily">@font/ys_display_regular</item>
+        <item name="iconGravity">textStart</item>
+        <item name="android:drawablePadding">9dp</item>
+        <item name="drawableTint">@color/icon_color</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textColorHint">@color/icon_color</item>
+        <item name="android:shadowRadius">0</item>
+    </style>
+    <style name="EditClearButtonStyle">
+        <item name="tint">@color/icon_color</item>
+
+    </style>
+</resources>
