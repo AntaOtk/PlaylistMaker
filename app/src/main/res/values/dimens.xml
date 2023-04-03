@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="button_corner_radius">16dp</dimen>
+    <dimen name="icon_padding">14dp</dimen>
+    <dimen name="header_size">26sp</dimen>
+    <dimen name="vertical_padding">21dp</dimen>
+    <dimen name="menu_text_size">16sp</dimen>
+    <dimen name="paddingClassic">16dp</dimen>
+    <dimen name="button_text_size">22sp</dimen>
+
+</resources>
