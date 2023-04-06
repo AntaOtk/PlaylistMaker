@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
 
 
@@ -10,68 +10,51 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="20dp">
+
         <ImageView
+            style="@style/HeadStyle"
+            android:id="@+id/backToMainActivity"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_gravity="center_vertical"
-            android:src="@drawable/back"
-            android:contentDescription="@string/app_name" />
+            android:contentDescription="@string/app_name"
+            android:src="@drawable/back" />
+
         <TextView
+            style="@style/HeadStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="start"
             android:paddingStart="28dp"
-            android:text="@string/settings_button"
-            android:textColor="@color/black"
-            android:textSize="@dimen/header_size" />
+            android:text="@string/settings_button" />
     </LinearLayout>
 
-    <Switch
-        android:layout_marginTop="20dp"
-        android:paddingVertical="@dimen/vertical_padding"
-        android:paddingHorizontal="@dimen/paddingClassic"
+    <androidx.appcompat.widget.SwitchCompat
         android:id="@+id/switch1"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical"
+        style="@style/MenuSettingStyle"
+        android:layout_marginTop="20dp"
         android:text="@string/thema_setting"
-        android:textColor="@color/black"
-        android:textSize="@dimen/menu_text_size"/>
+        android:checked="false"
+        />
+
+    <TextView
+        android:id="@+id/share_button"
+        style="@style/MenuSettingStyle"
+        android:text="@string/teilen_setting"
+        app:drawableEndCompat="@drawable/share" />
+
+    <TextView
+        android:id="@+id/support_button"
+        style="@style/MenuSettingStyle"
+        android:text="@string/support_setting"
+        app:drawableEndCompat="@drawable/support" />
 
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingVertical="@dimen/vertical_padding"
-            android:paddingHorizontal="@dimen/paddingClassic"
-            android:layout_gravity="start"
-            android:text="@string/teilen_setting"
-            android:textColor="@color/black"
-            android:textSize="@dimen/menu_text_size"
-            app:drawableEndCompat="@drawable/share"/>
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingVertical="@dimen/vertical_padding"
-            android:paddingHorizontal="@dimen/paddingClassic"
-            android:layout_gravity="start"
-            android:text="@string/support_setting"
-            android:textColor="@color/black"
-            android:textSize="@dimen/menu_text_size"
-            app:drawableEndCompat="@drawable/support"/>
-
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingVertical="@dimen/vertical_padding"
-            android:paddingHorizontal="@dimen/paddingClassic"
-            android:layout_gravity="start"
-            android:text="@string/contract_button"
-            android:textColor="@color/black"
-            android:textSize="@dimen/menu_text_size"
-            app:drawableEndCompat="@drawable/forward"/>
+    <TextView
+        android:id="@+id/forward_button"
+        style="@style/MenuSettingStyle"
+        android:text="@string/contract_button"
+        app:drawableEndCompat="@drawable/forward" />
 
 
 </LinearLayout>

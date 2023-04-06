@@ -7,5 +7,6 @@
     <dimen name="menu_text_size">16sp</dimen>
     <dimen name="paddingClassic">16dp</dimen>
     <dimen name="button_text_size">22sp</dimen>
-
+    <dimen name="saertch_field">36dp</dimen>
+    <dimen name="search_corner_radius">9dp</dimen>
 </resources>
