@@ -9,7 +9,7 @@
         <item name="android:paddingVertical">@dimen/vertical_padding</item>
         <item name="android:paddingHorizontal">@dimen/paddingClassic</item>
         <item name="android:layout_gravity">start</item>
-        <item name="drawableTint">@color/icon_color</item>
+        <item name="drawableTint">@color/gray_color</item>
     </style>
     <style name="StartScreenStyle">
         <item name="android:background">@color/mein_screen</item>
@@ -21,7 +21,7 @@
         <item name="android:textSize">@dimen/header_size</item>
         <item name="tint">@color/black</item>
     </style>
-    <style name="StartButtomStyle"  parent="Widget.MaterialComponents.Button">
+    <style name="StartButtonStyle"  parent="Widget.MaterialComponents.Button">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_weight">1</item>
@@ -40,13 +40,30 @@
         <item name="android:fontFamily">@font/ys_display_regular</item>
         <item name="iconGravity">textStart</item>
         <item name="android:drawablePadding">9dp</item>
-        <item name="drawableTint">@color/icon_color</item>
+        <item name="drawableTint">@color/gray_color</item>
         <item name="android:textColor">@color/black</item>
-        <item name="android:textColorHint">@color/icon_color</item>
+        <item name="android:textColorHint">@color/gray_color</item>
         <item name="android:shadowRadius">0</item>
     </style>
     <style name="EditClearButtonStyle">
-        <item name="tint">@color/icon_color</item>
-
+        <item name="tint">@color/gray_color</item>
+    </style>
+    <style name="FirstContent">
+        <item name="android:fontFamily">@font/ys_display_regular</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">@color/black</item>
+    </style>
+    <style name="SecondContent">
+        <item name="android:fontFamily">@font/ys_display_regular</item>
+        <item name="android:textSize">11sp</item>
+        <item name="maxLines">1</item>
+        <item name="android:textColor">@color/gray_color</item>
+    </style>
+    <style name="ArtBlock">
+        <item name="cornerRadius">2dp</item>
+        <item name="backgroundColor">@color/black</item>
+    </style>
+    <style name="Arrow">
+        <item name="tint">@color/gray_color</item>
     </style>
 </resources>

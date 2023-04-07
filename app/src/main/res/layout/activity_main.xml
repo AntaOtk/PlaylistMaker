@@ -27,19 +27,19 @@
 
         <Button
             android:id="@+id/search_button"
-            style="@style/StartButtomStyle"
+            style="@style/StartButtonStyle"
             android:text="@string/search_button"
             app:icon="@drawable/search"/>
 
         <Button
             android:id="@+id/library_button"
-            style="@style/StartButtomStyle"
+            style="@style/StartButtonStyle"
             android:text="@string/library_button"
             app:icon="@drawable/library"/>
 
         <Button
             android:id="@+id/settings_button"
-            style="@style/StartButtomStyle"
+            style="@style/StartButtonStyle"
             android:text="@string/settings_button"
             app:icon="@drawable/settings"/>
     </LinearLayout>

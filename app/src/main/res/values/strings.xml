@@ -12,5 +12,7 @@
     <string name="mail_subject">Сообщение разработчикам и разработчицам приложения Playlist Maker</string>
     <string name="mail_message">Спасибо разработчикам и разработчицам за крутое приложение!</string>
     <string name="offer">https://yandex.ru/legal/practicum_offer/</string>
-
+    <string name="artist">No name artist</string>
+    <string name="track_title">No Raply</string>
+    <string name="track_time">00:00</string>
 </resources>
