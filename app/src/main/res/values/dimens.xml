@@ -7,6 +7,13 @@
     <dimen name="menu_text_size">16sp</dimen>
     <dimen name="paddingClassic">16dp</dimen>
     <dimen name="button_text_size">22sp</dimen>
-    <dimen name="saertch_field">36dp</dimen>
+    <dimen name="search_field">36dp</dimen>
     <dimen name="search_corner_radius">9dp</dimen>
+    <dimen name="margin_item_track">8dp</dimen>
+    <dimen name="art_item_search">45dp</dimen>
+    <dimen name="corner_radius_art">2dp</dimen>
+    <dimen name="search_list_padding">12dp</dimen>
+    <dimen name="vertical_margin_text_track">14dp</dimen>
+    <dimen name="tracklist_text_size">11sp</dimen>
+    <dimen name="head_tracklist_text_size">16sp</dimen>
 </resources>

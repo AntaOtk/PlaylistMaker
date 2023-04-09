@@ -60,7 +60,7 @@
         <item name="android:textColor">@color/gray_color</item>
     </style>
     <style name="ArtBlock">
-        <item name="cornerRadius">2dp</item>
+        <item name="cornerRadius">@dimen/corner_radius_art</item>
         <item name="backgroundColor">@color/black</item>
     </style>
     <style name="Arrow">
