@@ -4,7 +4,8 @@ import android.content.Intent
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.*
+import android.widget.ImageView
+import android.widget.TextView
 
 
 class SettingsActivity : AppCompatActivity() {

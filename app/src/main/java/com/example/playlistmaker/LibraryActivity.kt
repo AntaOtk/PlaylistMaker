@@ -12,6 +12,7 @@ class LibraryActivity : AppCompatActivity() {
         setContentView(R.layout.activity_library)
 
         val imageBack = findViewById<ImageView>(R.id.backToMainActivity)
-        imageBack.setOnClickListener{finish()}
+        imageBack.setOnClickListener { finish() }
+
     }
 }
