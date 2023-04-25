@@ -16,4 +16,8 @@
     <dimen name="vertical_margin_text_track">14dp</dimen>
     <dimen name="tracklist_text_size">11sp</dimen>
     <dimen name="head_tracklist_text_size">16sp</dimen>
+    <dimen name="placeholder_button_corner_radius">54dp</dimen>
+    <dimen name="placeholder_message_text_size">19sp</dimen>
+    <dimen name="repeat_text_size">14sp</dimen>
+    <dimen name="placeholder_message_margin">24dp</dimen>
 </resources>
