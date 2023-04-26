@@ -1,11 +1,13 @@
 package com.example.playlistmaker
 
+import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
 import android.view.inputmethod.EditorInfo
+import android.view.inputmethod.InputMethodManager
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
@@ -61,6 +63,11 @@ class SearchActivity : AppCompatActivity() {
 
         clearButton.setOnClickListener {
             inputEditText.setText("")
+            showMessage(InputStatus.SUCCESS)
+            tracks.clear()
+            adapter.notifyDataSetChanged()
+            val inputMethodManager = getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
+            inputMethodManager?.hideSoftInputFromWindow(clearButton.getWindowToken(), 0)
         }
 
         val buttonRepeat = findViewById<Button>(R.id.repeatButton)
@@ -105,7 +112,6 @@ class SearchActivity : AppCompatActivity() {
     }
 
 
-
     private fun search() {
         itunesService.search(inputEditText.text.toString())
             .enqueue(object : Callback<TrackResponse> {
@@ -115,24 +121,23 @@ class SearchActivity : AppCompatActivity() {
                     if (response.code() == 200) {
                         tracks.clear()
                         if (response.body()?.results?.isNotEmpty() == true) {
+                            showMessage(InputStatus.SUCCESS)
                             tracks.addAll(response.body()?.results!!)
                             adapter.notifyDataSetChanged()
                         }
                         if (tracks.isEmpty()) {
-                            showMessage(getString(R.string.nothing_found), 1)
-                        } else {
-                            showMessage("", 0)
+                            showMessage(InputStatus.EMPTY)
                         }
                     } else {
                         showMessage(
-                            getString(R.string.no_interrnet_conection), 2
+                            InputStatus.ERROR
                         )
                     }
 
                 }
 
                 override fun onFailure(call: Call<TrackResponse>, t: Throwable) {
-                    showMessage(getString(R.string.no_interrnet_conection), 2)
+                    showMessage(InputStatus.ERROR)
                 }
 
             })
@@ -151,29 +156,28 @@ class SearchActivity : AppCompatActivity() {
 
     }
 
-    private fun showMessage(text: String, type: Int) {
+    private fun showMessage(status: InputStatus) {
         val buttonRepeat = findViewById<Button>(R.id.repeatButton)
         buttonRepeat.visibility = View.GONE
-        if (text.isNotEmpty()) {
-            placeholderMessage.visibility = View.VISIBLE
+                    placeholderMessage.visibility = View.VISIBLE
             val textMessage = findViewById<TextView>(R.id.placeholderMessageText)
             val imageMessage = findViewById<ImageView>(R.id.placeholderMessageImage)
             tracks.clear()
             adapter.notifyDataSetChanged()
-            when (type){
-                1 -> {
-                    textMessage.text = text
+            when (status) {
+                InputStatus.SUCCESS ->{placeholderMessage.visibility = View.GONE}
+                InputStatus.EMPTY -> {
+                    textMessage.text = getString(R.string.nothing_found)
                     imageMessage.setImageResource(R.drawable.search_message)
                 }
-                2 -> {
-                    textMessage.text = text
+                InputStatus.ERROR -> {
+                    textMessage.text = getString(R.string.no_interrnet_conection)
                     imageMessage.setImageResource(R.drawable.internet_message)
                     buttonRepeat.visibility = View.VISIBLE
                 }
             }
-        } else {
-            placeholderMessage.visibility = View.GONE
-        }
+
     }
 
 }
+
