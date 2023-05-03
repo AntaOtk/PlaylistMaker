@@ -1,6 +1,7 @@
 package com.example.playlistmaker
 
 import android.content.Context
+import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Editable
@@ -30,23 +31,31 @@ class SearchActivity : AppCompatActivity() {
         const val INPUT_EDIT_TEXT = "INPUT_EDIT_TEXT"
     }
 
+
     private val itunesBaseUrl = "https://itunes.apple.com"
     private val retrofit =
         Retrofit.Builder().baseUrl(itunesBaseUrl).addConverterFactory(GsonConverterFactory.create())
             .build()
+    private val searchHistory = SearchHistory()
 
     private val itunesService = retrofit.create(APIsearch::class.java)
     private var text: String = ""
     private lateinit var inputEditText: EditText
     private lateinit var placeholderMessage: LinearLayout
     private lateinit var searchList: RecyclerView
+    private lateinit var sharedPreferences: SharedPreferences
 
     private val tracks = ArrayList<Track>()
-    private val adapter = SearchAdapter(tracks)
+    private val adapter = SearchAdapter(tracks) {
+        searchHistory.setTrack(it, sharedPreferences)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search)
+
+        sharedPreferences = getSharedPreferences(PRACTICUM_PREFERENCES, MODE_PRIVATE)
+
 
         inputEditText = findViewById(R.id.inputEditText)
         searchList = findViewById(R.id.rvSearch)
@@ -57,8 +66,24 @@ class SearchActivity : AppCompatActivity() {
 
         val inputEditText = findViewById<EditText>(R.id.inputEditText)
         val clearButton = findViewById<ImageView>(R.id.clearButtonIcon)
-        val searchList = findViewById<RecyclerView>(R.id.rvSearch)
+        val historyList = findViewById<RecyclerView>(R.id.historySearchList)
+        val hintMessage = findViewById<LinearLayout>(R.id.historySearch)
+        val clearHistoryButton = findViewById<Button>(R.id.clearHistoryButton)
         searchList.adapter = adapter
+
+
+        inputEditText.setOnFocusChangeListener { view, hasFocus ->
+            hintMessage.visibility =
+                if (hasFocus && inputEditText.text.isEmpty()) View.VISIBLE else View.GONE
+            historyList.adapter = SearchAdapter(searchHistory.read(sharedPreferences)) {}
+
+        }
+
+        clearHistoryButton.setOnClickListener {
+            searchHistory.clear(sharedPreferences)
+            historyList.adapter = SearchAdapter(searchHistory.read(sharedPreferences)) {}
+        }
+
 
 
         clearButton.setOnClickListener {
@@ -66,7 +91,8 @@ class SearchActivity : AppCompatActivity() {
             showMessage(InputStatus.SUCCESS)
             tracks.clear()
             adapter.notifyDataSetChanged()
-            val inputMethodManager = getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
+            val inputMethodManager =
+                getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
             inputMethodManager?.hideSoftInputFromWindow(clearButton.getWindowToken(), 0)
         }
 
@@ -83,6 +109,9 @@ class SearchActivity : AppCompatActivity() {
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 text = inputEditText.text.toString()
                 clearButton.visibility = clearButtonVisibility(s)
+                hintMessage.visibility =
+                    if (inputEditText.hasFocus() && s?.isEmpty() == true) View.VISIBLE else View.GONE
+                historyList.adapter = SearchAdapter(searchHistory.read(sharedPreferences)) {}
             }
 
             override fun afterTextChanged(s: Editable?) {
@@ -159,23 +188,25 @@ class SearchActivity : AppCompatActivity() {
     private fun showMessage(status: InputStatus) {
         val buttonRepeat = findViewById<Button>(R.id.repeatButton)
         buttonRepeat.visibility = View.GONE
-                    placeholderMessage.visibility = View.VISIBLE
-            val textMessage = findViewById<TextView>(R.id.placeholderMessageText)
-            val imageMessage = findViewById<ImageView>(R.id.placeholderMessageImage)
-            tracks.clear()
-            adapter.notifyDataSetChanged()
-            when (status) {
-                InputStatus.SUCCESS ->{placeholderMessage.visibility = View.GONE}
-                InputStatus.EMPTY -> {
-                    textMessage.text = getString(R.string.nothing_found)
-                    imageMessage.setImageResource(R.drawable.search_message)
-                }
-                InputStatus.ERROR -> {
-                    textMessage.text = getString(R.string.no_interrnet_conection)
-                    imageMessage.setImageResource(R.drawable.internet_message)
-                    buttonRepeat.visibility = View.VISIBLE
-                }
+        placeholderMessage.visibility = View.VISIBLE
+        val textMessage = findViewById<TextView>(R.id.placeholderMessageText)
+        val imageMessage = findViewById<ImageView>(R.id.placeholderMessageImage)
+        tracks.clear()
+        adapter.notifyDataSetChanged()
+        when (status) {
+            InputStatus.SUCCESS -> {
+                placeholderMessage.visibility = View.GONE
             }
+            InputStatus.EMPTY -> {
+                textMessage.text = getString(R.string.nothing_found)
+                imageMessage.setImageResource(R.drawable.search_message)
+            }
+            InputStatus.ERROR -> {
+                textMessage.text = getString(R.string.no_interrnet_conection)
+                imageMessage.setImageResource(R.drawable.internet_message)
+                buttonRepeat.visibility = View.VISIBLE
+            }
+        }
 
     }
 

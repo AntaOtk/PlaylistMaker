@@ -95,7 +95,7 @@
                 style="@style/placeHolderTextStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/paddingClassic"/>
+                android:layout_marginTop="@dimen/paddingClassic" />
 
             <Button
                 android:id="@+id/repeatButton"
@@ -103,10 +103,48 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/placeholder_message_margin"
-                android:visibility="gone"
-                android:text="@string/repeat"/>
+                android:text="@string/repeat"
+                android:visibility="gone" />
 
         </LinearLayout>
+
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:id="@+id/historySearch"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <TextView
+                    style="@style/placeHolderTextStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/history_text_place"
+                    android:gravity="center"
+                    android:text="@string/you_search" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/historySearchList"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    tools:itemCount="3"
+                    tools:listitem="@layout/track_item" />
+
+                <Button
+                    android:id="@+id/clearHistoryButton"
+                    style="@style/placeHolderButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="@dimen/placeholder_message_margin"
+                    android:text="@string/clear_history" />
+            </LinearLayout>
+        </androidx.core.widget.NestedScrollView>
 
     </FrameLayout>
 

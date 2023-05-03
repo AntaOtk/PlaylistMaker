@@ -17,7 +17,6 @@ class SearchViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     private val artwork = itemView.findViewById<ImageView>(R.id.artwork)
 
     fun bind(item: Track) {
-
         name.text = item.trackName
         artist.text = item.artistName
         trackTime.text = SimpleDateFormat("mm:ss", Locale.getDefault()).format(item.trackTimeMillis)

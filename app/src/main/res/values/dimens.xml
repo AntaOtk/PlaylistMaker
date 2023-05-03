@@ -20,4 +20,5 @@
     <dimen name="placeholder_message_text_size">19sp</dimen>
     <dimen name="repeat_text_size">14sp</dimen>
     <dimen name="placeholder_message_margin">24dp</dimen>
+    <dimen name="history_text_place">52dp</dimen>
 </resources>
