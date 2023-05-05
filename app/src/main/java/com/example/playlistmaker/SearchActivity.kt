@@ -74,14 +74,14 @@ class SearchActivity : AppCompatActivity() {
 
         inputEditText.setOnFocusChangeListener { view, hasFocus ->
             hintMessage.visibility =
-                if (hasFocus && inputEditText.text.isEmpty()) View.VISIBLE else View.GONE
+                if (hasFocus && inputEditText.text.isEmpty() && !searchHistory.read(sharedPreferences).isEmpty()) View.VISIBLE else View.GONE
             historyList.adapter = SearchAdapter(searchHistory.read(sharedPreferences)) {}
 
         }
 
         clearHistoryButton.setOnClickListener {
             searchHistory.clear(sharedPreferences)
-            historyList.adapter = SearchAdapter(searchHistory.read(sharedPreferences)) {}
+            hintMessage.visibility = View.GONE
         }
 
 
@@ -109,8 +109,13 @@ class SearchActivity : AppCompatActivity() {
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 text = inputEditText.text.toString()
                 clearButton.visibility = clearButtonVisibility(s)
-                hintMessage.visibility =
-                    if (inputEditText.hasFocus() && s?.isEmpty() == true) View.VISIBLE else View.GONE
+
+                    if (inputEditText.hasFocus() && s?.isEmpty() == true) {
+                        showMessage(InputStatus.SUCCESS)
+                        if (!searchHistory.read(sharedPreferences).isEmpty()) hintMessage.visibility =View.VISIBLE
+                    } else{
+                        hintMessage.visibility =View.GONE
+                    }
                 historyList.adapter = SearchAdapter(searchHistory.read(sharedPreferences)) {}
             }
 
