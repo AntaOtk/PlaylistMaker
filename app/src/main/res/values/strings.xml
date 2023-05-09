@@ -1,4 +1,5 @@
 <resources>
+
     <!-- base -->
     <string name="app_name">Playlist Maker</string>
     <string name="search_button">Поиск</string>
@@ -9,20 +10,23 @@
     <string name="support_setting">Написать в поддержку</string>
     <string name="contract_button">Пользовательское соглашение</string>
     <string name="message">https://practicum.yandex.ru/profile/android-developer/</string>
-    <!-- overdraw -->
 
+    <!-- overdraw -->
     <string name="mail_to_support">ovaorange@yandex.ru</string>
     <string name="mail_subject">Сообщение разработчикам и разработчицам приложения Playlist Maker</string>
     <string name="mail_message">Спасибо разработчикам и разработчицам за крутое приложение!</string>
     <string name="offer">https://yandex.ru/legal/practicum_offer/</string>
+
     <!-- track -->
     <string name="artist">No name artist</string>
     <string name="track_title">No Raply</string>
     <string name="track_time">00:00</string>
+
     <!-- search message -->
     <string name="no_interrnet_conection"> Проблемы со связью \n\ \n\ Загрузка не удалась.  Проверьте \n\ подключение к интернету</string>
     <string name="nothing_found">Ничего не нашлось</string>
-
     <string name="repeat">Обновить</string>
+    <string name="clear_history">Очистить историю</string>
+    <string name="you_search">Вы искали</string>
 
 </resources>

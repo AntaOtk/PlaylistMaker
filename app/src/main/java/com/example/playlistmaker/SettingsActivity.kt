@@ -1,11 +1,16 @@
 package com.example.playlistmaker
+
 import android.annotation.SuppressLint
 import android.content.Intent
+import android.content.SharedPreferences
+import android.content.res.Resources.Theme
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.appcompat.widget.SwitchCompat
+
 
 
 class SettingsActivity : AppCompatActivity() {
@@ -19,17 +24,26 @@ class SettingsActivity : AppCompatActivity() {
 
 
         val imageBack = findViewById<ImageView>(R.id.backToMainActivity)
-        imageBack.setOnClickListener{finish()}
+        imageBack.setOnClickListener { finish() }
 
 
         val share = findViewById<TextView>(R.id.share_button)
         val support = findViewById<TextView>(R.id.support_button)
         val forward = findViewById<TextView>(R.id.forward_button)
+        val themeSwitcher = findViewById<SwitchCompat>(R.id.switch_theme)
+        val sharedPreferences = getSharedPreferences(PRACTICUM_PREFERENCES, MODE_PRIVATE)
+        var darkTheme = sharedPreferences.getBoolean(THEME_KEY, false)
+        themeSwitcher.setChecked(darkTheme)
+
+
+        themeSwitcher.setOnCheckedChangeListener { switcher, checked ->
+            (applicationContext as App).switchTheme(checked)
+        }
 
         share.setOnClickListener {
             val intent = Intent(Intent.ACTION_SEND)
             intent.putExtra(Intent.EXTRA_TEXT, getString(R.string.message))
-            intent.type  = "text/plain"
+            intent.type = "text/plain"
             startActivity(intent)
         }
 

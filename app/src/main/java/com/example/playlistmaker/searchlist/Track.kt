@@ -2,7 +2,7 @@ package com.example.playlistmaker.searchlist
 
 import com.google.gson.annotations.SerializedName
 
-class Track(
+data class Track(
     @SerializedName("trackName")
     val trackName: String,
     @SerializedName("artistName")
