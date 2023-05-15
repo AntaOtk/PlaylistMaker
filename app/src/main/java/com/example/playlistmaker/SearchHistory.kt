@@ -1,5 +1,7 @@
 package com.example.playlistmaker
 
+import android.content.Context
+import android.content.Context.MODE_PRIVATE
 import android.content.SharedPreferences
 import com.example.playlistmaker.searchlist.Track
 import com.google.gson.Gson
@@ -10,18 +12,24 @@ import java.lang.reflect.Type
 const val TRACKS_KEY = "track_key"
 const val MAXIMUM = 10
 
-class SearchHistory {
+class SearchHistory(context: Context) {
 
 
-    fun setTrack(track: Track, sharedPreferences: SharedPreferences) {
-        val tracks = read(sharedPreferences)
+    private val sharedPreferences: SharedPreferences = context.getSharedPreferences(
+        PRACTICUM_PREFERENCES,
+        MODE_PRIVATE
+    )
+
+
+    fun setTrack(track: Track) {
+        val tracks = read()
         if (!tracks.remove(track) && tracks.size >= MAXIMUM) tracks.removeAt(MAXIMUM - 1)
         tracks.add(0, track)
-        write(sharedPreferences, tracks)
+        write(tracks)
     }
 
 
-    fun read(sharedPreferences: SharedPreferences): MutableList<
+    fun read(): MutableList<
             Track> {
         val json = sharedPreferences.getString(TRACKS_KEY, null) ?: return mutableListOf()
         val listOfMyClassObject: Type = object : TypeToken<ArrayList<Track>?>() {}.type
@@ -29,7 +37,7 @@ class SearchHistory {
     }
 
 
-    fun write(sharedPreferences: SharedPreferences, tracks: MutableList<Track>) {
+    fun write(tracks: MutableList<Track>) {
         val json = Gson().toJson(tracks)
         sharedPreferences.edit()
             .putString(TRACKS_KEY, json)

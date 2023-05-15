@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
     <style name="MenuSettingStyle">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
@@ -11,9 +12,11 @@
         <item name="android:layout_gravity">start</item>
         <item name="drawableTint">@color/white</item>
     </style>
+
     <style name="StartScreenStyle">
         <item name="android:background">@color/black</item>
     </style>
+
     <style name="HeadStyle">
         <item name="android:fontFamily">@font/ys_display_medium</item>
         <item name="android:textFontWeight">500</item>
@@ -21,7 +24,8 @@
         <item name="android:textSize">@dimen/header_size</item>
         <item name="tint">@color/white</item>
     </style>
-    <style name="StartButtomStyle"  parent="Widget.MaterialComponents.Button">
+
+    <style name="StartButtomStyle" parent="Widget.MaterialComponents.Button">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_weight">1</item>
@@ -35,6 +39,7 @@
         <item name="iconGravity">textStart</item>
         <item name="iconTint">@color/black</item>
     </style>
+
     <style name="EditTextStyle">
         <item name="android:fontFamily">@font/ys_display_regular</item>
         <item name="android:textFontWeight">400</item>
@@ -47,15 +52,18 @@
         <item name="android:shadowRadius">0</item>
         <item name="android:backgroundTint">@color/white</item>
     </style>
+
     <style name="EditClearButtonStyle">
         <item name="tint">@color/black</item>
     </style>
+
     <style name="FirstContent">
         <item name="android:fontFamily">@font/ys_display_regular</item>
         <item name="android:textFontWeight">400</item>
         <item name="android:textSize">@dimen/head_tracklist_text_size</item>
         <item name="android:textColor">@color/white</item>
     </style>
+
     <style name="SecondContent">
         <item name="android:fontFamily">@font/ys_display_regular</item>
         <item name="android:textFontWeight">400</item>
@@ -63,15 +71,18 @@
         <item name="maxLines">1</item>
         <item name="android:textColor">@color/white</item>
     </style>
+
     <style name="Arrow">
         <item name="tint">@color/white</item>
     </style>
+
     <style name="placeHolderTextStyle">
         <item name="android:fontFamily">@font/ys_display_medium</item>
         <item name="android:textSize">@dimen/placeholder_message_text_size</item>
         <item name="android:textColor">@color/white</item>
         <item name="android:gravity">center</item>
     </style>
+
     <style name="placeHolderButton" parent="Widget.MaterialComponents.Button">
         <item name="android:fontFamily">@font/ys_display_medium</item>
         <item name="android:textColor">@color/black</item>
@@ -81,4 +92,36 @@
         <item name="cornerRadius">@dimen/placeholder_button_corner_radius</item>
         <item name="android:shadowRadius">0</item>
     </style>
+
+    <!-- AudioPlayer -->
+
+    <style name="AudioPlayerTrackName">
+        <item name="android:fontFamily">@font/ys_display_medium</item>
+        <item name="android:textSize">@dimen/audioplayer_trackname_text_size</item>
+        <item name="android:textColor">@color/white</item>
+    </style>
+
+    <style name="AudioPlayerArtist">
+        <item name="android:fontFamily">@font/ys_display_medium</item>
+        <item name="android:textSize">@dimen/audioplayer_artist_text_size</item>
+        <item name="android:textColor">@color/white</item>
+    </style>
+
+    <style name="AudioPlayerContentName">
+        <item name="android:fontFamily">@font/ys_display_regular</item>
+        <item name="android:textSize">@dimen/audioplayer_content_text_size</item>
+        <item name="android:textColor">@color/gray_color</item>
+    </style>
+
+    <style name="AudioPlayerContentText">
+        <item name="android:fontFamily">@font/ys_display_regular</item>
+        <item name="android:textSize">@dimen/audioplayer_content_text_size</item>
+        <item name="android:textColor">@color/white</item>
+    </style>
+
+    <style name="AudioPlayerImage">
+        <item name="cornerRadius">@dimen/audioplayer_corner_radius_art</item>
+    </style>
+
+
 </resources>
