@@ -28,9 +28,15 @@
     <dimen name="audioplayer_artist_text_size">14sp</dimen>
     <dimen name="audioplayer_content_text_size">13sp</dimen>
     <dimen name="audioplayer_corner_radius_art">8dp</dimen>
-    <dimen name="artwork_top_margin">46dp</dimen>
-
-
+    <dimen name="artwork_top_margin">42dp</dimen>
+    <dimen name="title_top_margin">24dp</dimen>
+    <dimen name="button_horizontal_margin">24dp</dimen>
+    <dimen name="artist_top_margin">12dp</dimen>
+    <dimen name="progresstime_top_margin">12dp</dimen>
+    <dimen name="progresstime_bottom_margin">30dp</dimen>
+    <dimen name="distance_between_lines">16dp</dimen>
+    <dimen name="bottom_line_margin">20dp</dimen>
+    <dimen name="play_button_top_margin">38dp</dimen>
 
 
 </resources>

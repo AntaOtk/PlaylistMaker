@@ -10,19 +10,12 @@ import com.example.playlistmaker.searchlist.Track
 import java.text.SimpleDateFormat
 import java.util.*
 
-class AudioPlayer : AppCompatActivity()  {
-
-
-
-
-
-
+class AudioPlayer : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.audio_player)
         val searchHistory = SearchHistory(this)
-
 
 
         val name = findViewById<TextView>(R.id.title)
@@ -45,14 +38,14 @@ class AudioPlayer : AppCompatActivity()  {
         name.text = item.trackName
         artist.text = item.artistName
         album.text = item.collectionName
-        year.text = item.releaseDate.substring(0,4)
+        year.text = item.releaseDate.substring(0, 4)
         ganre.text = item.primaryGenreName
         country.text = item.country
         duration.text = SimpleDateFormat("mm:ss", Locale.getDefault()).format(item.trackTimeMillis)
 
 
         Glide.with(applicationContext)
-            .load(item.artworkUrl100.replaceAfterLast('/',"512x512bb.jpg"))
+            .load(item.artworkUrl100.replaceAfterLast('/', "512x512bb.jpg"))
             .placeholder(R.drawable.placeholder)
             .centerCrop()
             .transform(RoundedCorners(applicationContext.resources.getDimensionPixelSize(R.dimen.audioplayer_corner_radius_art)))
@@ -63,6 +56,7 @@ class AudioPlayer : AppCompatActivity()  {
 
 
 }
+
 
 
 
