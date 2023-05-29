@@ -55,6 +55,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/title_top_margin"
+        android:layout_marginHorizontal="@dimen/margin_horizontal"
         android:text="@string/track_title"
         app:layout_constraintStart_toStartOf="@id/leftBorder"
         app:layout_constraintTop_toBottomOf="@id/cover" />
@@ -65,6 +66,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/artist_top_margin"
+        android:layout_marginHorizontal="@dimen/margin_horizontal"
         android:text="@string/artist"
         app:layout_constraintStart_toStartOf="@id/leftBorder"
         app:layout_constraintTop_toBottomOf="@id/title" />

@@ -36,6 +36,7 @@
     <dimen name="progresstime_bottom_margin">30dp</dimen>
     <dimen name="distance_between_lines">16dp</dimen>
     <dimen name="bottom_line_margin">20dp</dimen>
+    <dimen name="margin_horizontal">8dp</dimen>
     <dimen name="play_button_top_margin">38dp</dimen>
 
 
