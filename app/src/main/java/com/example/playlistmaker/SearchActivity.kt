@@ -1,6 +1,7 @@
 package com.example.playlistmaker
 
 import android.content.Context
+import android.content.Intent
 import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -36,7 +37,9 @@ class SearchActivity : AppCompatActivity() {
     private val retrofit =
         Retrofit.Builder().baseUrl(itunesBaseUrl).addConverterFactory(GsonConverterFactory.create())
             .build()
-    private val searchHistory = SearchHistory()
+    private val searchHistory by lazy {
+        SearchHistory(this)
+    }
 
     private val itunesService = retrofit.create(APIsearch::class.java)
     private var text: String = ""
@@ -47,7 +50,10 @@ class SearchActivity : AppCompatActivity() {
 
     private val tracks = ArrayList<Track>()
     private val adapter = SearchAdapter(tracks) {
-        searchHistory.setTrack(it, sharedPreferences)
+        searchHistory.setTrack(it)
+        val displayIntent = Intent(this, AudioPlayer::class.java)
+        startActivity(displayIntent)
+
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -74,8 +80,14 @@ class SearchActivity : AppCompatActivity() {
 
         inputEditText.setOnFocusChangeListener { view, hasFocus ->
             hintMessage.visibility =
-                if (hasFocus && inputEditText.text.isEmpty() && !searchHistory.read(sharedPreferences).isEmpty()) View.VISIBLE else View.GONE
-            historyList.adapter = SearchAdapter(searchHistory.read(sharedPreferences)) {}
+                if (hasFocus && inputEditText.text.isEmpty() && !searchHistory.read().isEmpty()) View.VISIBLE else View.GONE
+            historyList.adapter = SearchAdapter(searchHistory.read()) {
+
+                searchHistory.setTrack(it)
+                val displayIntent = Intent(this, AudioPlayer::class.java)
+                startActivity(displayIntent)
+
+            }
 
         }
 
@@ -112,11 +124,16 @@ class SearchActivity : AppCompatActivity() {
 
                     if (inputEditText.hasFocus() && s?.isEmpty() == true) {
                         showMessage(InputStatus.SUCCESS)
-                        if (!searchHistory.read(sharedPreferences).isEmpty()) hintMessage.visibility =View.VISIBLE
+                        if (!searchHistory.read().isEmpty()) hintMessage.visibility =View.VISIBLE
                     } else{
                         hintMessage.visibility =View.GONE
                     }
-                historyList.adapter = SearchAdapter(searchHistory.read(sharedPreferences)) {}
+                historyList.adapter = SearchAdapter(searchHistory.read()) {
+
+                    searchHistory.setTrack(it)
+                    val displayIntent = Intent(this@SearchActivity, AudioPlayer::class.java)
+                    startActivity(displayIntent)
+                }
             }
 
             override fun afterTextChanged(s: Editable?) {

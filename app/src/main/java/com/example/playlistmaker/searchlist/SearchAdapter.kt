@@ -16,7 +16,9 @@ class SearchAdapter(private val data: List<Track>,  private val clickListener: (
 
     override fun onBindViewHolder(holder: SearchViewHolder, position: Int) {
         holder.bind(data[position])
-        holder.itemView.setOnClickListener {clickListener.invoke(data[position]) }
+        holder.itemView.setOnClickListener {clickListener.invoke(data[position])
+
+        }
 
 
     }
