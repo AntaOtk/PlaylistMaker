@@ -18,9 +18,7 @@ class MainActivity : AppCompatActivity() {
         val settigsButton = findViewById<Button>(R.id.settings_button)
 
         searchButton.setOnClickListener {
-            val displayIntent = Intent(this, SearchActivity::class.java)
-            startActivity(displayIntent)
-
+            SearchActivity.startActivity(this)
         }
 
         libraryButton.setOnClickListener {
@@ -36,6 +34,5 @@ class MainActivity : AppCompatActivity() {
         }
 
         settigsButton.setOnClickListener(buttonClickListener)
-
     }
 }

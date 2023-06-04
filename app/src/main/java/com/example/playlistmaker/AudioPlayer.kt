@@ -1,5 +1,7 @@
 package com.example.playlistmaker
 
+import android.content.Context
+import android.content.Intent
 import android.media.MediaPlayer
 import android.os.Bundle
 import android.os.Handler
@@ -21,7 +23,14 @@ class AudioPlayer : AppCompatActivity() {
         private const val STATE_PREPARED = 1
         private const val STATE_PLAYING = 2
         private const val STATE_PAUSED = 3
-        private const val DELAY = 25L
+        private const val DELAY_MILLIS = 25L
+        private const val TIME_FORMAT = "mm:ss"
+        private const val ZERO_TIME = "00:00"
+
+        fun startActivity(context: Context) {
+            val intent = Intent(context, AudioPlayer::class.java)
+            context.startActivity(intent)
+        }
     }
 
     private var playerState = STATE_DEFAULT
@@ -33,7 +42,9 @@ class AudioPlayer : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.audio_player)
+
         val searchHistory = SearchHistory(this)
+
         playButton = findViewById(R.id.playButton)
         progressTimeView = findViewById(R.id.progressTime)
 
@@ -46,23 +57,16 @@ class AudioPlayer : AppCompatActivity() {
         val ganre = findViewById<TextView>(R.id.styleName)
         val country = findViewById<TextView>(R.id.countryName)
         val artwork = findViewById<ImageView>(R.id.cover)
+
         mainThreadHandler = Handler(Looper.getMainLooper())
         val item = searchHistory.read().get(0)
 
-
-
         preparePlayer(item)
 
-        playButton.setOnClickListener {
-            playbackControl()
-        }
-
+        playButton.setOnClickListener { playbackControl() }
 
         val imageBack = findViewById<ImageView>(R.id.backButton)
         imageBack.setOnClickListener { finish() }
-
-
-
 
         name.text = item.trackName
         artist.text = item.artistName
@@ -79,8 +83,6 @@ class AudioPlayer : AppCompatActivity() {
             .centerCrop()
             .transform(RoundedCorners(applicationContext.resources.getDimensionPixelSize(R.dimen.audioplayer_corner_radius_art)))
             .into(artwork)
-
-
     }
 
     private fun preparePlayer(item: Track) {
@@ -92,17 +94,15 @@ class AudioPlayer : AppCompatActivity() {
         }
         mediaPlayer.setOnCompletionListener {
             playerState = STATE_PREPARED
-
         }
     }
-
 
     private fun startPlayer() {
         mediaPlayer.start()
         playButton.setImageResource(R.drawable.pause_button)
         playerState = STATE_PLAYING
         mainThreadHandler?.post(
-            createUpdateProgressTime()
+            createUpdateProgressTimeRunnable()
         )
     }
 
@@ -112,16 +112,16 @@ class AudioPlayer : AppCompatActivity() {
         playerState = STATE_PAUSED
     }
 
-    private fun createUpdateProgressTime(): Runnable {
+    private fun createUpdateProgressTimeRunnable(): Runnable {
         return object : Runnable {
             override fun run() {
                 when (playerState) {
                     STATE_PLAYING -> {
                         progressTimeView.text = SimpleDateFormat(
-                            "mm:ss",
+                            TIME_FORMAT,
                             Locale.getDefault()
                         ).format(mediaPlayer.currentPosition)
-                        mainThreadHandler?.postDelayed(this, DELAY)
+                        mainThreadHandler?.postDelayed(this, DELAY_MILLIS)
                     }
                     STATE_PAUSED -> {
                         mainThreadHandler?.removeCallbacks(this)
@@ -129,13 +129,11 @@ class AudioPlayer : AppCompatActivity() {
                     STATE_PREPARED -> {
                         mainThreadHandler?.removeCallbacks(this)
                         playButton.setImageResource(R.drawable.play_button)
-                        progressTimeView.text = "00:00"
+                        progressTimeView.text = ZERO_TIME
                     }
-
                 }
             }
         }
-
     }
 
     private fun playbackControl() {
@@ -149,7 +147,6 @@ class AudioPlayer : AppCompatActivity() {
         }
     }
 
-
     override fun onPause() {
         super.onPause()
         pausePlayer()
@@ -159,12 +156,4 @@ class AudioPlayer : AppCompatActivity() {
         super.onDestroy()
         mediaPlayer.release()
     }
-
-
 }
-
-
-
-
-
-
