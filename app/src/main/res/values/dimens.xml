@@ -38,6 +38,5 @@
     <dimen name="bottom_line_margin">20dp</dimen>
     <dimen name="margin_horizontal">8dp</dimen>
     <dimen name="play_button_top_margin">38dp</dimen>
-
-
+    <dimen name="padding_progressbar">148dp</dimen>
 </resources>

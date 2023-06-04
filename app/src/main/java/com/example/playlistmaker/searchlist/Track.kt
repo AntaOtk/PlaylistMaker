@@ -18,5 +18,7 @@ data class Track(
     @SerializedName("primaryGenreName")
     val primaryGenreName: String,
     @SerializedName("country")
-    val country: String
+    val country: String,
+    @SerializedName("previewUrl")
+    val previewUrl: String
 )
