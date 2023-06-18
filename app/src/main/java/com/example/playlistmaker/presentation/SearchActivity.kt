@@ -1,4 +1,4 @@
-package com.example.playlistmaker
+package com.example.playlistmaker.presentation
 
 import android.content.Context
 import android.content.Intent
@@ -19,10 +19,12 @@ import android.widget.LinearLayout
 import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.example.playlistmaker.searchlist.APIsearch
-import com.example.playlistmaker.searchlist.SearchAdapter
-import com.example.playlistmaker.searchlist.Track
-import com.example.playlistmaker.searchlist.TrackResponse
+import com.example.playlistmaker.InputStatus
+import com.example.playlistmaker.R
+import com.example.playlistmaker.data.network.ApiSearch
+import com.example.playlistmaker.data.SearchHistory
+import com.example.playlistmaker.data.dto.TrackResponse
+import com.example.playlistmaker.domain.models.Track
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -43,11 +45,6 @@ class SearchActivity : AppCompatActivity() {
 
     }
 
-
-    private val itunesBaseUrl = "https://itunes.apple.com"
-    private val retrofit =
-        Retrofit.Builder().baseUrl(itunesBaseUrl).addConverterFactory(GsonConverterFactory.create())
-            .build()
     private val searchHistory by lazy {
         SearchHistory(this)
     }
@@ -55,8 +52,6 @@ class SearchActivity : AppCompatActivity() {
     private val handler = Handler(Looper.getMainLooper())
     private var isClickAllowed = true
 
-
-    private val itunesService = retrofit.create(APIsearch::class.java)
     private var text: String = ""
     private lateinit var inputEditText: EditText
     private lateinit var placeholderMessage: LinearLayout

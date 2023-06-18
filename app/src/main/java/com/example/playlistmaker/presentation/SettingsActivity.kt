@@ -1,16 +1,17 @@
-package com.example.playlistmaker
+package com.example.playlistmaker.presentation
 
 import android.annotation.SuppressLint
 import android.content.Intent
-import android.content.SharedPreferences
-import android.content.res.Resources.Theme
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.widget.SwitchCompat
-
+import com.example.playlistmaker.App
+import com.example.playlistmaker.PRACTICUM_PREFERENCES
+import com.example.playlistmaker.R
+import com.example.playlistmaker.THEME_KEY
 
 
 class SettingsActivity : AppCompatActivity() {

@@ -1,18 +1,24 @@
-package com.example.playlistmaker
+package com.example.playlistmaker.data
 
 import android.content.Context
 import android.content.Context.MODE_PRIVATE
 import android.content.SharedPreferences
-import com.example.playlistmaker.searchlist.Track
+import com.example.playlistmaker.domain.models.Track
+import com.example.playlistmaker.presentation.PRACTICUM_PREFERENCES
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import java.lang.reflect.Type
 
 
-const val TRACKS_KEY = "track_key"
-const val MAXIMUM = 10
 
 class SearchHistory(context: Context) {
+
+    companion object {
+        private const val TRACKS_KEY = "track_key"
+        private const val MAXIMUM = 10
+    }
+
+
 
 
     private val sharedPreferences: SharedPreferences = context.getSharedPreferences(
