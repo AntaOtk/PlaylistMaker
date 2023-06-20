@@ -3,15 +3,17 @@ package com.example.playlistmaker.data
 import android.content.Context
 import android.content.Context.MODE_PRIVATE
 import android.content.SharedPreferences
+import com.example.playlistmaker.PRACTICUM_PREFERENCES
+import com.example.playlistmaker.data.dto.TrackDto
+import com.example.playlistmaker.domain.api.OneTrackRepository
+import com.example.playlistmaker.domain.api.TrackHistoryRepository
 import com.example.playlistmaker.domain.models.Track
-import com.example.playlistmaker.presentation.PRACTICUM_PREFERENCES
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import java.lang.reflect.Type
 
 
-
-class SearchHistory(context: Context) {
+class SearchHistory(context: Context) : OneTrackRepository, TrackHistoryRepository {
 
     companion object {
         private const val TRACKS_KEY = "track_key"
@@ -19,38 +21,76 @@ class SearchHistory(context: Context) {
     }
 
 
-
-
     private val sharedPreferences: SharedPreferences = context.getSharedPreferences(
         PRACTICUM_PREFERENCES,
         MODE_PRIVATE
     )
 
+    override fun getTrack(): Track {
+        val track = read().get(0)
+        return Track(
+            track.trackName,
+            track.artistName,
+            track.trackTimeMillis,
+            track.artworkUrl100,
+            track.collectionName,
+            track.releaseDate,
+            track.primaryGenreName,
+            track.country,
+            track.previewUrl
+        )
+    }
 
-    fun setTrack(track: Track) {
+    override fun getTrackList(): List<Track> {
+        return read().map {
+            Track(
+                it.trackName,
+                it.artistName,
+                it.trackTimeMillis,
+                it.artworkUrl100,
+                it.collectionName,
+                it.releaseDate,
+                it.primaryGenreName,
+                it.country,
+                it.previewUrl
+            )
+        }
+    }
+
+    override fun setTrack(track: Track) {
         val tracks = read()
-        if (!tracks.remove(track) && tracks.size >= MAXIMUM) tracks.removeAt(MAXIMUM - 1)
-        tracks.add(0, track)
+        val trackDto = TrackDto(
+            track.trackName,
+            track.artistName,
+            track.trackTimeMillis,
+            track.artworkUrl100,
+            track.collectionName,
+            track.releaseDate,
+            track.primaryGenreName,
+            track.country,
+            track.previewUrl
+        )
+        if (!tracks.remove(trackDto) && tracks.size >= MAXIMUM) tracks.removeAt(MAXIMUM - 1)
+        tracks.add(0, trackDto)
         write(tracks)
     }
 
 
-    fun read(): MutableList<
-            Track> {
+    private fun read(): MutableList<TrackDto> {
         val json = sharedPreferences.getString(TRACKS_KEY, null) ?: return mutableListOf()
-        val listOfMyClassObject: Type = object : TypeToken<ArrayList<Track>?>() {}.type
+        val listOfMyClassObject: Type = object : TypeToken<ArrayList<TrackDto>?>() {}.type
         return Gson().fromJson(json, listOfMyClassObject)
     }
 
 
-    fun write(tracks: MutableList<Track>) {
+    private fun write(tracks: MutableList<TrackDto>) {
         val json = Gson().toJson(tracks)
         sharedPreferences.edit()
             .putString(TRACKS_KEY, json)
             .apply()
     }
 
-    fun clear(sharedPreferences: SharedPreferences){
+    override fun clear() {
         sharedPreferences.edit()
             .remove(TRACKS_KEY)
             .apply()

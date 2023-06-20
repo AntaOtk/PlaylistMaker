@@ -1,12 +1,11 @@
 package com.example.playlistmaker.presentation
 
-import android.annotation.SuppressLint
 import android.content.Intent
 import android.net.Uri
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SwitchCompat
 import com.example.playlistmaker.App
 import com.example.playlistmaker.PRACTICUM_PREFERENCES
@@ -15,9 +14,6 @@ import com.example.playlistmaker.THEME_KEY
 
 
 class SettingsActivity : AppCompatActivity() {
-
-    @SuppressLint("WrongViewCast")
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,7 +29,7 @@ class SettingsActivity : AppCompatActivity() {
         val forward = findViewById<TextView>(R.id.forward_button)
         val themeSwitcher = findViewById<SwitchCompat>(R.id.switch_theme)
         val sharedPreferences = getSharedPreferences(PRACTICUM_PREFERENCES, MODE_PRIVATE)
-        var darkTheme = sharedPreferences.getBoolean(THEME_KEY, false)
+        val darkTheme = sharedPreferences.getBoolean(THEME_KEY, false)
         themeSwitcher.setChecked(darkTheme)
 
 
@@ -62,7 +58,5 @@ class SettingsActivity : AppCompatActivity() {
             intent.data = Uri.parse(getString(R.string.offer))
             startActivity(intent)
         }
-
     }
-
 }

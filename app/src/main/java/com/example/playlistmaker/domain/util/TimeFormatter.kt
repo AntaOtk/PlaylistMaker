@@ -1,6 +1,5 @@
-package com.example.playlistmaker.domain
+package com.example.playlistmaker.domain.util
 
-import com.example.playlistmaker.presentation.AudioPlayer
 import java.text.SimpleDateFormat
 import java.util.*
 

@@ -12,11 +12,9 @@ import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.example.playlistmaker.R
-import com.example.playlistmaker.data.Player
-import com.example.playlistmaker.domain.PlayControl
+import com.example.playlistmaker.creator.Creator
 import com.example.playlistmaker.domain.PlayerPresenter
-import com.example.playlistmaker.domain.TimeFormatter
-import com.example.playlistmaker.domain.api.OneTrackRepository
+import com.example.playlistmaker.domain.use_case.PlayControl
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -30,20 +28,18 @@ class AudioPlayer : AppCompatActivity(), PlayerPresenter {
         }
     }
 
-    private val playControl: PlayControl
-    private val oneTrackRepository: OneTrackRepository
     private lateinit var playButton: ImageButton
     private lateinit var progressTimeView: TextView
     private var mainThreadHandler: Handler? = null
+    private lateinit var playControl: PlayControl
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.audio_player)
-
+        playControl = Creator.createPlayControl(this)
 
         playButton = findViewById(R.id.playButton)
         progressTimeView = findViewById(R.id.progressTime)
-
 
         val name = findViewById<TextView>(R.id.title)
         val artist = findViewById<TextView>(R.id.artist)
@@ -53,7 +49,7 @@ class AudioPlayer : AppCompatActivity(), PlayerPresenter {
         val ganre = findViewById<TextView>(R.id.styleName)
         val country = findViewById<TextView>(R.id.countryName)
         val artwork = findViewById<ImageView>(R.id.cover)
-        val item = oneTrackRepository.getTrack()
+        val item = Creator.getOneTrackRepository().getTrack()
 
         mainThreadHandler = Handler(Looper.getMainLooper())
         playButton.setOnClickListener { playControl.playbackControl() }
@@ -69,6 +65,7 @@ class AudioPlayer : AppCompatActivity(), PlayerPresenter {
         country.text = item.country
         duration.text = SimpleDateFormat("mm:ss", Locale.getDefault()).format(item.trackTimeMillis)
 
+        playControl.preparePlayer(item)
 
         Glide.with(applicationContext)
             .load(item.artworkUrl100.replaceAfterLast('/', "512x512bb.jpg"))
@@ -85,16 +82,13 @@ class AudioPlayer : AppCompatActivity(), PlayerPresenter {
         )
     }
 
-
     override fun pausePlayer() {
         playButton.setImageResource(R.drawable.play_button)
     }
 
     override fun progressTimeViewUpdate(progressTime: String) {
         progressTimeView.text = progressTime
-
     }
-
 
     override fun playButtonEnabled() {
         playButton.isEnabled = true
@@ -112,7 +106,6 @@ class AudioPlayer : AppCompatActivity(), PlayerPresenter {
     override fun onPause() {
         super.onPause()
         playControl.pausePlayer()
-
     }
 
     override fun onDestroy() {

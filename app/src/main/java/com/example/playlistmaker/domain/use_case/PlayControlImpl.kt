@@ -1,14 +1,12 @@
-package com.example.playlistmaker.domain
+package com.example.playlistmaker.domain.use_case
 
-import android.media.MediaPlayer
-import com.example.playlistmaker.R
-import com.example.playlistmaker.data.Player
-import com.example.playlistmaker.presentation.AudioPlayer
-import java.text.SimpleDateFormat
-import java.util.*
+import com.example.playlistmaker.domain.PlayerInteractor
+import com.example.playlistmaker.domain.PlayerPresenter
+import com.example.playlistmaker.domain.models.Track
+import com.example.playlistmaker.domain.util.TimeFormatter
 
-
-class PlayControl(val mediaPlayer: PlayerInteractor, val playerPresenter: PlayerPresenter) {
+class PlayControlImpl(val mediaPlayer: PlayerInteractor, val playerPresenter: PlayerPresenter) :
+    PlayControl {
 
     companion object {
         private const val STATE_DEFAULT = 0
@@ -19,18 +17,21 @@ class PlayControl(val mediaPlayer: PlayerInteractor, val playerPresenter: Player
 
     private var playerState = STATE_DEFAULT
 
-
-    fun setPlayerState() {
-        playerState = STATE_PREPARED
-
+    override fun preparePlayer(item: Track) {
+        mediaPlayer.preparePlayer(item, this::setPlayerStatePrepared, this::setPlayerState)
     }
 
-    fun setPlayerStatePrepared() {
+
+    private fun setPlayerState() {
+        playerState = STATE_PREPARED
+    }
+
+    private fun setPlayerStatePrepared() {
         playerState = STATE_PREPARED
         playerPresenter.playButtonEnabled()
     }
 
-    fun playbackControl() {
+    override fun playbackControl() {
         when (playerState) {
             STATE_PLAYING -> {
                 pausePlayer()
@@ -41,19 +42,19 @@ class PlayControl(val mediaPlayer: PlayerInteractor, val playerPresenter: Player
         }
     }
 
-    fun startPlayer() {
+    private fun startPlayer() {
         mediaPlayer.startPlayer()
         playerPresenter.startPlayer()
         playerState = STATE_PLAYING
     }
 
-    fun pausePlayer() {
+    override fun pausePlayer() {
         mediaPlayer.pausePlayer()
         playerPresenter.pausePlayer()
         playerState = STATE_PAUSED
     }
 
-    fun createUpdateProgressTimeRunnable(): Runnable {
+    override fun createUpdateProgressTimeRunnable(): Runnable {
         return object : Runnable {
             override fun run() {
 
@@ -76,7 +77,7 @@ class PlayControl(val mediaPlayer: PlayerInteractor, val playerPresenter: Player
     }
 
 
-        fun release() {
-            mediaPlayer.release()
-        }
+    override fun release() {
+        mediaPlayer.release()
     }
+}
