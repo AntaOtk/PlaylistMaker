@@ -38,7 +38,7 @@ class SearchActivity : AppCompatActivity() {
     }
 
     private val searchHistory by lazy {
-        Creator.getHistoryRepository()
+        Creator.getHistoryRepository(this)
     }
     private val searchRunnable = Runnable { search() }
     private val handler = Handler(Looper.getMainLooper())
@@ -123,6 +123,8 @@ class SearchActivity : AppCompatActivity() {
 
                 if (inputEditText.hasFocus() && s.isNullOrEmpty()) {
                     handler.removeCallbacks(searchRunnable)
+                    tracks.clear()
+                    adapter.notifyDataSetChanged()
                     showMessage(InputStatus.SUCCESS)
                     if (searchHistory.getTrackList().isNotEmpty()) hintMessage.visibility =
                         View.VISIBLE
@@ -152,6 +154,7 @@ class SearchActivity : AppCompatActivity() {
         inputEditText.setOnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_DONE) {
                 if (inputEditText.text.isNotEmpty()) {
+                    handler.removeCallbacks(searchRunnable)
                     search()
                 }
                 true
@@ -165,18 +168,23 @@ class SearchActivity : AppCompatActivity() {
         progressBar.visibility = View.VISIBLE
         searchList.visibility = View.GONE
         placeholderMessage.visibility = View.GONE
-        interactor.searchTracks(inputEditText.text.toString()) {
-
-            tracks.clear()
-            if (it.isNotEmpty()) {
-                searchList.visibility = View.VISIBLE
-                tracks.addAll(it)
-                adapter.notifyDataSetChanged()
-                showMessage(InputStatus.SUCCESS)
-            } else {
-                showMessage(InputStatus.EMPTY)
+        interactor.searchTracks(inputEditText.text.toString(), {
+            handler.post {
+                tracks.clear()
+                progressBar.visibility = View.GONE
+                if (it.isNotEmpty()) {
+                    searchList.visibility = View.VISIBLE
+                    tracks.addAll(it)
+                    adapter.notifyDataSetChanged()
+                    showMessage(InputStatus.SUCCESS)
+                } else {
+                    showMessage(InputStatus.EMPTY)
+                }
             }
-        }
+        }, {
+            progressBar.visibility = View.GONE
+            handler.post { showMessage(InputStatus.ERROR) }
+        })
     }
 
     private fun clickDebounce(): Boolean {
@@ -204,16 +212,16 @@ class SearchActivity : AppCompatActivity() {
         placeholderMessage.visibility = View.VISIBLE
         val textMessage = findViewById<TextView>(R.id.placeholderMessageText)
         val imageMessage = findViewById<ImageView>(R.id.placeholderMessageImage)
-        tracks.clear()
-        adapter.notifyDataSetChanged()
         when (status) {
             InputStatus.SUCCESS -> {
                 placeholderMessage.visibility = View.GONE
             }
+
             InputStatus.EMPTY -> {
                 textMessage.text = getString(R.string.nothing_found)
                 imageMessage.setImageResource(R.drawable.search_message)
             }
+
             InputStatus.ERROR -> {
                 textMessage.text = getString(R.string.no_interrnet_conection)
                 imageMessage.setImageResource(R.drawable.internet_message)

@@ -28,32 +28,12 @@ class SearchHistory(context: Context) : OneTrackRepository, TrackHistoryReposito
 
     override fun getTrack(): Track {
         val track = read().get(0)
-        return Track(
-            track.trackName,
-            track.artistName,
-            track.trackTimeMillis,
-            track.artworkUrl100,
-            track.collectionName,
-            track.releaseDate,
-            track.primaryGenreName,
-            track.country,
-            track.previewUrl
-        )
+        return trackMap(track)
     }
 
     override fun getTrackList(): List<Track> {
         return read().map {
-            Track(
-                it.trackName,
-                it.artistName,
-                it.trackTimeMillis,
-                it.artworkUrl100,
-                it.collectionName,
-                it.releaseDate,
-                it.primaryGenreName,
-                it.country,
-                it.previewUrl
-            )
+            trackMap(it)
         }
     }
 
@@ -94,6 +74,20 @@ class SearchHistory(context: Context) : OneTrackRepository, TrackHistoryReposito
         sharedPreferences.edit()
             .remove(TRACKS_KEY)
             .apply()
+    }
+
+    private fun trackMap(track: TrackDto): Track {
+        return Track(
+            track.trackName,
+            track.artistName,
+            track.trackTimeMillis,
+            track.artworkUrl100,
+            track.collectionName,
+            track.releaseDate,
+            track.primaryGenreName,
+            track.country,
+            track.previewUrl
+        )
     }
 
 }

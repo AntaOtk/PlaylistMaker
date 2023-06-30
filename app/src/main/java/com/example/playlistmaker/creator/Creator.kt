@@ -15,8 +15,6 @@ import com.example.playlistmaker.domain.use_case.PlayControlImpl
 
 
 object Creator {
-    lateinit var context: Context
-
     private fun getTrackRepository(): TracksRepository {
         return TracksRepositoryImpl(RetrofitNetworkClient())
     }
@@ -29,11 +27,11 @@ object Creator {
         return PlayControlImpl(Player(), playerPresenter)
     }
 
-    fun getOneTrackRepository(): OneTrackRepository {
+    fun getOneTrackRepository(context: Context): OneTrackRepository {
         return SearchHistory(context)
     }
 
-    fun getHistoryRepository(): TrackHistoryRepository {
+    fun getHistoryRepository(context: Context): TrackHistoryRepository {
         return SearchHistory(context)
     }
 

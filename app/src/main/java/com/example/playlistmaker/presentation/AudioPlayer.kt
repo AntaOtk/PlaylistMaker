@@ -49,7 +49,7 @@ class AudioPlayer : AppCompatActivity(), PlayerPresenter {
         val ganre = findViewById<TextView>(R.id.styleName)
         val country = findViewById<TextView>(R.id.countryName)
         val artwork = findViewById<ImageView>(R.id.cover)
-        val item = Creator.getOneTrackRepository().getTrack()
+        val item = Creator.getOneTrackRepository(this).getTrack()
 
         mainThreadHandler = Handler(Looper.getMainLooper())
         playButton.setOnClickListener { playControl.playbackControl() }
