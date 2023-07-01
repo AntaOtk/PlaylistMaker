@@ -5,6 +5,7 @@ import android.net.Uri
 import android.os.Bundle
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SwitchCompat
 import com.example.playlistmaker.App
@@ -41,7 +42,7 @@ class SettingsActivity : AppCompatActivity() {
             val intent = Intent(Intent.ACTION_SEND)
             intent.putExtra(Intent.EXTRA_TEXT, getString(R.string.message))
             intent.type = "text/plain"
-            startActivity(intent)
+            safeStartActivity(intent)
         }
 
         support.setOnClickListener {
@@ -50,13 +51,21 @@ class SettingsActivity : AppCompatActivity() {
             intent.putExtra(Intent.EXTRA_EMAIL, arrayOf(R.string.mail_to_support))
             intent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.mail_subject))
             intent.putExtra(Intent.EXTRA_TEXT, getString(R.string.mail_message))
-            startActivity(intent)
+            safeStartActivity(intent)
         }
 
         forward.setOnClickListener {
             val intent = Intent(Intent.ACTION_VIEW)
             intent.data = Uri.parse(getString(R.string.offer))
+            safeStartActivity(intent)
+        }
+    }
+
+    private fun safeStartActivity(intent: Intent) {
+        try {
             startActivity(intent)
+        } catch (e: Exception) {
+            Toast.makeText(applicationContext, getString(R.string.error_toast_message), Toast.LENGTH_SHORT).show()
         }
     }
 }

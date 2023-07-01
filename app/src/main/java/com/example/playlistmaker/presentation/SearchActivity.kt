@@ -87,7 +87,6 @@ class SearchActivity : AppCompatActivity() {
                         .isNotEmpty()
                 ) View.VISIBLE else View.GONE
             historyList.adapter = SearchAdapter(searchHistory.getTrackList()) {
-
                 searchHistory.setTrack(it)
                 AudioPlayer.startActivity(this)
             }
@@ -157,7 +156,6 @@ class SearchActivity : AppCompatActivity() {
                     handler.removeCallbacks(searchRunnable)
                     search()
                 }
-                true
             }
             false
         }
@@ -182,8 +180,10 @@ class SearchActivity : AppCompatActivity() {
                 }
             }
         }, {
-            progressBar.visibility = View.GONE
-            handler.post { showMessage(InputStatus.ERROR) }
+            handler.post {
+                progressBar.visibility = View.GONE
+                showMessage(InputStatus.ERROR)
+            }
         })
     }
 
