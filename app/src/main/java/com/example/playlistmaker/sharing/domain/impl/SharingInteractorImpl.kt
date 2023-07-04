@@ -1,11 +1,15 @@
 package com.example.playlistmaker.sharing.domain.impl
 
+
+import android.content.Context
+import com.example.playlistmaker.R
 import com.example.playlistmaker.sharing.data.ExternalNavigator
 import com.example.playlistmaker.sharing.domain.SharingInteractor
 import com.example.playlistmaker.sharing.domain.model.EmailData
 
 class SharingInteractorImpl(
     private val externalNavigator: ExternalNavigator,
+    private val context: Context
 ) : SharingInteractor {
     override fun shareApp() {
         externalNavigator.shareLink(getShareAppLink())
@@ -20,17 +24,19 @@ class SharingInteractorImpl(
     }
 
     private fun getShareAppLink(): String {
-        // Нужно реализовать
-        return ""
+        return context.getString(R.string.message)
     }
 
     private fun getSupportEmailData(): EmailData {
-        // Нужно реализовать
-        return EmailData()
+        return EmailData(
+            arrayOf(context.getString(R.string.mail_to_support)),
+            context.getString(R.string.mail_subject),
+            context.getString(R.string.mail_subject)
+        )
     }
 
     private fun getTermsLink(): String {
-        // Нужно реализовать
-        return ""
+
+        return context.getString(R.string.offer)
     }
 }

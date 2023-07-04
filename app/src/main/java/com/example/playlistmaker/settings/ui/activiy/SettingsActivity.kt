@@ -48,7 +48,7 @@ class SettingsActivity : AppCompatActivity() {
         support.setOnClickListener {
             val intent = Intent(Intent.ACTION_SENDTO)
             intent.data = Uri.parse("mailto:")
-            intent.putExtra(Intent.EXTRA_EMAIL, arrayOf(R.string.mail_to_support))
+            intent.putExtra(Intent.EXTRA_EMAIL, arrayOf(getString(R.string.mail_to_support)))
             intent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.mail_subject))
             intent.putExtra(Intent.EXTRA_TEXT, getString(R.string.mail_message))
             safeStartActivity(intent)

@@ -13,8 +13,8 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.example.playlistmaker.R
 import com.example.playlistmaker.creator.Creator
-import com.example.playlistmaker.domain.PlayerPresenter
-import com.example.playlistmaker.domain.use_case.PlayControl
+import com.example.playlistmaker.player.domain.PlayerPresenter
+import com.example.playlistmaker.player.domain.use_case.PlayControl
 import java.text.SimpleDateFormat
 import java.util.*
 

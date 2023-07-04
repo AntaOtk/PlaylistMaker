@@ -18,10 +18,10 @@ import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
-import com.example.playlistmaker.InputStatus
+import com.example.playlistmaker.search.data.InputStatus
 import com.example.playlistmaker.R
 import com.example.playlistmaker.creator.Creator
-import com.example.playlistmaker.domain.models.Track
+import com.example.playlistmaker.search.domain.models.Track
 import com.example.playlistmaker.player.AudioPlayer
 
 class SearchActivity : AppCompatActivity() {
