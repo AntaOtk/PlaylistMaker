@@ -1,22 +1,20 @@
-package com.example.playlistmaker
+package com.example.playlistmaker.presentation
 
-import android.annotation.SuppressLint
 import android.content.Intent
-import android.content.SharedPreferences
-import android.content.res.Resources.Theme
 import android.net.Uri
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SwitchCompat
-
+import com.example.playlistmaker.App
+import com.example.playlistmaker.PRACTICUM_PREFERENCES
+import com.example.playlistmaker.R
+import com.example.playlistmaker.THEME_KEY
 
 
 class SettingsActivity : AppCompatActivity() {
-
-    @SuppressLint("WrongViewCast")
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,7 +30,7 @@ class SettingsActivity : AppCompatActivity() {
         val forward = findViewById<TextView>(R.id.forward_button)
         val themeSwitcher = findViewById<SwitchCompat>(R.id.switch_theme)
         val sharedPreferences = getSharedPreferences(PRACTICUM_PREFERENCES, MODE_PRIVATE)
-        var darkTheme = sharedPreferences.getBoolean(THEME_KEY, false)
+        val darkTheme = sharedPreferences.getBoolean(THEME_KEY, false)
         themeSwitcher.setChecked(darkTheme)
 
 
@@ -44,7 +42,7 @@ class SettingsActivity : AppCompatActivity() {
             val intent = Intent(Intent.ACTION_SEND)
             intent.putExtra(Intent.EXTRA_TEXT, getString(R.string.message))
             intent.type = "text/plain"
-            startActivity(intent)
+            safeStartActivity(intent)
         }
 
         support.setOnClickListener {
@@ -53,15 +51,21 @@ class SettingsActivity : AppCompatActivity() {
             intent.putExtra(Intent.EXTRA_EMAIL, arrayOf(R.string.mail_to_support))
             intent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.mail_subject))
             intent.putExtra(Intent.EXTRA_TEXT, getString(R.string.mail_message))
-            startActivity(intent)
+            safeStartActivity(intent)
         }
 
         forward.setOnClickListener {
             val intent = Intent(Intent.ACTION_VIEW)
             intent.data = Uri.parse(getString(R.string.offer))
-            startActivity(intent)
+            safeStartActivity(intent)
         }
-
     }
 
+    private fun safeStartActivity(intent: Intent) {
+        try {
+            startActivity(intent)
+        } catch (e: Exception) {
+            Toast.makeText(applicationContext, getString(R.string.error_toast_message), Toast.LENGTH_SHORT).show()
+        }
+    }
 }

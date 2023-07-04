@@ -3,20 +3,20 @@ package com.example.playlistmaker
 import android.app.Application
 import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatDelegate
+import com.example.playlistmaker.creator.Creator
 
 const val PRACTICUM_PREFERENCES = "playlist_maker_preferences"
 const val THEME_KEY = "theme_key"
 
-class App  : Application() {
+class App : Application() {
 
     var darkTheme = false
-    private lateinit var sharedPreferences : SharedPreferences
+    private lateinit var sharedPreferences: SharedPreferences
 
 
     override fun onCreate() {
-
-        sharedPreferences = getSharedPreferences(PRACTICUM_PREFERENCES,MODE_PRIVATE)
-        darkTheme = sharedPreferences.getBoolean(THEME_KEY,darkTheme)
+        sharedPreferences = getSharedPreferences(PRACTICUM_PREFERENCES, MODE_PRIVATE)
+        darkTheme = sharedPreferences.getBoolean(THEME_KEY, darkTheme)
         super.onCreate()
         switchTheme(darkTheme)
     }
