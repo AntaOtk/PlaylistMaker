@@ -1,4 +1,4 @@
-package com.example.playlistmaker.presentation
+package com.example.playlistmaker.search.ui
 
 import android.content.Context
 import android.content.Intent
@@ -22,6 +22,7 @@ import com.example.playlistmaker.InputStatus
 import com.example.playlistmaker.R
 import com.example.playlistmaker.creator.Creator
 import com.example.playlistmaker.domain.models.Track
+import com.example.playlistmaker.player.AudioPlayer
 
 class SearchActivity : AppCompatActivity() {
 
