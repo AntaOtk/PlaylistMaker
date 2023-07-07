@@ -3,32 +3,26 @@ package com.example.playlistmaker.search.data
 import com.example.playlistmaker.search.data.dto.SearchRequest
 import com.example.playlistmaker.search.data.dto.TrackResponse
 import com.example.playlistmaker.search.domain.api.TracksRepository
-import com.example.playlistmaker.search.domain.models.Track
+import com.example.playlistmaker.search.domain.model.Track
+import com.example.playlistmaker.search.util.Resource
 
 class TracksRepositoryImpl(private val networkClient: NetworkClient) : TracksRepository {
 
-    override fun searchTracks(expression: String): List<Track> {
-        val response = try {
-            networkClient.doRequest(SearchRequest(expression))
-        } catch (e: Exception) {
-            throw NetworkException()
-        }
-        if (response.resultCode == 200) {
-            return (response as TrackResponse).results.map {
-                Track(
-                    it.trackName,
-                    it.artistName,
-                    it.trackTimeMillis,
-                    it.artworkUrl100,
-                    it.collectionName,
-                    it.releaseDate,
-                    it.primaryGenreName,
-                    it.country,
-                    it.previewUrl
-                )
+    private val mapper = TrackMapper()
+
+    override fun searchTracks(expression: String): Resource<List<Track>> {
+        val response =  networkClient.doRequest(SearchRequest(expression))
+        return when (response.resultCode) {
+            -1 -> {
+                Resource.Error("Проверьте подключение к интернету")
             }
-        } else {
-            return emptyList()
+            200 -> {
+                Resource.Success((response as TrackResponse).results.map {
+                    mapper.trackMap(it)})
+            }
+            else -> {
+                Resource.Error("Ошибка сервера")
+            }
         }
     }
 }

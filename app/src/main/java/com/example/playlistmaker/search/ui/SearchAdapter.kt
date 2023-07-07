@@ -4,7 +4,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.playlistmaker.R
-import com.example.playlistmaker.search.domain.models.Track
+import com.example.playlistmaker.search.domain.model.Track
 
 class SearchAdapter(private val data: List<Track>, private val clickListener: (Track) -> Unit) :
     RecyclerView.Adapter<SearchViewHolder>() {

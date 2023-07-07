@@ -1,4 +1,4 @@
-package com.example.playlistmaker.player
+package com.example.playlistmaker.player.ui
 
 import android.content.Context
 import android.content.Intent
@@ -8,17 +8,19 @@ import android.os.Looper
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.appcompat.app.AppCompatActivity
+import androidx.activity.ComponentActivity
+import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.example.playlistmaker.R
 import com.example.playlistmaker.creator.Creator
+import com.example.playlistmaker.player.PlayerViewModel
 import com.example.playlistmaker.player.domain.PlayerPresenter
 import com.example.playlistmaker.player.domain.use_case.PlayControl
 import java.text.SimpleDateFormat
 import java.util.*
 
-class AudioPlayer : AppCompatActivity(), PlayerPresenter {
+class AudioPlayer : ComponentActivity(), PlayerPresenter {
     companion object {
         private const val DELAY_MILLIS = 25L
 
@@ -32,12 +34,13 @@ class AudioPlayer : AppCompatActivity(), PlayerPresenter {
     private lateinit var progressTimeView: TextView
     private var mainThreadHandler: Handler? = null
     private lateinit var playControl: PlayControl
+    private lateinit var viewModel: PlayerViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.audio_player)
-        playControl = Creator.createPlayControl(this)
 
+        playControl = Creator.createPlayControl(this)
         playButton = findViewById(R.id.playButton)
         progressTimeView = findViewById(R.id.progressTime)
 
@@ -50,7 +53,7 @@ class AudioPlayer : AppCompatActivity(), PlayerPresenter {
         val country = findViewById<TextView>(R.id.countryName)
         val artwork = findViewById<ImageView>(R.id.cover)
         val item = Creator.getOneTrackRepository(this).getTrack()
-
+        //viewModel = ViewModelProvider(this, PlayerViewModel.getViewModelFactory(item))[PlayerViewModel::class.java]
         mainThreadHandler = Handler(Looper.getMainLooper())
         playButton.setOnClickListener { playControl.playbackControl() }
 

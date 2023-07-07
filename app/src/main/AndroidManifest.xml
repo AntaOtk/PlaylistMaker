@@ -2,6 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.INTERNET"/>
 
     <application
@@ -15,7 +16,7 @@
         android:theme="@style/Theme.PlaylistMaker"
         tools:targetApi="31">
         <activity
-            android:name=".presentation.MainActivity"
+            android:name=".main.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -23,19 +24,19 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".presentation.SettingsActivity"
+            android:name=".settings.ui.activiy.SettingsActivity"
             android:exported="false">
         </activity>
         <activity
-            android:name=".presentation.LibraryActivity"
+            android:name=".libraby.LibraryActivity"
             android:exported="false">
         </activity>
         <activity
-            android:name=".presentation.SearchActivity"
+            android:name=".search.ui.activity.SearchActivity"
             android:exported="false">
         </activity>
         <activity
-            android:name=".presentation.AudioPlayer"
+            android:name=".player.ui.AudioPlayer"
             android:exported="false">
         </activity>
 

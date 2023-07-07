@@ -1,6 +1,6 @@
 package com.example.playlistmaker.player.domain.use_case
 
-import com.example.playlistmaker.search.domain.models.Track
+import com.example.playlistmaker.search.domain.model.Track
 
 interface PlayControl {
     fun playbackControl()

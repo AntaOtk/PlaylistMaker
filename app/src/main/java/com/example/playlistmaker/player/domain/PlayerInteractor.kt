@@ -1,6 +1,6 @@
 package com.example.playlistmaker.player.domain
 
-import com.example.playlistmaker.search.domain.models.Track
+import com.example.playlistmaker.search.domain.model.Track
 
 interface PlayerInteractor {
 

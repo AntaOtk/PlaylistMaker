@@ -1,4 +1,4 @@
-package com.example.playlistmaker.search.domain.models
+package com.example.playlistmaker.search.domain.model
 
 
 data class Track(

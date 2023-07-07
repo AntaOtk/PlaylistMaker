@@ -2,7 +2,7 @@ package com.example.playlistmaker.player.domain.use_case
 
 import com.example.playlistmaker.player.domain.PlayerInteractor
 import com.example.playlistmaker.player.domain.PlayerPresenter
-import com.example.playlistmaker.search.domain.models.Track
+import com.example.playlistmaker.search.domain.model.Track
 import com.example.playlistmaker.player.domain.util.TimeFormatter
 
 class PlayControlImpl(val mediaPlayer: PlayerInteractor, val playerPresenter: PlayerPresenter) :

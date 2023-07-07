@@ -2,7 +2,7 @@ package com.example.playlistmaker.player.data
 
 import android.media.MediaPlayer
 import com.example.playlistmaker.player.domain.PlayerInteractor
-import com.example.playlistmaker.search.domain.models.Track
+import com.example.playlistmaker.search.domain.model.Track
 
 class Player : PlayerInteractor {
 

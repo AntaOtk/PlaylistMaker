@@ -2,7 +2,7 @@ package com.example.playlistmaker.creator
 
 import android.content.Context
 import com.example.playlistmaker.player.data.Player
-import com.example.playlistmaker.search.data.SearchHistory
+import com.example.playlistmaker.search.data.SearchHistoryRepository
 import com.example.playlistmaker.search.data.TracksRepositoryImpl
 import com.example.playlistmaker.search.data.network.RetrofitNetworkClient
 import com.example.playlistmaker.player.domain.PlayerPresenter
@@ -12,19 +12,16 @@ import com.example.playlistmaker.search.domain.api.TracksInteractor
 import com.example.playlistmaker.search.domain.api.TracksRepository
 import com.example.playlistmaker.search.domain.impl.TracksInteractorImpl
 import com.example.playlistmaker.player.domain.use_case.PlayControlImpl
-import com.example.playlistmaker.sharing.data.ExternalNavigator
-import com.example.playlistmaker.sharing.data.impl.ExternalNavigatorImpl
-import com.example.playlistmaker.sharing.domain.SharingInteractor
-import com.example.playlistmaker.sharing.domain.impl.SharingInteractorImpl
+import com.example.playlistmaker.search.data.LocalStorage
 
 
 object Creator {
-    private fun getTrackRepository(): TracksRepository {
-        return TracksRepositoryImpl(RetrofitNetworkClient())
+    private fun getTrackRepository(context: Context): TracksRepository {
+        return TracksRepositoryImpl(RetrofitNetworkClient(context))
     }
 
-    fun provideTrackInteractor(): TracksInteractor {
-        return TracksInteractorImpl(getTrackRepository())
+    fun provideTrackInteractor(context: Context): TracksInteractor {
+        return TracksInteractorImpl(getTrackRepository(context))
     }
 
     fun createPlayControl(playerPresenter: PlayerPresenter): PlayControlImpl {
@@ -32,19 +29,11 @@ object Creator {
     }
 
     fun getOneTrackRepository(context: Context): OneTrackRepository {
-        return SearchHistory(context)
+        return SearchHistoryRepository(LocalStorage(context.getSharedPreferences("local_storage", Context.MODE_PRIVATE)))
     }
 
     fun getHistoryRepository(context: Context): TrackHistoryRepository {
-        return SearchHistory(context)
-    }
-
-    fun getSharingInteractor(context: Context):SharingInteractor {
-        return SharingInteractorImpl(getExternalNavigator(),context)
-    }
-
-    fun getExternalNavigator(): ExternalNavigator {
-        return ExternalNavigatorImpl()
+        return SearchHistoryRepository(LocalStorage(context.getSharedPreferences("local_storage", Context.MODE_PRIVATE)))
     }
 
 }
