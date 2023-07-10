@@ -20,7 +20,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
 import com.example.playlistmaker.R
-import com.example.playlistmaker.player.ui.AudioPlayer
+import com.example.playlistmaker.databinding.ActivitySearchBinding
+import com.example.playlistmaker.player.ui.activity.AudioPlayer
 import com.example.playlistmaker.search.domain.model.Track
 import com.example.playlistmaker.search.ui.SearchAdapter
 import com.example.playlistmaker.search.ui.SearchState
@@ -37,6 +38,9 @@ class SearchActivity : AppCompatActivity() {
         }
     }
 
+    private lateinit var binding: ActivitySearchBinding
+
+
     private lateinit var inputEditText: EditText
     private lateinit var placeholderMessage: LinearLayout
     private lateinit var searchList: RecyclerView
@@ -51,13 +55,14 @@ class SearchActivity : AppCompatActivity() {
     private val adapter = SearchAdapter(tracks) {
         if (clickDebounce()) {
             viewModel.setTrack(it)
-            AudioPlayer.startActivity(this)
+            AudioPlayer.startActivity(this, it)
         }
     }
 
     private val handler = Handler(Looper.getMainLooper())
     private var isClickAllowed = true
     private var inputText: String = ""
+    private var simpleTextWatcher: TextWatcher? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -66,6 +71,8 @@ class SearchActivity : AppCompatActivity() {
             this,
             SearchViewModel.getViewModelFactory()
         )[SearchViewModel::class.java]
+
+        binding = ActivitySearchBinding.inflate(layoutInflater)
 
         inputEditText = findViewById(R.id.inputEditText)
         searchList = findViewById(R.id.rvSearch)
@@ -110,7 +117,7 @@ class SearchActivity : AppCompatActivity() {
             viewModel.searchDebounce(inputText)
         }
 
-        val simpleTextWatcher = object : TextWatcher {
+        simpleTextWatcher = object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
@@ -122,6 +129,11 @@ class SearchActivity : AppCompatActivity() {
 
             }
         }
+        simpleTextWatcher?.let { inputEditText.addTextChangedListener(it) }
+
+        viewModel.observeState().observe(this) {
+            render(it)
+        }
 
         inputEditText.setOnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_DONE) {
@@ -132,12 +144,13 @@ class SearchActivity : AppCompatActivity() {
             false
         }
 
-        simpleTextWatcher?.let { inputEditText.addTextChangedListener(it) }
-
-        viewModel.observeState().observe(this) {
-            render(it)
-        }
     }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        simpleTextWatcher?.let { inputEditText.removeTextChangedListener(it) }
+    }
+
 
     fun clickDebounce(): Boolean {
         val current = isClickAllowed

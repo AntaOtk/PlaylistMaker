@@ -1,83 +1,47 @@
 package com.example.playlistmaker.player.domain.use_case
 
-import com.example.playlistmaker.player.domain.PlayerInteractor
-import com.example.playlistmaker.player.domain.PlayerPresenter
-import com.example.playlistmaker.search.domain.model.Track
+import com.example.playlistmaker.player.data.PlayerClient
 import com.example.playlistmaker.player.domain.util.TimeFormatter
+import com.example.playlistmaker.player.ui.activity.PlayerState
 
-class PlayControlImpl(val mediaPlayer: PlayerInteractor, val playerPresenter: PlayerPresenter) :
+class PlayControlImpl(private val mediaPlayer: PlayerClient) :
     PlayControl {
 
-    companion object {
-        private const val STATE_DEFAULT = 0
-        private const val STATE_PREPARED = 1
-        private const val STATE_PLAYING = 2
-        private const val STATE_PAUSED = 3
+    private var playerState = PlayerState.PREPARED
+
+
+    override fun preparePlayer(url: String) {
+        mediaPlayer.preparePlayer(url)
     }
 
-    private var playerState = STATE_DEFAULT
-
-    override fun preparePlayer(item: Track) {
-        mediaPlayer.preparePlayer(item, this::setPlayerStatePrepared, this::setPlayerState)
-    }
-
-
-    private fun setPlayerState() {
-        playerState = STATE_PREPARED
-    }
-
-    private fun setPlayerStatePrepared() {
-        playerState = STATE_PREPARED
-        playerPresenter.playButtonEnabled()
-    }
-
-    override fun playbackControl() {
+    override fun playbackControl() : PlayerState{
         when (playerState) {
-            STATE_PLAYING -> {
-                pausePlayer()
-            }
-            STATE_PREPARED, STATE_PAUSED -> {
-                startPlayer()
-            }
+            PlayerState.Plyeng -> pausePlayer()
+            PlayerState.Paused, PlayerState.PREPARED -> startPlayer()
         }
+        return playerState
     }
 
     private fun startPlayer() {
         mediaPlayer.startPlayer()
-        playerPresenter.startPlayer()
-        playerState = STATE_PLAYING
+        playerState = PlayerState.Plyeng
     }
 
-    override fun pausePlayer() {
+    private fun pausePlayer() {
         mediaPlayer.pausePlayer()
-        playerPresenter.pausePlayer()
-        playerState = STATE_PAUSED
+        playerState = PlayerState.Paused
     }
 
-    override fun createUpdateProgressTimeRunnable(): Runnable {
-        return object : Runnable {
-            override fun run() {
-
-                when (playerState) {
-                    STATE_PLAYING -> {
-                        playerPresenter.progressTimeViewUpdate(TimeFormatter.format(mediaPlayer.getCurrentPosition()))
-                        playerPresenter.postDelayed(this)
-                    }
-                    STATE_PAUSED -> {
-                        playerPresenter.removeCallbacks(this)
-                    }
-                    STATE_PREPARED -> {
-                        playerPresenter.pausePlayer()
-                        playerPresenter.progressTimeViewUpdate(TimeFormatter.ZERO_TIME)
-                        playerPresenter.removeCallbacks(this)
-                    }
-                }
-            }
-        }
+    override fun getProgressTime(): String {
+        if (playerState == PlayerState.PREPARED )  return TimeFormatter.ZERO_TIME else return TimeFormatter.format(mediaPlayer.getCurrentPosition())
     }
-
 
     override fun release() {
         mediaPlayer.release()
+    }
+
+
+    override fun setOnStateChangeListener(callback: (PlayerState) -> Unit) {
+        mediaPlayer.setOnStateChangeListener(callback)
     }
 }

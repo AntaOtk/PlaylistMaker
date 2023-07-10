@@ -51,6 +51,4 @@ class LocalStorage(private val sharedPreferences: SharedPreferences) {
             .remove(HISTORY_KEY)
             .apply()
     }
-
-
 }

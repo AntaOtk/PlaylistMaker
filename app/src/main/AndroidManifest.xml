@@ -16,7 +16,7 @@
         android:theme="@style/Theme.PlaylistMaker"
         tools:targetApi="31">
         <activity
-            android:name=".main.MainActivity"
+            android:name=".main.ui.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -28,7 +28,7 @@
             android:exported="false">
         </activity>
         <activity
-            android:name=".libraby.LibraryActivity"
+            android:name=".libraby.ui.LibraryActivity"
             android:exported="false">
         </activity>
         <activity
@@ -36,7 +36,7 @@
             android:exported="false">
         </activity>
         <activity
-            android:name=".player.ui.AudioPlayer"
+            android:name=".player.ui.activity.AudioPlayer"
             android:exported="false">
         </activity>
 

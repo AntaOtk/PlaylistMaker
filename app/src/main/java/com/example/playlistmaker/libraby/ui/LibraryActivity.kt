@@ -1,4 +1,4 @@
-package com.example.playlistmaker.libraby
+package com.example.playlistmaker.libraby.ui
 
 import android.os.Bundle
 import android.widget.ImageView

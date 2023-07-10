@@ -1,10 +1,8 @@
 package com.example.playlistmaker.settings.ui.activiy
 
-import android.content.Intent
 import android.os.Bundle
 import android.widget.ImageView
 import android.widget.TextView
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SwitchCompat
 import androidx.lifecycle.ViewModelProvider
@@ -23,7 +21,7 @@ class SettingsActivity : AppCompatActivity() {
         setContentView(R.layout.activity_settings)
         viewModel = ViewModelProvider(
             this,
-            SettingsViewModel.getViewModelFactory()
+            SettingsViewModel.getViewModelFactory(this)
         )[SettingsViewModel::class.java]
 
 
@@ -56,15 +54,5 @@ class SettingsActivity : AppCompatActivity() {
         }
     }
 
-    private fun safeStartActivity(intent: Intent) {
-        try {
-            startActivity(intent)
-        } catch (e: Exception) {
-            Toast.makeText(
-                applicationContext,
-                getString(R.string.error_toast_message),
-                Toast.LENGTH_SHORT
-            ).show()
-        }
-    }
+
 }
