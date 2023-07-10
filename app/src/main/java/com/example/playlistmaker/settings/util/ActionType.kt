@@ -1,4 +1,4 @@
-package com.example.playlistmaker.settings.ui.util
+package com.example.playlistmaker.settings.util
 
 sealed interface ActionType {
     data class Theme( val settings: Boolean) : ActionType

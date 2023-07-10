@@ -1,20 +1,20 @@
 package com.example.playlistmaker.settings.ui.activiy
 
 import android.os.Bundle
-import android.widget.ImageView
-import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.SwitchCompat
 import androidx.lifecycle.ViewModelProvider
 import com.example.playlistmaker.App
 import com.example.playlistmaker.R
-import com.example.playlistmaker.settings.ui.util.ActionType
+import com.example.playlistmaker.databinding.ActivitySettingsBinding
+import com.example.playlistmaker.settings.util.ActionType
 import com.example.playlistmaker.settings.ui.view_model.SettingsViewModel
 
 
 class SettingsActivity : AppCompatActivity() {
 
     private lateinit var viewModel: SettingsViewModel
+    private lateinit var binding: ActivitySettingsBinding
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -23,33 +23,23 @@ class SettingsActivity : AppCompatActivity() {
             this,
             SettingsViewModel.getViewModelFactory(this)
         )[SettingsViewModel::class.java]
+        binding = ActivitySettingsBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
+        binding.switchTheme.isChecked = viewModel.getTheme()
 
-        val imageBack = findViewById<ImageView>(R.id.backToMainActivity)
-        imageBack.setOnClickListener { finish() }
-
-        val share = findViewById<TextView>(R.id.share_button)
-        val support = findViewById<TextView>(R.id.support_button)
-        val forward = findViewById<TextView>(R.id.forward_button)
-        val themeSwitcher = findViewById<SwitchCompat>(R.id.switch_theme)
-
-        themeSwitcher.setChecked(viewModel.getTheme())
-
-
-        themeSwitcher.setOnCheckedChangeListener { switcher, checked ->
+        binding.backToMainActivity.setOnClickListener { finish() }
+        binding.switchTheme.setOnCheckedChangeListener { _, checked ->
             viewModel.execute(ActionType.Theme(checked))
             (applicationContext as App).switchTheme(checked)
         }
-
-        share.setOnClickListener {
-            val intent = viewModel.execute(ActionType.Share)
+        binding.shareButton.setOnClickListener {
+            viewModel.execute(ActionType.Share)
         }
-
-        support.setOnClickListener {
+        binding.supportButton.setOnClickListener {
             viewModel.execute(ActionType.Support)
         }
-
-        forward.setOnClickListener {
+        binding.forwardButton.setOnClickListener {
             viewModel.execute(ActionType.Term)
         }
     }

@@ -1,13 +1,8 @@
 package com.example.playlistmaker.search.domain.model
 
-import android.os.Parcel
-import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
-import kotlinx.android.parcel.Parceler
-import kotlinx.android.parcel.Parcelize
+import java.io.Serializable
 
-
-@Parcelize
 data class Track(
     @SerializedName("trackName")
     val trackName: String,
@@ -27,4 +22,4 @@ data class Track(
     val country: String,
     @SerializedName("previewUrl")
     val previewUrl: String
-): Parcelable
+) : Serializable

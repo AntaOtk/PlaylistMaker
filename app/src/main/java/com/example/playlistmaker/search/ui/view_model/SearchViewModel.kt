@@ -64,7 +64,7 @@ class SearchViewModel(
     private val tracks = ArrayList<Track>()
 
 
-    fun searchHistory() {
+    private fun searchHistory() {
         val history = historyRepository.getTrackList()
         if (history.isNotEmpty())
             renderState(

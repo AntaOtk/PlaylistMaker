@@ -1,7 +1,6 @@
 package com.example.playlistmaker.player.data
 
-import com.example.playlistmaker.player.ui.activity.PlayerState
-import com.example.playlistmaker.search.domain.model.Track
+import com.example.playlistmaker.player.domain.util.PlayerState
 
 interface PlayerClient {
 

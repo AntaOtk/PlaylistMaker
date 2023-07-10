@@ -10,20 +10,13 @@ import android.text.TextWatcher
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
-import android.widget.Button
-import android.widget.EditText
-import android.widget.ImageView
-import android.widget.LinearLayout
-import android.widget.ProgressBar
-import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
-import androidx.recyclerview.widget.RecyclerView
 import com.example.playlistmaker.R
 import com.example.playlistmaker.databinding.ActivitySearchBinding
 import com.example.playlistmaker.player.ui.activity.AudioPlayer
 import com.example.playlistmaker.search.domain.model.Track
-import com.example.playlistmaker.search.ui.SearchAdapter
+import com.example.playlistmaker.search.ui.adapter.SearchAdapter
 import com.example.playlistmaker.search.ui.SearchState
 import com.example.playlistmaker.search.ui.view_model.SearchViewModel
 
@@ -39,16 +32,6 @@ class SearchActivity : AppCompatActivity() {
     }
 
     private lateinit var binding: ActivitySearchBinding
-
-
-    private lateinit var inputEditText: EditText
-    private lateinit var placeholderMessage: LinearLayout
-    private lateinit var searchList: RecyclerView
-    private lateinit var hintMessage: LinearLayout
-    private lateinit var progressBar: ProgressBar
-    private lateinit var textMessage: TextView
-    private lateinit var imageMessage: ImageView
-    private lateinit var buttonRepeat: Button
     private lateinit var viewModel: SearchViewModel
 
     private val tracks = mutableListOf<Track>()
@@ -73,47 +56,33 @@ class SearchActivity : AppCompatActivity() {
         )[SearchViewModel::class.java]
 
         binding = ActivitySearchBinding.inflate(layoutInflater)
-
-        inputEditText = findViewById(R.id.inputEditText)
-        searchList = findViewById(R.id.rvSearch)
-        placeholderMessage = findViewById(R.id.placeholderMessage)
-        progressBar = findViewById(R.id.progressBar)
-        textMessage = findViewById(R.id.placeholderMessageText)
-        imageMessage = findViewById(R.id.placeholderMessageImage)
-        buttonRepeat = findViewById(R.id.repeatButton)
-
-        val imageBack = findViewById<ImageView>(R.id.backToMainActivity)
-        imageBack.setOnClickListener { finish() }
-
-        val inputEditText = findViewById<EditText>(R.id.inputEditText)
-        val clearButton = findViewById<ImageView>(R.id.clearButtonIcon)
-        val historyList = findViewById<RecyclerView>(R.id.historySearchList)
-        hintMessage = findViewById(R.id.historySearch)
-        val clearHistoryButton = findViewById<Button>(R.id.clearHistoryButton)
-
-        searchList.adapter = adapter
-        historyList.adapter = adapter
+        setContentView(binding.root)
 
 
-        inputEditText.setOnFocusChangeListener { view, hasFocus ->
+        binding.backToMainActivity.setOnClickListener { finish() }
+        binding.rvSearch.adapter = adapter
+        binding.historySearchList.adapter = adapter
+
+
+        binding.inputEditText.setOnFocusChangeListener { _, _ ->
             viewModel.searchDebounce(inputText)
         }
 
-        clearHistoryButton.setOnClickListener {
+        binding.clearHistoryButton.setOnClickListener {
             viewModel.clear()
-            hintMessage.visibility = View.GONE
+            binding.historySearch.visibility = View.GONE
         }
 
-        clearButton.setOnClickListener {
-            inputEditText.setText("")
+        binding.clearButtonIcon.setOnClickListener {
+            binding.inputEditText.setText("")
             viewModel.searchDebounce("")
             val inputMethodManager =
                 getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
-            inputMethodManager?.hideSoftInputFromWindow(clearButton.getWindowToken(), 0)
+            inputMethodManager?.hideSoftInputFromWindow(binding.clearButtonIcon.windowToken, 0)
         }
 
 
-        buttonRepeat.setOnClickListener {
+        binding.repeatButton.setOnClickListener {
             viewModel.searchDebounce(inputText)
         }
 
@@ -121,23 +90,24 @@ class SearchActivity : AppCompatActivity() {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                clearButton.visibility = clearButtonVisibility(s)
-                viewModel.searchDebounce(s?.toString() ?: "")
+                inputText = s?.toString() ?: ""
+                binding.clearButtonIcon.visibility = clearButtonVisibility(s)
+                viewModel.searchDebounce(inputText)
             }
 
             override fun afterTextChanged(s: Editable?) {
 
             }
         }
-        simpleTextWatcher?.let { inputEditText.addTextChangedListener(it) }
+        simpleTextWatcher?.let { binding.inputEditText.addTextChangedListener(it) }
 
         viewModel.observeState().observe(this) {
             render(it)
         }
 
-        inputEditText.setOnEditorActionListener { _, actionId, _ ->
+        binding.inputEditText.setOnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_DONE) {
-                if (inputEditText.text.isNotEmpty()) {
+                if (binding.inputEditText.text.isNotEmpty()) {
                     viewModel.searchDebounce(inputText)
                 }
             }
@@ -148,11 +118,11 @@ class SearchActivity : AppCompatActivity() {
 
     override fun onDestroy() {
         super.onDestroy()
-        simpleTextWatcher?.let { inputEditText.removeTextChangedListener(it) }
+        simpleTextWatcher?.let { binding.inputEditText.removeTextChangedListener(it) }
     }
 
 
-    fun clickDebounce(): Boolean {
+    private fun clickDebounce(): Boolean {
         val current = isClickAllowed
         if (isClickAllowed) {
             isClickAllowed = false
@@ -194,63 +164,58 @@ class SearchActivity : AppCompatActivity() {
     }
 
     private fun showHistory(trackList: List<Track>) {
-        hintMessage.visibility = View.VISIBLE
-        buttonRepeat.visibility = View.GONE
-        searchList.visibility = View.GONE
-        placeholderMessage.visibility = View.GONE
-        progressBar.visibility = View.GONE
+        binding.historySearch.visibility = View.VISIBLE
+        binding.rvSearch.visibility = View.GONE
+        binding.placeholderMessage.visibility = View.GONE
+        binding.progressBar.visibility = View.GONE
         tracks.clear()
         tracks.addAll(trackList)
         adapter.notifyDataSetChanged()
     }
 
     private fun showEmptyHistory() {
-        hintMessage.visibility = View.GONE
-        buttonRepeat.visibility = View.GONE
-        searchList.visibility = View.GONE
-        placeholderMessage.visibility = View.GONE
-        progressBar.visibility = View.GONE
+        binding.historySearch.visibility = View.GONE
+        binding.rvSearch.visibility = View.GONE
+        binding.placeholderMessage.visibility = View.GONE
+        binding.progressBar.visibility = View.GONE
     }
 
     private fun showLoading() {
-        hintMessage.visibility = View.GONE
-        buttonRepeat.visibility = View.GONE
-        searchList.visibility = View.GONE
-        placeholderMessage.visibility = View.GONE
-        progressBar.visibility = View.VISIBLE
+        binding.historySearch.visibility = View.GONE
+        binding.rvSearch.visibility = View.GONE
+        binding.placeholderMessage.visibility = View.GONE
+        binding.progressBar.visibility = View.VISIBLE
     }
 
     private fun showError(errorMessage: String) {
-        hintMessage.visibility = View.GONE
-        buttonRepeat.visibility = View.VISIBLE
-        searchList.visibility = View.GONE
-        placeholderMessage.visibility = View.VISIBLE
-        progressBar.visibility = View.GONE
-        textMessage.text = errorMessage
-        imageMessage.setImageResource(R.drawable.internet_message)
+        binding.historySearch.visibility = View.GONE
+        binding.repeatButton.visibility = View.GONE
+        binding.rvSearch.visibility = View.GONE
+        binding.placeholderMessage.visibility = View.VISIBLE
+        binding.progressBar.visibility = View.GONE
+        binding.placeholderMessageText.text = errorMessage
+        binding.placeholderMessageImage.setImageResource(R.drawable.internet_message)
 
     }
 
     private fun showEmpty(emptyMessage: String) {
-        hintMessage.visibility = View.GONE
-        buttonRepeat.visibility = View.GONE
-        searchList.visibility = View.GONE
-        placeholderMessage.visibility = View.VISIBLE
-        progressBar.visibility = View.GONE
-        textMessage.text = emptyMessage
-        imageMessage.setImageResource(R.drawable.search_message)
+        binding.historySearch.visibility = View.GONE
+        binding.repeatButton.visibility = View.GONE
+        binding.rvSearch.visibility = View.GONE
+        binding.placeholderMessage.visibility = View.VISIBLE
+        binding.progressBar.visibility = View.GONE
+        binding.placeholderMessageText.text = emptyMessage
+        binding.placeholderMessageImage.setImageResource(R.drawable.search_message)
     }
 
     private fun showContent(trackList: List<Track>) {
-        hintMessage.visibility = View.GONE
-        buttonRepeat.visibility = View.GONE
-        searchList.visibility = View.VISIBLE
-        placeholderMessage.visibility = View.GONE
-        progressBar.visibility = View.GONE
+        binding.historySearch.visibility = View.GONE
+        binding.rvSearch.visibility = View.VISIBLE
+        binding.placeholderMessage.visibility = View.GONE
+        binding.progressBar.visibility = View.GONE
         tracks.clear()
         tracks.addAll(trackList)
         adapter.notifyDataSetChanged()
     }
-
 }
 

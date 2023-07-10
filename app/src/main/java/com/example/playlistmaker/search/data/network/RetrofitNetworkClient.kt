@@ -3,7 +3,6 @@ package com.example.playlistmaker.search.data.network
 import android.content.Context
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
-import com.example.playlistmaker.search.data.NetworkClient
 import com.example.playlistmaker.search.data.dto.Response
 import com.example.playlistmaker.search.data.dto.SearchRequest
 import retrofit2.Retrofit

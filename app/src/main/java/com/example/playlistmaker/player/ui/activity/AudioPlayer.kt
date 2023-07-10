@@ -2,16 +2,17 @@ package com.example.playlistmaker.player.ui.activity
 
 import android.content.Context
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.example.playlistmaker.R
 import com.example.playlistmaker.databinding.AudioPlayerBinding
+import com.example.playlistmaker.player.domain.util.PlayerState
 import com.example.playlistmaker.player.ui.viewmodel.PlayerViewModel
 import com.example.playlistmaker.search.domain.model.Track
 import java.text.SimpleDateFormat
@@ -36,16 +37,14 @@ class AudioPlayer : AppCompatActivity() {
         setContentView(R.layout.audio_player)
         binding = AudioPlayerBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
-        val track: Track? = intent.getParcelableExtra("TRACK")
-
-
-        val imageBack = findViewById<ImageView>(R.id.backButton)
-        imageBack.setOnClickListener { finish() }
-
+        val track: Track = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            intent.getParcelableExtra("TRACK",Track::class.java)!!
+        } else {
+            intent.getParcelableExtra("TRACK")!!
+        }
         viewModel = ViewModelProvider(
             this,
-            PlayerViewModel.getViewModelFactory(track)
+            PlayerViewModel.getViewModelFactory()
         )[PlayerViewModel::class.java]
         mainThreadHandler = Handler(Looper.getMainLooper())
         binding.playButton.setOnClickListener { viewModel.playbackControl() }
@@ -56,6 +55,10 @@ class AudioPlayer : AppCompatActivity() {
         viewModel.observeProgressTimeState().observe(this) {
             progressTimeViewUpdate(it)
         }
+
+        binding.backButton.setOnClickListener { finish() }
+
+
 
         binding.title.text = track.trackName
         binding.artist.text = track.artistName
@@ -78,8 +81,8 @@ class AudioPlayer : AppCompatActivity() {
 
     private fun render(state: PlayerState) {
         when (state) {
-            PlayerState.Plyeng -> startPlayer()
-            PlayerState.Paused, PlayerState.PREPARED -> pausePlayer()
+            PlayerState.PLAYING -> startPlayer()
+            PlayerState.PAUSED, PlayerState.PREPARED -> pausePlayer()
         }
     }
 

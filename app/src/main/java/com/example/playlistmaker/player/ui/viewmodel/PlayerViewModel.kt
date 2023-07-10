@@ -2,7 +2,6 @@ package com.example.playlistmaker.player.ui.viewmodel
 
 import android.os.Handler
 import android.os.Looper
-import android.os.SystemClock
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -10,9 +9,8 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import com.example.playlistmaker.creator.Creator
-import com.example.playlistmaker.player.domain.use_case.PlayControl
-import com.example.playlistmaker.player.ui.activity.PlayerState
-import com.example.playlistmaker.search.domain.model.Track
+import com.example.playlistmaker.player.domain.PlayControl
+import com.example.playlistmaker.player.domain.util.PlayerState
 
 class PlayerViewModel(private val playerInteractor: PlayControl) :
     ViewModel() {
@@ -20,13 +18,11 @@ class PlayerViewModel(private val playerInteractor: PlayControl) :
     companion object {
         private const val DELAY_MILLIS = 25L
 
-        fun getViewModelFactory(track: Track): ViewModelProvider.Factory = viewModelFactory {
+        fun getViewModelFactory(): ViewModelProvider.Factory = viewModelFactory {
             initializer {
 
                 val interactor = Creator.createPlayControl()
-
                 PlayerViewModel(
-
                     interactor
                 )
             }
@@ -36,7 +32,11 @@ class PlayerViewModel(private val playerInteractor: PlayControl) :
     init {
         playerInteractor.setOnStateChangeListener { state ->
             stateLiveData.postValue(state)
-            if (state == PlayerState.PREPARED) mainThreadHandler.removeCallbacks(progressTimeRunnable)
+            val progressTime = playerInteractor.getProgressTime()
+            stateProgressTimeLiveData.postValue(progressTime)
+            if (state == PlayerState.PREPARED) mainThreadHandler.removeCallbacks(
+                progressTimeRunnable
+            )
         }
     }
 
@@ -63,7 +63,9 @@ class PlayerViewModel(private val playerInteractor: PlayControl) :
     fun playbackControl() {
         val state = playerInteractor.playbackControl()
         renderState(state)
-        if (state == PlayerState.Plyeng) mainThreadHandler.post(progressTimeRunnable) else  mainThreadHandler.removeCallbacks(progressTimeRunnable)
+        if (state == PlayerState.PLAYING) mainThreadHandler.post(progressTimeRunnable) else mainThreadHandler.removeCallbacks(
+            progressTimeRunnable
+        )
     }
 
     private fun renderState(state: PlayerState) {

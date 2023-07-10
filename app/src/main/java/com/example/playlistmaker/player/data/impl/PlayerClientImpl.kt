@@ -2,8 +2,7 @@ package com.example.playlistmaker.player.data.impl
 
 import android.media.MediaPlayer
 import com.example.playlistmaker.player.data.PlayerClient
-import com.example.playlistmaker.player.ui.activity.PlayerState
-import com.example.playlistmaker.search.domain.model.Track
+import com.example.playlistmaker.player.domain.util.PlayerState
 
 class PlayerClientImpl : PlayerClient {
 

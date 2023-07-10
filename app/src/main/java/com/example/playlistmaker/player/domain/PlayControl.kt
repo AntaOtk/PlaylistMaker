@@ -1,6 +1,6 @@
-package com.example.playlistmaker.player.domain.use_case
+package com.example.playlistmaker.player.domain
 
-import com.example.playlistmaker.player.ui.activity.PlayerState
+import com.example.playlistmaker.player.domain.util.PlayerState
 
 interface PlayControl {
     fun preparePlayer(url: String)

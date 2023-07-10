@@ -5,7 +5,7 @@ import com.example.playlistmaker.search.domain.model.Track
 sealed interface SearchState {
 
     object Loading : SearchState
-    object AllEmpty: SearchState
+    object AllEmpty : SearchState
 
     data class Content(
         val tracks: List<Track>

@@ -10,7 +10,7 @@ import com.example.playlistmaker.App
 import com.example.playlistmaker.creator.Creator
 import com.example.playlistmaker.settings.domain.SettingsInteractor
 import com.example.playlistmaker.settings.domain.model.ThemeSettings
-import com.example.playlistmaker.settings.ui.util.ActionType
+import com.example.playlistmaker.settings.util.ActionType
 import com.example.playlistmaker.sharing.domain.SharingInteractor
 
 class SettingsViewModel(

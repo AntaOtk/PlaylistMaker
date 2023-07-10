@@ -1,4 +1,4 @@
-package com.example.playlistmaker.search.data
+package com.example.playlistmaker.search.data.local
 
 import android.content.SharedPreferences
 import com.example.playlistmaker.search.data.dto.TrackDto
@@ -11,10 +11,6 @@ class LocalStorage(private val sharedPreferences: SharedPreferences) {
     private companion object {
         private const val HISTORY_KEY = "HISTORY_KEY"
         private const val MAXIMUM = 10
-    }
-
-    fun getTrack(): TrackDto {
-        return read().get(0)
     }
 
     fun getTrackList(): List<TrackDto> {
