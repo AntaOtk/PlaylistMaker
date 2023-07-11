@@ -9,4 +9,5 @@ interface PlayControl {
     fun getProgressTime(): String
 
     fun setOnStateChangeListener(callback: (PlayerState) -> Unit)
+    fun pausePlayer()
 }

@@ -28,7 +28,7 @@ class PlayControlImpl(private val mediaPlayer: PlayerClient) :
         playerState = PlayerState.PLAYING
     }
 
-    private fun pausePlayer() {
+    override fun pausePlayer() {
         mediaPlayer.pausePlayer()
         playerState = PlayerState.PAUSED
     }

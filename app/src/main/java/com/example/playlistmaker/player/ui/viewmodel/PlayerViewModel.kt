@@ -68,13 +68,20 @@ class PlayerViewModel(private val playerInteractor: PlayControl) :
         )
     }
 
-    private fun renderState(state: PlayerState) {
-        stateLiveData.postValue(state)
-    }
+
 
     override fun onCleared() {
         super.onCleared()
         playerInteractor.release()
         mainThreadHandler.removeCallbacks(progressTimeRunnable)
+    }
+
+    fun onPause() {
+        playerInteractor.pausePlayer()
+        renderState(PlayerState.PAUSED)
+    }
+
+    private fun renderState(state: PlayerState) {
+        stateLiveData.postValue(state)
     }
 }

@@ -102,6 +102,6 @@ class AudioPlayer : AppCompatActivity() {
 
     override fun onPause() {
         super.onPause()
-        viewModel.playbackControl()
+        viewModel.onPause()
     }
 }
