@@ -1,7 +1,7 @@
 package com.example.playlistmaker.settings.data.impl
 
 import android.content.Context
-import com.example.playlistmaker.settings.data.SettingsRepository
+import com.example.playlistmaker.settings.domain.SettingsRepository
 import com.example.playlistmaker.settings.domain.model.ThemeSettings
 
 class SettingsRepositoryImpl(context: Context) : SettingsRepository {

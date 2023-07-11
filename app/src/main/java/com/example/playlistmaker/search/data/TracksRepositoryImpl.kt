@@ -4,7 +4,7 @@ import com.example.playlistmaker.search.data.dto.SearchRequest
 import com.example.playlistmaker.search.data.dto.TrackResponse
 import com.example.playlistmaker.search.data.network.NetworkClient
 import com.example.playlistmaker.search.domain.api.TracksRepository
-import com.example.playlistmaker.search.domain.mapper.TrackMapper
+import com.example.playlistmaker.search.data.mapper.TrackMapper
 import com.example.playlistmaker.search.domain.model.Track
 import com.example.playlistmaker.search.util.Resource
 

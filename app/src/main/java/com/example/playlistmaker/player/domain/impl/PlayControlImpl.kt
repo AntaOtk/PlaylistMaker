@@ -1,6 +1,6 @@
 package com.example.playlistmaker.player.domain.impl
 
-import com.example.playlistmaker.player.data.PlayerClient
+import com.example.playlistmaker.player.domain.PlayerClient
 import com.example.playlistmaker.player.domain.PlayControl
 import com.example.playlistmaker.player.domain.util.PlayerState
 import com.example.playlistmaker.player.domain.util.TimeFormatter

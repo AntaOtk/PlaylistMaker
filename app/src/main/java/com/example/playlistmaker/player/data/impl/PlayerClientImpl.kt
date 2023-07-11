@@ -1,7 +1,7 @@
 package com.example.playlistmaker.player.data.impl
 
 import android.media.MediaPlayer
-import com.example.playlistmaker.player.data.PlayerClient
+import com.example.playlistmaker.player.domain.PlayerClient
 import com.example.playlistmaker.player.domain.util.PlayerState
 
 class PlayerClientImpl : PlayerClient {

@@ -19,10 +19,12 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 class AudioPlayer : AppCompatActivity() {
+
     companion object {
+        const val TRACK = "TRACK"
         fun startActivity(context: Context, track: Track) {
             val intent = Intent(context, AudioPlayer::class.java)
-            intent.putExtra("TRACK", track)
+            intent.putExtra(TRACK, track)
             context.startActivity(intent)
         }
     }
@@ -38,9 +40,9 @@ class AudioPlayer : AppCompatActivity() {
         binding = AudioPlayerBinding.inflate(layoutInflater)
         setContentView(binding.root)
         val track: Track = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            intent.getParcelableExtra("TRACK",Track::class.java)!!
+            intent.getParcelableExtra(TRACK, Track::class.java)!!
         } else {
-            intent.getParcelableExtra("TRACK")!!
+            intent.getParcelableExtra(TRACK)!!
         }
         viewModel = ViewModelProvider(
             this,
@@ -96,5 +98,10 @@ class AudioPlayer : AppCompatActivity() {
 
     private fun progressTimeViewUpdate(progressTime: String) {
         binding.progressTime.text = progressTime
+    }
+
+    override fun onPause() {
+        super.onPause()
+        viewModel.playbackControl()
     }
 }

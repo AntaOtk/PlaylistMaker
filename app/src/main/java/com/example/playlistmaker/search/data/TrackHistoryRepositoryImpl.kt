@@ -2,11 +2,11 @@ package com.example.playlistmaker.search.data
 
 import com.example.playlistmaker.search.data.local.LocalStorage
 import com.example.playlistmaker.search.domain.api.TrackHistoryRepository
-import com.example.playlistmaker.search.domain.mapper.TrackMapper
+import com.example.playlistmaker.search.data.mapper.TrackMapper
 import com.example.playlistmaker.search.domain.model.Track
 
 
-class SearchHistoryRepository(
+class TrackHistoryRepositoryImpl(
     private val localStorage: LocalStorage,
 ) : TrackHistoryRepository {
 
@@ -23,9 +23,7 @@ class SearchHistoryRepository(
         localStorage.setTrack(trackDto)
     }
 
-
     override fun clear() {
         localStorage.clear()
     }
-
 }
