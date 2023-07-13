@@ -7,7 +7,6 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.example.playlistmaker.R
@@ -15,11 +14,13 @@ import com.example.playlistmaker.databinding.AudioPlayerBinding
 import com.example.playlistmaker.player.domain.util.PlayerState
 import com.example.playlistmaker.player.ui.viewmodel.PlayerViewModel
 import com.example.playlistmaker.search.domain.model.Track
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.text.SimpleDateFormat
 import java.util.*
 
 class AudioPlayer : AppCompatActivity() {
 
+    private val viewModel by viewModel<PlayerViewModel>()
     companion object {
         const val TRACK = "TRACK"
         fun startActivity(context: Context, track: Track) {
@@ -31,8 +32,6 @@ class AudioPlayer : AppCompatActivity() {
 
     private lateinit var binding: AudioPlayerBinding
     private var mainThreadHandler: Handler? = null
-    private lateinit var viewModel: PlayerViewModel
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,10 +43,6 @@ class AudioPlayer : AppCompatActivity() {
         } else {
             intent.getParcelableExtra(TRACK)!!
         }
-        viewModel = ViewModelProvider(
-            this,
-            PlayerViewModel.getViewModelFactory()
-        )[PlayerViewModel::class.java]
         mainThreadHandler = Handler(Looper.getMainLooper())
         binding.playButton.setOnClickListener { viewModel.playbackControl() }
 

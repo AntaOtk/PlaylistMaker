@@ -47,6 +47,9 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
 
+    //KOIN
+    implementation "io.insert-koin:koin-android:3.3.0"
+
     //NETWORK
     implementation 'com.github.bumptech.glide:glide:4.14.2'
     implementation 'com.google.code.gson:gson:2.10'

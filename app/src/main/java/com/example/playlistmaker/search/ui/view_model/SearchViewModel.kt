@@ -1,38 +1,29 @@
 package com.example.playlistmaker.search.ui.view_model
 
-import android.app.Application
+import android.content.Context
 import android.os.Handler
 import android.os.Looper
 import android.os.SystemClock
-import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory.Companion.APPLICATION_KEY
-import androidx.lifecycle.viewmodel.initializer
-import androidx.lifecycle.viewmodel.viewModelFactory
+import androidx.lifecycle.ViewModel
 import com.example.playlistmaker.R
-import com.example.playlistmaker.creator.Creator
+import com.example.playlistmaker.search.domain.api.TrackHistoryRepository
+import com.example.playlistmaker.search.domain.api.TracksInteractor
 import com.example.playlistmaker.search.domain.model.Track
 import com.example.playlistmaker.search.ui.SearchState
 
 class SearchViewModel(
-    application: Application
-) : AndroidViewModel(application) {
+    private val tracksInteractor: TracksInteractor,
+    private val historyRepository: TrackHistoryRepository,
+    private val context: Context
+) : ViewModel() {
 
     companion object {
         private const val SEARCH_DEBOUNCE_DELAY_MILLIS = 2000L
         private val SEARCH_REQUEST_TOKEN = Any()
-
-        fun getViewModelFactory(): ViewModelProvider.Factory = viewModelFactory {
-            initializer {
-                SearchViewModel(this[APPLICATION_KEY] as Application)
-            }
-        }
     }
 
-    private val tracksInteractor = Creator.provideTrackInteractor(getApplication())
-    private val historyRepository = Creator.getHistoryRepository(getApplication())
 
     private val stateLiveData = MutableLiveData<SearchState>()
     fun observeState(): LiveData<SearchState> = stateLiveData
@@ -102,15 +93,14 @@ class SearchViewModel(
                         errorMessage != null -> {
                             renderState(
                                 SearchState.Error(
-                                    getApplication<Application>().getString(R.string.no_interrnet_conection),
+                                    context.getString(R.string.no_interrnet_conection),
                                 )
                             )
                         }
-
                         tracks.isEmpty() -> {
                             renderState(
                                 SearchState.Empty(
-                                    getApplication<Application>().getString(R.string.nothing_found),
+                                    context.getString(R.string.nothing_found),
                                 )
                             )
                         }

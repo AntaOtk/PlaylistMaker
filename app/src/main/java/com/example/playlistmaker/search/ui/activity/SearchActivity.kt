@@ -11,16 +11,18 @@ import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.ViewModelProvider
 import com.example.playlistmaker.R
 import com.example.playlistmaker.databinding.ActivitySearchBinding
 import com.example.playlistmaker.player.ui.activity.AudioPlayer
 import com.example.playlistmaker.search.domain.model.Track
-import com.example.playlistmaker.search.ui.adapter.SearchAdapter
 import com.example.playlistmaker.search.ui.SearchState
+import com.example.playlistmaker.search.ui.adapter.SearchAdapter
 import com.example.playlistmaker.search.ui.view_model.SearchViewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class SearchActivity : AppCompatActivity() {
+
+    private val viewModel by viewModel<SearchViewModel>()
 
     companion object {
         const val INPUT_EDIT_TEXT = "INPUT_EDIT_TEXT"
@@ -32,7 +34,6 @@ class SearchActivity : AppCompatActivity() {
     }
 
     private lateinit var binding: ActivitySearchBinding
-    private lateinit var viewModel: SearchViewModel
 
     private val tracks = mutableListOf<Track>()
     private val adapter = SearchAdapter(tracks) {
@@ -50,10 +51,6 @@ class SearchActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search)
-        viewModel = ViewModelProvider(
-            this,
-            SearchViewModel.getViewModelFactory()
-        )[SearchViewModel::class.java]
 
         binding = ActivitySearchBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -189,7 +186,7 @@ class SearchActivity : AppCompatActivity() {
 
     private fun showError(errorMessage: String) {
         binding.historySearch.visibility = View.GONE
-        binding.repeatButton.visibility = View.GONE
+        binding.repeatButton.visibility = View.VISIBLE
         binding.rvSearch.visibility = View.GONE
         binding.placeholderMessage.visibility = View.VISIBLE
         binding.progressBar.visibility = View.GONE
@@ -218,4 +215,3 @@ class SearchActivity : AppCompatActivity() {
         adapter.notifyDataSetChanged()
     }
 }
-
