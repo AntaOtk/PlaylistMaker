@@ -10,7 +10,7 @@
     <string name="support_setting">Написать в поддержку</string>
     <string name="contract_button">Пользовательское соглашение</string>
     <string name="message">https://practicum.yandex.ru/profile/android-developer/</string>
-    <string name="error_toast_message">ошибка выполнения</string>
+    <string name="error_toast_message">на устройстве не найдено приложения для выполнения команды</string>
 
     <!-- overdraw -->
     <string name="mail_to_support">ovaorange@yandex.ru</string>
