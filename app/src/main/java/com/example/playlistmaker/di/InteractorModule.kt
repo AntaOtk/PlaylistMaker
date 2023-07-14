@@ -16,7 +16,7 @@ val interactorModule = module {
     factory { PlayerState.PREPARED }
 
     single<TracksInteractor> {
-        TracksInteractorImpl(get())
+        TracksInteractorImpl(get(),get())
     }
 
     single<SettingsInteractor> {

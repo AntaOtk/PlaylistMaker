@@ -1,24 +1,16 @@
 package com.example.playlistmaker.search.ui.view_model
 
-import android.content.Context
 import android.os.Handler
 import android.os.Looper
 import android.os.SystemClock
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.playlistmaker.R
-import com.example.playlistmaker.search.domain.api.TrackHistoryRepository
 import com.example.playlistmaker.search.domain.api.TracksInteractor
 import com.example.playlistmaker.search.domain.model.Track
 import com.example.playlistmaker.search.ui.SearchState
 
-class SearchViewModel(
-    private val tracksInteractor: TracksInteractor,
-    private val historyRepository: TrackHistoryRepository,
-    private val context: Context
-) : ViewModel() {
-
+class SearchViewModel(private val tracksInteractor: TracksInteractor) : ViewModel() {
     companion object {
         private const val SEARCH_DEBOUNCE_DELAY_MILLIS = 2000L
         private val SEARCH_REQUEST_TOKEN = Any()
@@ -56,7 +48,7 @@ class SearchViewModel(
 
 
     private fun searchHistory() {
-        val history = historyRepository.getTrackList()
+        val history = tracksInteractor.getTrackList()
         if (history.isNotEmpty())
             renderState(
                 SearchState.EmptyInput(
@@ -68,11 +60,11 @@ class SearchViewModel(
     }
 
     fun setTrack(track: Track) {
-        historyRepository.setTrack(track)
+        tracksInteractor.setTrack(track)
     }
 
     fun clear() {
-        historyRepository.clear()
+        tracksInteractor.clear()
     }
 
 
@@ -93,14 +85,14 @@ class SearchViewModel(
                         errorMessage != null -> {
                             renderState(
                                 SearchState.Error(
-                                    context.getString(R.string.no_interrnet_conection),
+                                    errorMessage
                                 )
                             )
                         }
                         tracks.isEmpty() -> {
                             renderState(
                                 SearchState.Empty(
-                                    context.getString(R.string.nothing_found),
+                                    tracksInteractor.getEmptyMessage(),
                                 )
                             )
                         }

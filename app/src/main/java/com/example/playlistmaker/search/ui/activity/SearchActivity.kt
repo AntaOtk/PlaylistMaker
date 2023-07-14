@@ -55,7 +55,6 @@ class SearchActivity : AppCompatActivity() {
         binding = ActivitySearchBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-
         binding.backToMainActivity.setOnClickListener { finish() }
         binding.rvSearch.adapter = adapter
         binding.historySearchList.adapter = adapter
@@ -77,7 +76,6 @@ class SearchActivity : AppCompatActivity() {
                 getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
             inputMethodManager?.hideSoftInputFromWindow(binding.clearButtonIcon.windowToken, 0)
         }
-
 
         binding.repeatButton.setOnClickListener {
             viewModel.searchDebounce(inputText)
@@ -117,7 +115,6 @@ class SearchActivity : AppCompatActivity() {
         super.onDestroy()
         simpleTextWatcher?.let { binding.inputEditText.removeTextChangedListener(it) }
     }
-
 
     private fun clickDebounce(): Boolean {
         val current = isClickAllowed

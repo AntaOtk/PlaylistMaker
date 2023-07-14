@@ -4,6 +4,7 @@ import com.example.playlistmaker.player.data.impl.PlayerClientImpl
 import com.example.playlistmaker.player.domain.PlayerClient
 import com.example.playlistmaker.search.data.TrackHistoryRepositoryImpl
 import com.example.playlistmaker.search.data.TracksRepositoryImpl
+import com.example.playlistmaker.search.data.mapper.TrackMapper
 import com.example.playlistmaker.search.domain.api.TrackHistoryRepository
 import com.example.playlistmaker.search.domain.api.TracksRepository
 import com.example.playlistmaker.settings.data.impl.SettingsRepositoryImpl
@@ -15,12 +16,14 @@ import org.koin.dsl.module
 
 val repositoryModule = module {
 
+    single { TrackMapper() }
+
     single<TracksRepository> {
-        TracksRepositoryImpl(get())
+        TracksRepositoryImpl(get(),get(),androidContext())
     }
 
     single<TrackHistoryRepository> {
-        TrackHistoryRepositoryImpl(get())
+        TrackHistoryRepositoryImpl(get(),get())
     }
 
     single <SettingsRepository> {
