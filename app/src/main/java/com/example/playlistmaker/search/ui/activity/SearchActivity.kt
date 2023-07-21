@@ -61,7 +61,7 @@ class SearchActivity : AppCompatActivity() {
 
 
         binding.inputEditText.setOnFocusChangeListener { _, _ ->
-            viewModel.searchDebounce(inputText)
+            if (inputText.isEmpty()) viewModel.searchHistory()
         }
 
         binding.clearHistoryButton.setOnClickListener {

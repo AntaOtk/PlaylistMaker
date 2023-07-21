@@ -22,7 +22,6 @@ class TracksInteractorImpl(
                 is Resource.Success -> {
                     consumer.consume(resource.data, null)
                 }
-
                 is Resource.Error -> {
                     consumer.consume(null, resource.message)
                 }

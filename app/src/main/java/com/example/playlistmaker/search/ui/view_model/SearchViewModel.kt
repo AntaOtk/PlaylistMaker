@@ -46,8 +46,7 @@ class SearchViewModel(private val tracksInteractor: TracksInteractor) : ViewMode
 
     private val tracks = ArrayList<Track>()
 
-
-    private fun searchHistory() {
+    fun searchHistory() {
         val history = tracksInteractor.getTrackList()
         if (history.isNotEmpty())
             renderState(
