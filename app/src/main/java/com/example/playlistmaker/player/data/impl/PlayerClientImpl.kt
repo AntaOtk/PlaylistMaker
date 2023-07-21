@@ -4,9 +4,8 @@ import android.media.MediaPlayer
 import com.example.playlistmaker.player.domain.PlayerClient
 import com.example.playlistmaker.player.domain.util.PlayerState
 
-class PlayerClientImpl : PlayerClient {
+class PlayerClientImpl(private var mediaPlayer: MediaPlayer) : PlayerClient {
 
-    private var mediaPlayer = MediaPlayer()
     private var stateCallback: ((PlayerState) -> Unit)? = null
 
     override fun preparePlayer (url: String) {

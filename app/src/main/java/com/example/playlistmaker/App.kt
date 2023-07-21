@@ -1,46 +1,25 @@
 package com.example.playlistmaker
 
 import android.app.Application
-import android.content.SharedPreferences
-import androidx.appcompat.app.AppCompatDelegate
+import com.example.playlistmaker.di.dataModule
+import com.example.playlistmaker.di.interactorModule
+import com.example.playlistmaker.di.repositoryModule
+import com.example.playlistmaker.di.viewModelModule
 import com.example.playlistmaker.settings.domain.SettingsRepository
-import com.example.playlistmaker.settings.data.impl.SettingsRepositoryImpl
-import com.example.playlistmaker.settings.domain.SettingsInteractor
-import com.example.playlistmaker.settings.domain.impl.SettingsInteractorImpl
-
-const val PRACTICUM_PREFERENCES = "playlist_maker_preferences"
-const val THEME_KEY = "theme_key"
+import org.koin.android.ext.android.inject
+import org.koin.android.ext.koin.androidContext
+import org.koin.core.context.startKoin
 
 class App : Application() {
 
-    fun provideSettingsInteractor(): SettingsInteractor {
-        return SettingsInteractorImpl(getSettingsRepository())
-    }
-
-    private fun getSettingsRepository(): SettingsRepository {
-        return SettingsRepositoryImpl(this)
-    }
-
-    private var darkTheme = false
-    private lateinit var sharedPreferences: SharedPreferences
-
+    private val repository: SettingsRepository by inject()
 
     override fun onCreate() {
-        sharedPreferences = getSharedPreferences(PRACTICUM_PREFERENCES, MODE_PRIVATE)
-        darkTheme = sharedPreferences.getBoolean(THEME_KEY, darkTheme)
         super.onCreate()
-        switchTheme(darkTheme)
-    }
-
-    fun switchTheme(darkThemeEnabled: Boolean) {
-        darkTheme = darkThemeEnabled
-        AppCompatDelegate.setDefaultNightMode(
-            if (darkThemeEnabled) {
-                AppCompatDelegate.MODE_NIGHT_YES
-            } else {
-                AppCompatDelegate.MODE_NIGHT_NO
-            }
-        )
-        sharedPreferences.edit().putBoolean(THEME_KEY, darkTheme).apply()
+        startKoin {
+            androidContext(this@App)
+            modules(dataModule, repositoryModule, interactorModule, viewModelModule)
+        }
+        repository.switchTheme(repository.getThemeSettings())
     }
 }

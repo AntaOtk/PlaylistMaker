@@ -5,11 +5,8 @@ import com.example.playlistmaker.player.domain.PlayControl
 import com.example.playlistmaker.player.domain.util.PlayerState
 import com.example.playlistmaker.player.domain.util.TimeFormatter
 
-class PlayControlImpl(private val mediaPlayer: PlayerClient) :
+class PlayControlImpl(private val mediaPlayer: PlayerClient, private var playerState: PlayerState) :
     PlayControl {
-
-    private var playerState = PlayerState.PREPARED
-
 
     override fun preparePlayer(url: String) {
         mediaPlayer.preparePlayer(url)

@@ -1,16 +1,15 @@
 package com.example.playlistmaker.search.data
 
 import com.example.playlistmaker.search.data.local.LocalStorage
-import com.example.playlistmaker.search.domain.api.TrackHistoryRepository
 import com.example.playlistmaker.search.data.mapper.TrackMapper
+import com.example.playlistmaker.search.domain.api.TrackHistoryRepository
 import com.example.playlistmaker.search.domain.model.Track
 
 
 class TrackHistoryRepositoryImpl(
     private val localStorage: LocalStorage,
+    private val mapper: TrackMapper
 ) : TrackHistoryRepository {
-
-    private val mapper = TrackMapper()
 
     override fun getTrackList(): List<Track> {
         return localStorage.getTrackList().map {
