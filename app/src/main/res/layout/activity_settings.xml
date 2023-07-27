@@ -25,7 +25,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="start"
-            android:paddingStart="28dp"
+            android:paddingStart="@dimen/padding_head_start"
             android:text="@string/settings_button" />
     </LinearLayout>
 
@@ -49,12 +49,9 @@
         android:text="@string/support_setting"
         app:drawableEndCompat="@drawable/support" />
 
-
     <TextView
         android:id="@+id/forward_button"
         style="@style/MenuSettingStyle"
         android:text="@string/contract_button"
         app:drawableEndCompat="@drawable/forward" />
-
-
 </LinearLayout>

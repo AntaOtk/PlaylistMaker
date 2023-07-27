@@ -36,4 +36,8 @@
     <string name="clear_history">Очистить историю</string>
     <string name="you_search">Вы искали</string>
 
+    <!-- medialibrary -->
+    <string name="new_list">Новый плейлист</string>
+    <string name="playlist_message">Вы не создали\n\ни одного плейлиста</string>
+    <string name="tracks_message">Ваша медиатека пуста</string>
 </resources>
