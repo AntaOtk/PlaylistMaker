@@ -18,13 +18,13 @@ class TracksFragment : Fragment() {
         }
     }
 
-    private lateinit var binding: TracksFragmentBinding
+    private var binding: TracksFragmentBinding? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         binding = TracksFragmentBinding.inflate(inflater, container, false)
-        return binding.root
+        return binding!!.root
     }
 }
