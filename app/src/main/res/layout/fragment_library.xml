@@ -4,38 +4,23 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    tools:context=".library.ui.fragments.LibraryFragment">
 
 
-    <LinearLayout
+    <TextView
         android:id="@+id/header"
-        style="@style/HeadStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:padding="@dimen/library_head_padding"
+        style="@style/HeadStyle"
+        android:paddingVertical="@dimen/head_padding_vertical"
+        android:paddingStart="@dimen/head_padding_start"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        tools:ignore="MissingConstraints">
+        tools:ignore="MissingConstraints"
+        android:text="@string/library_button" />
 
-        <ImageView
-            android:id="@+id/backToMainActivity"
-            style="@style/HeadStyle"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_gravity="center_vertical"
-            android:contentDescription="@string/app_name"
-            android:src="@drawable/back" />
-
-        <TextView
-            style="@style/HeadStyle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="start"
-            android:paddingStart="@dimen/padding_head_start"
-            android:text="@string/library_button" />
-    </LinearLayout>
 
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/tabLayout"

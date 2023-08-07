@@ -1,18 +1,19 @@
-package com.example.playlistmaker.search.ui.activity
+package com.example.playlistmaker.search.ui.fragments
 
 import android.content.Context
-import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.text.Editable
 import android.text.TextWatcher
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
-import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
 import com.example.playlistmaker.R
-import com.example.playlistmaker.databinding.ActivitySearchBinding
+import com.example.playlistmaker.databinding.FragmentSearchBinding
 import com.example.playlistmaker.player.ui.activity.AudioPlayer
 import com.example.playlistmaker.search.domain.model.Track
 import com.example.playlistmaker.search.ui.SearchState
@@ -20,26 +21,21 @@ import com.example.playlistmaker.search.ui.adapter.SearchAdapter
 import com.example.playlistmaker.search.ui.view_model.SearchViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class SearchActivity : AppCompatActivity() {
+class SearchFragment : Fragment() {
 
     private val viewModel by viewModel<SearchViewModel>()
 
     companion object {
         const val INPUT_EDIT_TEXT = "INPUT_EDIT_TEXT"
         private const val CLICK_DEBOUNCE_DELAY_MILLIS = 1000L
-        fun startActivity(context: Context) {
-            val intent = Intent(context, SearchActivity::class.java)
-            context.startActivity(intent)
-        }
     }
 
-    private lateinit var binding: ActivitySearchBinding
-
+    private lateinit var binding: FragmentSearchBinding
     private val tracks = mutableListOf<Track>()
     private val adapter = SearchAdapter(tracks) {
         if (clickDebounce()) {
             viewModel.setTrack(it)
-            AudioPlayer.startActivity(this, it)
+            AudioPlayer.startActivity(requireContext(), it)
         }
     }
 
@@ -48,14 +44,17 @@ class SearchActivity : AppCompatActivity() {
     private var inputText: String = ""
     private var simpleTextWatcher: TextWatcher? = null
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_search)
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        binding = FragmentSearchBinding.inflate(inflater, container, false)
+        return binding.root
+    }
 
-        binding = ActivitySearchBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
-        binding.backToMainActivity.setOnClickListener { finish() }
         binding.rvSearch.adapter = adapter
         binding.historySearchList.adapter = adapter
 
@@ -73,7 +72,7 @@ class SearchActivity : AppCompatActivity() {
             binding.inputEditText.setText("")
             viewModel.searchDebounce("")
             val inputMethodManager =
-                getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
+                requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
             inputMethodManager?.hideSoftInputFromWindow(binding.clearButtonIcon.windowToken, 0)
         }
 
@@ -96,7 +95,7 @@ class SearchActivity : AppCompatActivity() {
         }
         simpleTextWatcher?.let { binding.inputEditText.addTextChangedListener(it) }
 
-        viewModel.observeState().observe(this) {
+        viewModel.observeState().observe(viewLifecycleOwner) {
             render(it)
         }
 
@@ -133,9 +132,11 @@ class SearchActivity : AppCompatActivity() {
         outState.putString(INPUT_EDIT_TEXT, inputText)
     }
 
-    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
-        super.onRestoreInstanceState(savedInstanceState)
-        inputText = savedInstanceState.getString(INPUT_EDIT_TEXT).toString()
+    override fun onViewStateRestored(savedInstanceState: Bundle?) {
+        super.onViewStateRestored(savedInstanceState)
+        if (savedInstanceState != null) {
+            inputText = savedInstanceState.getString(INPUT_EDIT_TEXT).toString()
+        }
     }
 
     private fun render(state: SearchState) {
