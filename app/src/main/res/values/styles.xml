@@ -21,12 +21,12 @@
         <item name="android:textSize">@dimen/header_size</item>
         <item name="tint">@color/black</item>
     </style>
-    <style name="NavigationButtonStyle" parent="Widget.MaterialComponents.BottomNavigationView">
+    <style name="NavigationButtonStyle">
         <item name="android:fontFamily">@font/ys_display_medium</item>
         <item name="android:textFontWeight">500</item>
-        <item name="itemTextColor">@color/black</item>
+        <item name="itemTextColor">@drawable/bottom_navigate_color</item>
         <item name="android:textSize">@dimen/button_text_size</item>
-        <item name="itemIconTint">@color/black</item>
+        <item name="itemIconTint">@drawable/bottom_navigate_color</item>
         <item name="backgroundTint">@color/white</item>
     </style>
     <style name="EditTextStyle">
