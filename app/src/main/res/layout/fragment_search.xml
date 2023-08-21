@@ -5,31 +5,16 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".search.ui.activity.SearchActivity">
+    tools:context=".search.ui.fragments.SearchFragment">
 
-    <LinearLayout
+    <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:padding="20dp">
-
-        <ImageView
-            android:id="@+id/backToMainActivity"
-            style="@style/HeadStyle"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_gravity="center_vertical"
-            android:contentDescription="@string/app_name"
-            android:src="@drawable/back" />
-
-        <TextView
-            style="@style/HeadStyle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="start"
-            android:paddingStart="@dimen/padding_head_start"
-            android:text="@string/search_button" />
-    </LinearLayout>
+        style="@style/HeadStyle"
+        android:layout_gravity="start"
+        android:paddingVertical="@dimen/head_padding_vertical"
+        android:paddingStart="@dimen/head_padding_start"
+        android:text="@string/search_button" />
 
     <FrameLayout
         android:id="@+id/container"

@@ -21,20 +21,13 @@
         <item name="android:textSize">@dimen/header_size</item>
         <item name="tint">@color/black</item>
     </style>
-    <style name="StartButtonStyle" parent="Widget.MaterialComponents.Button">
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_weight">1</item>
+    <style name="NavigationButtonStyle">
         <item name="android:fontFamily">@font/ys_display_medium</item>
         <item name="android:textFontWeight">500</item>
-        <item name="android:textColor">@color/black</item>
+        <item name="itemTextColor">@drawable/bottom_navigate_color</item>
         <item name="android:textSize">@dimen/button_text_size</item>
-        <item name="android:textAllCaps">false</item>
-        <item name="android:backgroundTint">@color/white</item>
-        <item name="cornerRadius">@dimen/button_corner_radius</item>
-        <item name="iconGravity">textStart</item>
-        <item name="iconTint">@color/black</item>
-        <item name="android:shadowRadius">0</item>
+        <item name="itemIconTint">@drawable/bottom_navigate_color</item>
+        <item name="backgroundTint">@color/white</item>
     </style>
     <style name="EditTextStyle">
         <item name="android:fontFamily">@font/ys_display_regular</item>

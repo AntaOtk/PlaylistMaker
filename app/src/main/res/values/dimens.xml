@@ -11,14 +11,14 @@
     <dimen name="placeholder_message_margin">24dp</dimen>
     <dimen name="top_media_margin">46dp</dimen>
     <dimen name="top_selected_tracks_margin">46dp</dimen>
-    <dimen name="padding_head_start">28dp</dimen>
-    <dimen name="library_head_padding">20dp</dimen>
+    <dimen name="head_padding_start">16dp</dimen>
+    <dimen name="head_padding_vertical">14dp</dimen>
 
     <!-- SIZE -->
     <dimen name="button_corner_radius">16dp</dimen>
     <dimen name="header_size">26sp</dimen>
     <dimen name="menu_text_size">16sp</dimen>
-    <dimen name="button_text_size">22sp</dimen>
+    <dimen name="button_text_size">12sp</dimen>
     <dimen name="search_corner_radius">9dp</dimen>
     <dimen name="art_item_search">45dp</dimen>
     <dimen name="corner_radius_art">2dp</dimen>
