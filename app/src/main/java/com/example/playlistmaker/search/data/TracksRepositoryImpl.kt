@@ -9,28 +9,38 @@ import com.example.playlistmaker.search.data.network.NetworkClient
 import com.example.playlistmaker.search.domain.api.TracksRepository
 import com.example.playlistmaker.search.domain.model.Track
 import com.example.playlistmaker.search.util.Resource
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
 
-class TracksRepositoryImpl(private val networkClient: NetworkClient, private val mapper: TrackMapper, private val context: Context) :
+class TracksRepositoryImpl(
+    private val networkClient: NetworkClient,
+    private val mapper: TrackMapper,
+    private val context: Context
+) :
     TracksRepository {
 
-    override fun searchTracks(expression: String): Resource<List<Track>> {
+    override fun searchTracks(expression: String): Flow<Resource<List<Track>>> = flow {
         val response = networkClient.doRequest(SearchRequest(expression))
-        return when (response.resultCode) {
+        when (response.resultCode) {
             -1 -> {
-                Resource.Error(context.getString(R.string.no_interrnet_conection))
+                emit(Resource.Error(context.getString(R.string.no_interrnet_conection)))
             }
 
             200 -> {
-                Resource.Success((response as TrackResponse).results.map {
-                    mapper.trackMap(it)
-                })
+                with(response as TrackResponse) {
+                    val data = results.map {
+                        mapper.trackMap(it)
+                    }
+                    emit(Resource.Success(data))
+                }
             }
 
             else -> {
-                Resource.Error(context.getString(R.string.no_interrnet_conection))
+                emit(Resource.Error(context.getString(R.string.no_interrnet_conection)))
             }
         }
     }
+
     override fun getMessage(): String {
         return context.getString(R.string.nothing_found)
     }
