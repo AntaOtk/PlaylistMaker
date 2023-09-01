@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.playlistmaker.player.domain.PlayControl
 import com.example.playlistmaker.player.domain.util.PlayerState
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -21,7 +22,7 @@ class PlayerViewModel(private val playerInteractor: PlayControl) :
             stateLiveData.postValue(state)
             val progressTime = playerInteractor.getProgressTime()
             stateProgressTimeLiveData.postValue(progressTime)
-            if (state == PlayerState.PREPARED) timerJob?.cancel()
+            if (state == PlayerState.PREPARED) cancelTimer()
         }
     }
 
@@ -34,21 +35,13 @@ class PlayerViewModel(private val playerInteractor: PlayControl) :
     private var timerJob: Job? = null
 
     private fun startTimer(state: PlayerState) {
-        timerJob = viewModelScope.launch {
-            while (state == PlayerState.PLAYING){
+        timerJob = viewModelScope.launch(Dispatchers.Default) {
+            while (state == PlayerState.PLAYING) {
                 delay(DELAY_MILLIS)
-                stateProgressTimeLiveData.postValue( playerInteractor.getProgressTime())
+                stateProgressTimeLiveData.postValue(playerInteractor.getProgressTime())
             }
         }
     }
-
-   /* private val progressTimeRunnable = object : Runnable {
-        override fun run() {
-            val progressTime = playerInteractor.getProgressTime()
-            stateProgressTimeLiveData.postValue(progressTime)
-            mainThreadHandler.postDelayed(this, DELAY_MILLIS)
-        }
-    } */
 
     fun prepare(url: String) {
         playerInteractor.preparePlayer(url)
@@ -57,10 +50,9 @@ class PlayerViewModel(private val playerInteractor: PlayControl) :
     fun playbackControl() {
         val state = playerInteractor.playbackControl()
         renderState(state)
-        if (state == PlayerState.PLAYING) startTimer(state) else timerJob?.cancel()
+        if (state == PlayerState.PLAYING) startTimer(state) else cancelTimer()
 
     }
-
 
     override fun onCleared() {
         super.onCleared()
@@ -74,5 +66,10 @@ class PlayerViewModel(private val playerInteractor: PlayControl) :
 
     private fun renderState(state: PlayerState) {
         stateLiveData.postValue(state)
+    }
+
+    private fun cancelTimer() {
+        timerJob?.cancel()
+        timerJob = null
     }
 }
