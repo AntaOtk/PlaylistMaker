@@ -30,8 +30,8 @@ class LibraryFragment : Fragment() {
 
         tabMediator = TabLayoutMediator(binding!!.tabLayout, binding!!.viewPager) { tab, position ->
             when (position) {
-                0 -> tab.text = R.string.my_track.toString()
-                1 -> tab.text = R.string.playlists.toString()
+                0 -> tab.text = requireContext().getString(R.string.my_track)
+                1 -> tab.text = requireContext().getString(R.string.playlists)
             }
         }
         tabMediator.attach()
