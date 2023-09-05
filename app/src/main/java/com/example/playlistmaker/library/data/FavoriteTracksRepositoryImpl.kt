@@ -6,6 +6,9 @@ import com.example.playlistmaker.library.domain.FavoriteTracksRepository
 import com.example.playlistmaker.search.domain.model.Track
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
+import java.text.SimpleDateFormat
+import java.util.Date
+
 
 class FavoriteTracksRepositoryImpl(
     private val appDatabase: AppDatabase,
@@ -36,6 +39,6 @@ class FavoriteTracksRepositoryImpl(
     }
 
     private fun convertToTrackEntity(track: Track): TracksEntity {
-        return trackDbConvertor.map(track)
+        return trackDbConvertor.map(track, SimpleDateFormat("yyyy MM dd HH:mm:ss").format(Date()))
     }
 }

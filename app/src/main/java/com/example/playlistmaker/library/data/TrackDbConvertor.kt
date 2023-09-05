@@ -5,7 +5,7 @@ import com.example.playlistmaker.search.domain.model.Track
 
 
 class TrackDbConvertor {
-    fun map(track: Track): TracksEntity {
+    fun map(track: Track, updateTime: String): TracksEntity {
         return TracksEntity(
             track.trackId,
             track.trackName,
@@ -17,7 +17,8 @@ class TrackDbConvertor {
             track.primaryGenreName,
             track.country,
             track.previewUrl,
-            track.favoriteChecked
+            track.favoriteChecked,
+            updateTime
         )
     }
 

@@ -50,39 +50,44 @@ class TracksFragment : Fragment() {
         }
     }
 
-        private fun render(state: FavoriteState) {
-            when (state) {
-                is FavoriteState.Content -> showContent(state.tracks)
-                is FavoriteState.Empty -> showEmpty()
-            }
-        }
+    override fun onStart() {
+        super.onStart()
+        viewModel.fill()
+    }
 
-        private fun showEmpty() {
-            binding!!.messageText.visibility = View.VISIBLE
-            binding!!.messageImage.visibility = View.VISIBLE
-            binding!!.rvFavorite.visibility = View.GONE
-
-        }
-
-        private fun showContent(trackList: List<Track>) {
-            binding!!.messageText.visibility = View.GONE
-            binding!!.messageImage.visibility = View.GONE
-            binding!!.rvFavorite.visibility = View.VISIBLE
-            tracks.clear()
-            tracks.addAll(trackList)
-            adapter.notifyDataSetChanged()
-        }
-
-        private fun clickDebounce(): Boolean {
-            val current = isClickAllowed
-            if (isClickAllowed) {
-                isClickAllowed = false
-                viewLifecycleOwner.lifecycleScope.launch {
-                    delay(CLICK_DEBOUNCE_DELAY_MILLIS)
-                    isClickAllowed = true
-                }
-            }
-            return current
+    private fun render(state: FavoriteState) {
+        when (state) {
+            is FavoriteState.Content -> showContent(state.tracks)
+            is FavoriteState.Empty -> showEmpty()
         }
     }
+
+    private fun showEmpty() {
+        binding!!.messageText.visibility = View.VISIBLE
+        binding!!.messageImage.visibility = View.VISIBLE
+        binding!!.rvFavorite.visibility = View.GONE
+
+    }
+
+    private fun showContent(trackList: List<Track>) {
+        binding!!.messageText.visibility = View.GONE
+        binding!!.messageImage.visibility = View.GONE
+        binding!!.rvFavorite.visibility = View.VISIBLE
+        tracks.clear()
+        tracks.addAll(trackList)
+        adapter.notifyDataSetChanged()
+    }
+
+    private fun clickDebounce(): Boolean {
+        val current = isClickAllowed
+        if (isClickAllowed) {
+            isClickAllowed = false
+            viewLifecycleOwner.lifecycleScope.launch {
+                delay(CLICK_DEBOUNCE_DELAY_MILLIS)
+                isClickAllowed = true
+            }
+        }
+        return current
+    }
+}
 

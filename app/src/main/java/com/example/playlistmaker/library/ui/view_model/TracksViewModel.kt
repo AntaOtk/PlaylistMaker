@@ -11,7 +11,7 @@ import kotlinx.coroutines.launch
 
 class TracksViewModel(private val interactor: FavoriteTracksInteractor) : ViewModel() {
 
-    init {
+    fun  fill() {
         viewModelScope.launch {
             interactor.showTracks()
                 .collect { tracks ->
