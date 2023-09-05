@@ -6,7 +6,7 @@ import kotlinx.coroutines.flow.Flow
 interface TracksInteractor {
     fun searchTracks(expression: String): Flow<Pair<List<Track>?, String?>>
     fun getEmptyMessage(): String
-    fun getTrackList(): List<Track>
+    fun getTrackList(): Flow<List<Track>>
     fun setTrack(track: Track)
     fun clear()
 }
