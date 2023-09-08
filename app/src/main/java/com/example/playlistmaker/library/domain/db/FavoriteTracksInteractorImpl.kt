@@ -7,19 +7,30 @@ import kotlinx.coroutines.flow.Flow
 
 class FavoriteTracksInteractorImpl(private val favoriteTracksRepository: FavoriteTracksRepository) :
     FavoriteTracksInteractor {
-    override fun showTracks(): Flow<List<Track>> {
+
+    private var isChacked = false
+    override fun getTracks(): Flow<List<Track>> {
         return favoriteTracksRepository.getFavoriteTracks()
     }
 
-    override suspend fun updateFavorite(track: Track): Track {
-        return if (track.favoriteChecked) {
-            favoriteTracksRepository.deleteFavoriteTrack(track)
-            track.favoriteChecked = false
-            track
-        } else {
-            track.favoriteChecked = true
-            favoriteTracksRepository.addFavoriteTrack(track)
-            track
+    override suspend fun updateFavorite(track: Track): Boolean {
+        favoriteTracksRepository.getFavoriteChecked().collect{tracksId ->
+            isChacked = if (tracksId.contains(track.trackId)) {
+                favoriteTracksRepository.deleteFavoriteTrack(track)
+                false
+            } else {
+                favoriteTracksRepository.addFavoriteTrack(track)
+                true
+            }
         }
+        return isChacked
     }
+
+    override suspend fun getChecked(tracksId: Long) : Boolean {
+        favoriteTracksRepository.getFavoriteChecked().collect { id ->
+            isChacked = id.contains(tracksId)
+        }
+        return isChacked
+    }
+
 }

@@ -13,7 +13,10 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
-class PlayerViewModel(private val playerInteractor: PlayControl, private val favoriteInteractor: FavoriteTracksInteractor) :
+class PlayerViewModel(
+    private val playerInteractor: PlayControl,
+    private val favoriteInteractor: FavoriteTracksInteractor
+) :
     ViewModel() {
     companion object {
         private const val DELAY_MILLIS = 300L
@@ -49,8 +52,10 @@ class PlayerViewModel(private val playerInteractor: PlayControl, private val fav
     }
 
     fun prepare(track: Track) {
-        playerInteractor.preparePlayer(track.previewUrl)
-        renderFavoriteState(track)
+        viewModelScope.launch {
+            playerInteractor.preparePlayer(track.previewUrl)
+            getChecked(track)
+        }
     }
 
     fun playbackControl() {
@@ -85,7 +90,13 @@ class PlayerViewModel(private val playerInteractor: PlayControl, private val fav
         }
     }
 
-    private fun renderFavoriteState(track: Track) {
-        stateFavoriteData.postValue(track.favoriteChecked)
+    fun getChecked(track: Track) {
+        viewModelScope.launch {
+            renderFavoriteState(favoriteInteractor.getChecked(track.trackId))
+        }
+    }
+
+    private fun renderFavoriteState(isChecked: Boolean) {
+        stateFavoriteData.postValue(isChecked)
     }
 }

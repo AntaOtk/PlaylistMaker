@@ -51,18 +51,15 @@ class SearchViewModel(private val tracksInteractor: TracksInteractor) : ViewMode
     private val tracks = ArrayList<Track>()
 
     fun searchHistory() {
-        viewModelScope.launch {
-            tracksInteractor.getTrackList().collect { history ->
-                if (history.isNotEmpty())
-                    renderState(
-                        SearchState.EmptyInput(
-                            history
-                        )
-                    ) else renderState(
-                    SearchState.AllEmpty
+        val history = tracksInteractor.getTrackList()
+        if (history.isNotEmpty())
+            renderState(
+                SearchState.EmptyInput(
+                    history
                 )
-            }
-        }
+            ) else renderState(
+            SearchState.AllEmpty
+        )
     }
 
     fun setTrack(track: Track) {

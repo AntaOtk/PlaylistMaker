@@ -3,8 +3,8 @@ package com.example.playlistmaker.search.data.mapper
 import com.example.playlistmaker.search.data.dto.TrackDto
 import com.example.playlistmaker.search.domain.model.Track
 
-class TrackConvertor() {
-    fun trackMap(track: TrackDto, contains: Boolean): Track {
+class TrackMapper() {
+    fun trackMap(track: TrackDto): Track {
         return Track(
             track.trackId,
             track.trackName,
@@ -15,8 +15,7 @@ class TrackConvertor() {
             track.releaseDate,
             track.primaryGenreName,
             track.country,
-            track.previewUrl,
-            contains
+            track.previewUrl
         )
     }
 

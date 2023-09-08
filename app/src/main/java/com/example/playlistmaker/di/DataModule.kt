@@ -31,6 +31,8 @@ val dataModule = module {
             .getSharedPreferences("local_storage", Context.MODE_PRIVATE)
     }
 
+
+
     factory { Gson() }
 
     factory { MediaPlayer() }
@@ -47,6 +49,6 @@ val dataModule = module {
 
     single {
         Room.databaseBuilder(androidContext(), AppDatabase::class.java, "database.db")
-            .build()
+            .build().trackDao()
     }
 }

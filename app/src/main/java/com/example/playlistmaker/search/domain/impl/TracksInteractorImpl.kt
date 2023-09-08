@@ -30,7 +30,7 @@ class TracksInteractorImpl(
         return searchRepository.getMessage()
     }
 
-    override fun getTrackList(): Flow<List<Track>> {
+    override fun getTrackList(): List<Track> {
         return historyRepository.getTrackList()
     }
 
