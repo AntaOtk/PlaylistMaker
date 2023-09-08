@@ -8,10 +8,10 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import com.example.playlistmaker.databinding.TracksFragmentBinding
 import com.example.playlistmaker.library.ui.FavoriteState
-import com.example.playlistmaker.library.ui.adapter.FavoriteAdapter
 import com.example.playlistmaker.library.ui.view_model.TracksViewModel
 import com.example.playlistmaker.player.ui.activity.AudioPlayer
 import com.example.playlistmaker.search.domain.model.Track
+import com.example.playlistmaker.search.ui.adapter.SearchAdapter
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -21,14 +21,14 @@ class TracksFragment : Fragment() {
     private val viewModel by viewModel<TracksViewModel>()
 
     companion object {
-        const val CLICK_DEBOUNCE_DELAY_MILLIS = 100L
+        private const val CLICK_DEBOUNCE_DELAY_MILLIS = 100L
         fun newInstance() = TracksFragment().apply {
         }
     }
 
     private var binding: TracksFragmentBinding? = null
     private val tracks = mutableListOf<Track>()
-    private var adapter = FavoriteAdapter(tracks) {
+    private var adapter = SearchAdapter(tracks) {
         if (clickDebounce()) {
             AudioPlayer.startActivity(requireContext(), it)
         }
