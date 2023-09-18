@@ -1,11 +1,12 @@
-package com.example.playlistmaker.search.data.mapper
+package com.example.playlistmaker.library.data
 
-import com.example.playlistmaker.search.data.dto.TrackDto
+import com.example.playlistmaker.library.data.db.entity.TracksEntity
 import com.example.playlistmaker.search.domain.model.Track
 
-class TrackMapper() {
-    fun trackMap(track: TrackDto): Track {
-        return Track(
+
+class TrackDbMapper {
+    fun map(track: Track, updateTime: String): TracksEntity {
+        return TracksEntity(
             track.trackId,
             track.trackName,
             track.artistName,
@@ -15,12 +16,13 @@ class TrackMapper() {
             track.releaseDate,
             track.primaryGenreName,
             track.country,
-            track.previewUrl
+            track.previewUrl,
+            updateTime
         )
     }
 
-    fun trackDtoMap(track: Track): TrackDto {
-        return TrackDto(
+    fun map(track: TracksEntity): Track {
+        return Track(
             track.trackId,
             track.trackName,
             track.artistName,

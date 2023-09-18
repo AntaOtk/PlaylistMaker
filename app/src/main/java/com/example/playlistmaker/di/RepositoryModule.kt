@@ -1,5 +1,8 @@
 package com.example.playlistmaker.di
 
+import com.example.playlistmaker.library.data.FavoriteTracksRepositoryImpl
+import com.example.playlistmaker.library.data.TrackDbMapper
+import com.example.playlistmaker.library.domain.FavoriteTracksRepository
 import com.example.playlistmaker.player.data.impl.PlayerClientImpl
 import com.example.playlistmaker.player.domain.PlayerClient
 import com.example.playlistmaker.search.data.TrackHistoryRepositoryImpl
@@ -17,6 +20,8 @@ import org.koin.dsl.module
 val repositoryModule = module {
 
     single { TrackMapper() }
+    factory { TrackDbMapper() }
+
 
     single<TracksRepository> {
         TracksRepositoryImpl(get(),get(),androidContext())
@@ -36,5 +41,9 @@ val repositoryModule = module {
 
     factory<PlayerClient> {
         PlayerClientImpl(get())
+    }
+
+    single<FavoriteTracksRepository> {
+        FavoriteTracksRepositoryImpl(get(), get())
     }
 }

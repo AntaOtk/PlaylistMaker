@@ -10,15 +10,16 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.example.playlistmaker.R
 import com.example.playlistmaker.databinding.AudioPlayerBinding
 import com.example.playlistmaker.player.domain.util.PlayerState
-import com.example.playlistmaker.player.ui.viewmodel.PlayerViewModel
+import com.example.playlistmaker.player.ui.view_model.PlayerViewModel
 import com.example.playlistmaker.search.domain.model.Track
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.text.SimpleDateFormat
-import java.util.*
+import java.util.Locale
 
 class AudioPlayer : AppCompatActivity() {
 
     private val viewModel by viewModel<PlayerViewModel>()
+
     companion object {
         const val TRACK = "TRACK"
         fun startActivity(context: Context, track: Track) {
@@ -47,7 +48,13 @@ class AudioPlayer : AppCompatActivity() {
         viewModel.observeProgressTimeState().observe(this) {
             progressTimeViewUpdate(it)
         }
+
+        viewModel.observeFavoriteState().observe(this) {
+            favoriteRender(it)
+        }
         binding.backButton.setOnClickListener { finish() }
+
+        binding.likeButton.setOnClickListener { viewModel.onFavoriteClicked(track) }
 
         binding.title.text = track.trackName
         binding.artist.text = track.artistName
@@ -65,7 +72,13 @@ class AudioPlayer : AppCompatActivity() {
             .transform(RoundedCorners(applicationContext.resources.getDimensionPixelSize(R.dimen.audioplayer_corner_radius_art)))
             .into(binding.cover)
 
-        viewModel.prepare(track.previewUrl)
+        viewModel.prepare(track)
+    }
+
+    private fun favoriteRender(favoriteChecked: Boolean) {
+        if (favoriteChecked)
+            binding.likeButton.setImageResource(R.drawable.like_button_on)
+        else binding.likeButton.setImageResource(R.drawable.like_button_off)
     }
 
     private fun render(state: PlayerState) {

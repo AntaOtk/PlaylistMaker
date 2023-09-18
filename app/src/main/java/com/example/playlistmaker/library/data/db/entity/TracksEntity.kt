@@ -1,10 +1,11 @@
-package com.example.playlistmaker.search.domain.model
+package com.example.playlistmaker.library.data.db.entity
 
-import android.os.Parcelable
-import kotlinx.parcelize.Parcelize
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 
-@Parcelize
-data class Track(
+@Entity(tableName = "track_table")
+data class TracksEntity(
+    @PrimaryKey
     val trackId: Long,
     val trackName: String,
     val artistName: String,
@@ -14,5 +15,6 @@ data class Track(
     val releaseDate: String,
     val primaryGenreName: String,
     val country: String,
-    val previewUrl: String
-) : Parcelable
+    val previewUrl: String,
+    val updateTime: String
+)
