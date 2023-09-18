@@ -31,8 +31,6 @@ val dataModule = module {
             .getSharedPreferences("local_storage", Context.MODE_PRIVATE)
     }
 
-
-
     factory { Gson() }
 
     factory { MediaPlayer() }

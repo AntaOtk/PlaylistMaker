@@ -8,14 +8,14 @@ import kotlinx.coroutines.flow.Flow
 class FavoriteTracksInteractorImpl(private val favoriteTracksRepository: FavoriteTracksRepository) :
     FavoriteTracksInteractor {
 
-    private var isChacked = false
+    private var isChecked = false
     override fun getTracks(): Flow<List<Track>> {
         return favoriteTracksRepository.getFavoriteTracks()
     }
 
     override suspend fun updateFavorite(track: Track): Boolean {
         favoriteTracksRepository.getFavoriteChecked().collect{tracksId ->
-            isChacked = if (tracksId.contains(track.trackId)) {
+            isChecked = if (tracksId.contains(track.trackId)) {
                 favoriteTracksRepository.deleteFavoriteTrack(track)
                 false
             } else {
@@ -23,14 +23,14 @@ class FavoriteTracksInteractorImpl(private val favoriteTracksRepository: Favorit
                 true
             }
         }
-        return isChacked
+        return isChecked
     }
 
     override suspend fun getChecked(tracksId: Long) : Boolean {
         favoriteTracksRepository.getFavoriteChecked().collect { id ->
-            isChacked = id.contains(tracksId)
+            isChecked = id.contains(tracksId)
         }
-        return isChacked
+        return isChecked
     }
 
 }
