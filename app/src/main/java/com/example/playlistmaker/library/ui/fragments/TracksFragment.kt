@@ -6,6 +6,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
+import com.example.playlistmaker.R
 import com.example.playlistmaker.databinding.TracksFragmentBinding
 import com.example.playlistmaker.library.ui.FavoriteState
 import com.example.playlistmaker.library.ui.view_model.TracksViewModel
@@ -30,7 +32,7 @@ class TracksFragment : Fragment() {
     private val tracks = mutableListOf<Track>()
     private var adapter = SearchAdapter(tracks) {
         if (clickDebounce()) {
-            AudioPlayer.startActivity(requireContext(), it)
+            findNavController().navigate(R.id.action_libraryFragment_to_audioPlayer, AudioPlayer.createArgs(it))
         }
     }
     private var isClickAllowed = true

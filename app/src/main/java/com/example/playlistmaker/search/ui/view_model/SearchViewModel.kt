@@ -1,7 +1,5 @@
 package com.example.playlistmaker.search.ui.view_model
 
-import android.os.Handler
-import android.os.Looper
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -16,7 +14,6 @@ import kotlinx.coroutines.launch
 class SearchViewModel(private val tracksInteractor: TracksInteractor) : ViewModel() {
     companion object {
         private const val SEARCH_DEBOUNCE_DELAY_MILLIS = 2000L
-        private val SEARCH_REQUEST_TOKEN = Any()
     }
 
 
@@ -24,7 +21,6 @@ class SearchViewModel(private val tracksInteractor: TracksInteractor) : ViewMode
     fun observeState(): LiveData<SearchState> = stateLiveData
 
     private var latestSearchText: String? = null
-    private val handler = Handler(Looper.getMainLooper())
 
     private var searchJob: Job? = null
 
@@ -34,7 +30,6 @@ class SearchViewModel(private val tracksInteractor: TracksInteractor) : ViewMode
             return
         }
         this.latestSearchText = changedText
-        handler.removeCallbacksAndMessages(SEARCH_REQUEST_TOKEN)
 
 
         searchJob?.cancel()
@@ -42,10 +37,6 @@ class SearchViewModel(private val tracksInteractor: TracksInteractor) : ViewMode
             delay(SEARCH_DEBOUNCE_DELAY_MILLIS)
             search(changedText)
         }
-    }
-
-    override fun onCleared() {
-        handler.removeCallbacksAndMessages(SEARCH_REQUEST_TOKEN)
     }
 
     private val tracks = ArrayList<Track>()

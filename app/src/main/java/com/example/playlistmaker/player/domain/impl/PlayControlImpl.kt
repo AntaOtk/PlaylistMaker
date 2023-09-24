@@ -30,6 +30,10 @@ class PlayControlImpl(private val mediaPlayer: PlayerClient, private var playerS
         playerState = PlayerState.PAUSED
     }
 
+    override fun checkContains(): Boolean {
+        TODO("Not yet implemented")
+    }
+
     override fun getProgressTime(): String {
         return if (playerState == PlayerState.PREPARED) TimeFormatter.ZERO_TIME else TimeFormatter.format(
             mediaPlayer.getCurrentPosition()

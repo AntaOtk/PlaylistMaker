@@ -18,7 +18,6 @@ class TracksViewModel(private val interactor: FavoriteTracksInteractor) : ViewMo
                     renderState(processResult(tracks))
                 }
         }
-
     }
 
     private val stateFavoriteLiveData = MutableLiveData<FavoriteState>()

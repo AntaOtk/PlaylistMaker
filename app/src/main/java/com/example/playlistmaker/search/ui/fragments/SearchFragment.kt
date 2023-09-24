@@ -11,6 +11,7 @@ import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import com.example.playlistmaker.R
 import com.example.playlistmaker.databinding.FragmentSearchBinding
 import com.example.playlistmaker.player.ui.activity.AudioPlayer
@@ -36,7 +37,10 @@ class SearchFragment : Fragment() {
     private val adapter = SearchAdapter(tracks) {
         if (clickDebounce()) {
             viewModel.setTrack(it)
-            AudioPlayer.startActivity(requireContext(), it)
+            findNavController().navigate(
+                R.id.action_searchFragment_to_audioPlayer,
+                AudioPlayer.createArgs(it)
+            )
         }
     }
 

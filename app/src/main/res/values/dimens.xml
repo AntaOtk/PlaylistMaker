@@ -7,6 +7,7 @@
     <dimen name="search_field">36dp</dimen>
     <dimen name="margin_item_track">8dp</dimen>
     <dimen name="search_list_padding">12dp</dimen>
+    <dimen name="back_button_margin">12dp</dimen>
     <dimen name="vertical_margin_text_track">14dp</dimen>
     <dimen name="placeholder_message_margin">24dp</dimen>
     <dimen name="top_media_margin">46dp</dimen>

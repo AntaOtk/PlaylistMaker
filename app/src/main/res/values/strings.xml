@@ -42,4 +42,16 @@
     <string name="tracks_message">Ваша медиатека пуста</string>
     <string name="my_track">Избранные треки</string>
     <string name="playlists">Плейлисты</string>
+    <string name="playlists_name">Название*</string>
+    <string name="playlists_description">Описание</string>
+    <string name="create">Создать</string>
+    <string name="new_playlists">Новый плейлист</string>
+    <string name="add_to_playlist">Добавить в плейлист</string>
+    <string name="tracks">треков</string>
+    <string name="one_track">трек</string>
+    <string name="two_tracks">трека</string>
+
+
+    <string name="creator_alarm_body">Разрешить приложению «Playlist Maker» доступ к фото?</string>
+    <string name="kij">Название*</string>
 </resources>
