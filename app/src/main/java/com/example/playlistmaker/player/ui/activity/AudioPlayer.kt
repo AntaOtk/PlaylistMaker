@@ -1,13 +1,11 @@
 package com.example.playlistmaker.player.ui.activity
 
-import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.annotation.RequiresApi
-import androidx.core.os.bundleOf
+import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
@@ -15,10 +13,12 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.example.playlistmaker.R
 import com.example.playlistmaker.databinding.AudioPlayerBinding
 import com.example.playlistmaker.library.domain.model.PlayList
+import com.example.playlistmaker.main.ui.MainActivityViewModel
 import com.example.playlistmaker.player.domain.util.PlayerState
 import com.example.playlistmaker.player.ui.view_model.PlayerViewModel
 import com.example.playlistmaker.search.domain.model.Track
 import com.google.android.material.bottomsheet.BottomSheetBehavior
+import org.koin.androidx.viewmodel.ext.android.activityViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.text.SimpleDateFormat
 import java.util.Locale
@@ -26,20 +26,14 @@ import java.util.Locale
 class AudioPlayer : Fragment() {
 
     private val viewModel by viewModel<PlayerViewModel>()
-
-    companion object {
-        const val TRACK = "TRACK"
-
-        fun createArgs(track: Track): Bundle =
-            bundleOf(TRACK to track)
-    }
+    private val hostViewModel by activityViewModel<MainActivityViewModel>()
 
     private var _binding: AudioPlayerBinding? = null
     private val binding get() = _binding!!
     private val playlists = mutableListOf<PlayList>()
-    lateinit var track: Track
+    var track: Track? = null
     private val adapter = SmallPlayListAdapter(playlists) {
-        viewModel.addToPlaylist(track, it)
+        track?.let { it1 -> viewModel.addToPlaylist(it1, it) }
     }
 
     override fun onCreateView(
@@ -50,10 +44,13 @@ class AudioPlayer : Fragment() {
         return binding.root
     }
 
-
-    @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        track = requireArguments().getParcelable(TRACK, Track::class.java)!!
+        super.onViewCreated(view, savedInstanceState)
+        hostViewModel.getCurrentTrack().observe(viewLifecycleOwner) { currentTrack ->
+            this.track = currentTrack
+            renderInformation(currentTrack)
+        }
+
 
         val bottomSheetBehavior = BottomSheetBehavior.from(binding.playlistsBottomSheet).apply {
             state = BottomSheetBehavior.STATE_HIDDEN
@@ -100,18 +97,26 @@ class AudioPlayer : Fragment() {
         }
         binding.backButton.setOnClickListener { findNavController().navigateUp() }
 
-        binding.likeButton.setOnClickListener { viewModel.onFavoriteClicked(track) }
+        binding.likeButton.setOnClickListener { track?.let { it1 -> viewModel.onFavoriteClicked(it1) } }
         binding.addButton.setOnClickListener {
             bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
         }
 
+        requireActivity().onBackPressedDispatcher.addCallback(object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                findNavController().navigateUp()
 
+            }
+        })
 
         binding.addPlaylistButton.setOnClickListener {
             findNavController().navigate((R.id.action_audioPlayer_to_playlistCreatorFragment))
         }
 
-        binding.title.text = track.trackName
+        track?.let { viewModel.prepare(it) }
+    }
+
+    private fun renderInformation(track: Track) {
         binding.artist.text = track.artistName
         binding.albumName.text = track.collectionName
         binding.year.text = track.releaseDate.substring(0, 4)
@@ -126,8 +131,6 @@ class AudioPlayer : Fragment() {
             .centerCrop()
             .transform(RoundedCorners(requireActivity().resources.getDimensionPixelSize(R.dimen.audioplayer_corner_radius_art)))
             .into(binding.cover)
-
-        viewModel.prepare(track)
     }
 
     private fun renderPlayList(list: List<PlayList>) {
@@ -161,8 +164,10 @@ class AudioPlayer : Fragment() {
         binding.progressTime.text = progressTime
     }
 
-    private fun showToast(message: String) {
-        Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
+    private fun showToast(result: Pair<String, Boolean>) {
+        val message =
+            if (result.second) getString(R.string.add_track_message) else getString(R.string.add_track_message)
+        Toast.makeText(requireContext(), message + " " + result.first, Toast.LENGTH_SHORT).show()
     }
 
     override fun onPause() {

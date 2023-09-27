@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
     <style name="MenuSettingStyle">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
@@ -11,9 +12,11 @@
         <item name="android:layout_gravity">start</item>
         <item name="drawableTint">@color/gray_color</item>
     </style>
+
     <style name="StartScreenStyle">
         <item name="android:background">@color/blue_color</item>
     </style>
+
     <style name="HeadStyle">
         <item name="android:fontFamily">@font/ys_display_medium</item>
         <item name="android:textFontWeight">500</item>
@@ -21,6 +24,7 @@
         <item name="android:textSize">@dimen/header_size</item>
         <item name="tint">@color/black</item>
     </style>
+
     <style name="NavigationButtonStyle">
         <item name="android:fontFamily">@font/ys_display_medium</item>
         <item name="android:textFontWeight">500</item>
@@ -29,6 +33,7 @@
         <item name="itemIconTint">@drawable/bottom_navigate_color</item>
         <item name="backgroundTint">@color/white</item>
     </style>
+
     <style name="EditTextStyle">
         <item name="android:fontFamily">@font/ys_display_regular</item>
         <item name="iconGravity">textStart</item>
@@ -38,33 +43,40 @@
         <item name="android:textColorHint">@color/gray_color</item>
         <item name="android:shadowRadius">0</item>
     </style>
+
     <style name="EditClearButtonStyle">
         <item name="tint">@color/gray_color</item>
     </style>
+
     <style name="FirstContent">
         <item name="android:fontFamily">@font/ys_display_regular</item>
         <item name="android:textSize">16sp</item>
         <item name="android:textColor">?attr/colorOnSecondary</item>
     </style>
+
     <style name="SecondContent">
         <item name="android:fontFamily">@font/ys_display_regular</item>
         <item name="android:textSize">11sp</item>
         <item name="maxLines">1</item>
         <item name="android:textColor">@color/gray_color</item>
     </style>
+
     <style name="ArtBlock">
         <item name="cornerRadius">@dimen/corner_radius_art</item>
         <item name="backgroundColor">@color/black</item>
     </style>
+
     <style name="Arrow">
         <item name="tint">@color/gray_color</item>
     </style>
+
     <style name="placeHolderTextStyle">
         <item name="android:fontFamily">@font/ys_display_medium</item>
         <item name="android:textSize">@dimen/placeholder_message_text_size</item>
         <item name="android:textColor">@color/black</item>
         <item name="android:gravity">center</item>
     </style>
+
     <style name="placeHolderButton" parent="Widget.MaterialComponents.Button">
         <item name="android:fontFamily">@font/ys_display_medium</item>
         <item name="android:textColor">@color/white</item>
@@ -82,21 +94,25 @@
         <item name="android:textSize">@dimen/audioplayer_trackname_text_size</item>
         <item name="android:textColor">@color/black</item>
     </style>
+
     <style name="AudioPlayerArtist">
         <item name="android:fontFamily">@font/ys_display_medium</item>
         <item name="android:textSize">@dimen/audioplayer_artist_text_size</item>
         <item name="android:textColor">@color/black</item>
     </style>
+
     <style name="AudioPlayerContentName">
         <item name="android:fontFamily">@font/ys_display_regular</item>
         <item name="android:textSize">@dimen/audioplayer_content_text_size</item>
         <item name="android:textColor">@color/gray_color</item>
     </style>
+
     <style name="AudioPlayerContentText">
         <item name="android:fontFamily">@font/ys_display_regular</item>
         <item name="android:textSize">@dimen/audioplayer_content_text_size</item>
         <item name="android:textColor">@color/black</item>
     </style>
+
     <style name="AudioPlayerImage">
         <item name="cornerRadius">@dimen/audioplayer_corner_radius_art</item>
     </style>
@@ -106,21 +122,31 @@
         <item name="tabIndicatorColor">@color/black</item>
         <item name="android:fontFamily">@font/ys_display_medium</item>
         <item name="android:textFontWeight">500</item>
-        <item name="tabTextAppearance">@android:style/TextAppearance.Widget.TabWidget</item>
         <item name="android:textSize">@dimen/repeat_text_size</item>
+        <item name="tabTextAppearance">@android:style/TextAppearance.Widget.TabWidget</item>
         <item name="android:layout_margin">@dimen/paddingClassic</item>
     </style>
 
-    <style name="create_button" parent="Widget.MaterialComponents.Button">
+    <style name="create_button">
         <item name="android:fontFamily">@font/ys_display_medium</item>
         <item name="android:textColor">@color/white</item>
-        <item name="android:textSize">@dimen/repeat_text_size</item>
+        <item name="android:textSize">@dimen/menu_text_size</item>
         <item name="android:textAllCaps">false</item>
         <item name="android:shadowRadius">0</item>
     </style>
 
     <style name="inputTextStyle" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
-        <item name="boxStrokeColor">@color/blue_color</item>
+        <item name="boxStrokeColor">@color/customize_et</item>
         <item name="hintTextColor">@color/blue_color</item>
+        <item name="android:textColorHint">?attr/colorOnSecondary</item>
+        <item name="android:textColor">?attr/colorOnSecondary</item>
+        <item name="android:fontFamily">@font/ys_display_regular</item>
+        <item name="android:textSize">@dimen/menu_text_size</item>
+    </style>
+
+    <style name="PlayListText">
+        <item name="android:fontFamily">@font/ys_display_regular</item>
+        <item name="android:textSize">12sp</item>
+        <item name="android:textColor">?attr/colorOnSecondary</item>
     </style>
 </resources>

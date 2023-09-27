@@ -47,11 +47,24 @@
     <string name="create">Создать</string>
     <string name="new_playlists">Новый плейлист</string>
     <string name="add_to_playlist">Добавить в плейлист</string>
-    <string name="tracks">треков</string>
-    <string name="one_track">трек</string>
-    <string name="two_tracks">трека</string>
-
 
     <string name="creator_alarm_body">Разрешить приложению «Playlist Maker» доступ к фото?</string>
     <string name="kij">Название*</string>
+    <string name="positive_button">Завершить</string>
+    <string name="negative_button">Отмена</string>
+    <string name="back_alert_message">Все несохраненные данные будут потеряны</string>
+    <string name="back_alert_title">Завершить создание плейлиста?</string>
+    <string name="add_track_message">Добавлено в плейлист </string>
+    <string name="add_track_message_false">Трек уже добавлен в плейлист </string>
+    <string name="add_playlist_message">Плейлист %s создан</string>
+
+
+    <plurals name="tracksContOfList">
+        <item quantity="zero">%1$d треков</item>
+        <item quantity="one">%1$d трек</item>
+        <item quantity="two">%1$d трека</item>
+        <item quantity="few">%1$d трека</item>
+        <item quantity="many">%1$d треков</item>
+        <item quantity="other">%1$d трекoв</item>
+    </plurals>
 </resources>

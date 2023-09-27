@@ -16,16 +16,16 @@
 
     <TextView
         android:id="@+id/pl_name"
-        style="@style/FirstContent"
+        style="@style/PlayListText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/playlists_name"/>
 
     <TextView
         android:id="@+id/pl_count"
-        style="@style/FirstContent"
+        style="@style/PlayListText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/tracks"/>
+        />
 
 </LinearLayout>

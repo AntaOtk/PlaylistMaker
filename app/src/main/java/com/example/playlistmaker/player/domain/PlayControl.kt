@@ -10,5 +10,4 @@ interface PlayControl {
 
     fun setOnStateChangeListener(callback: (PlayerState) -> Unit)
     fun pausePlayer()
-    fun checkContains(): Boolean
 }

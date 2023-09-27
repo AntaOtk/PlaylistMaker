@@ -17,6 +17,10 @@ class TrackHistoryRepositoryImpl(
         }
     }
 
+    override fun getTrack(): Track {
+        return mapper.trackMap(localStorage.getLastTrack())
+    }
+
     override fun setTrack(track: Track) {
         val trackDto = mapper.trackDtoMap(track)
         localStorage.setTrack(trackDto)

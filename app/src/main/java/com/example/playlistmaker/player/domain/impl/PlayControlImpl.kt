@@ -1,7 +1,7 @@
 package com.example.playlistmaker.player.domain.impl
 
-import com.example.playlistmaker.player.domain.PlayerClient
 import com.example.playlistmaker.player.domain.PlayControl
+import com.example.playlistmaker.player.domain.PlayerClient
 import com.example.playlistmaker.player.domain.util.PlayerState
 import com.example.playlistmaker.player.domain.util.TimeFormatter
 
@@ -28,10 +28,6 @@ class PlayControlImpl(private val mediaPlayer: PlayerClient, private var playerS
     override fun pausePlayer() {
         mediaPlayer.pausePlayer()
         playerState = PlayerState.PAUSED
-    }
-
-    override fun checkContains(): Boolean {
-        TODO("Not yet implemented")
     }
 
     override fun getProgressTime(): String {

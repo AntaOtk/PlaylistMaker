@@ -12,12 +12,12 @@ class PlaylistInteractorImpl(private val playlistRepository: PlaylistRepository)
         return playlistRepository.getPlayLists()
     }
 
-    override suspend fun addTrack(track: Track, playList: PlayList): String {
+    override suspend fun addTrack(track: Track, playList: PlayList): Boolean {
         val tracks = playlistRepository.getTrackList(playList)
         return if (tracks.isEmpty() || !tracks.contains(track)) {
             playlistRepository.addTrack(track, playList)
-            "Добавлено в плейлист "
-        } else "Трек уже добавлен в плейлист "
+            true
+        } else false
 
     }
 }

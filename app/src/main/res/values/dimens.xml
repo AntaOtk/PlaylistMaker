@@ -14,10 +14,13 @@
     <dimen name="top_selected_tracks_margin">46dp</dimen>
     <dimen name="head_padding_start">16dp</dimen>
     <dimen name="head_padding_vertical">14dp</dimen>
+    <dimen name="create_image_margin">8dp</dimen>
+
 
     <!-- SIZE -->
     <dimen name="button_corner_radius">16dp</dimen>
     <dimen name="header_size">26sp</dimen>
+    <dimen name="second_header_size">26sp</dimen>
     <dimen name="menu_text_size">16sp</dimen>
     <dimen name="button_text_size">12sp</dimen>
     <dimen name="search_corner_radius">9dp</dimen>
@@ -46,4 +49,5 @@
     <dimen name="margin_horizontal">8dp</dimen>
     <dimen name="play_button_top_margin">38dp</dimen>
     <dimen name="padding_progressbar">148dp</dimen>
+    <dimen name="bottomSheetPadding">13dp</dimen>
 </resources>

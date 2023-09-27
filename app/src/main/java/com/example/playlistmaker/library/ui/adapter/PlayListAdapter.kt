@@ -7,13 +7,14 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.playlistmaker.databinding.PlaylistItemBinding
 import com.example.playlistmaker.library.domain.model.PlayList
 import com.example.playlistmaker.library.ui.view_holder.PlayListsViewHolder
+import com.example.playlistmaker.main.ui.MainActivity.Companion.ALBOM
 import java.io.File
 
 class PlayListAdapter(val data: List<PlayList>) :
     RecyclerView.Adapter<PlayListsViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PlayListsViewHolder {
         val filePath =
-            File(parent.context.getExternalFilesDir(Environment.DIRECTORY_PICTURES), "myalbum")
+            File(parent.context.getExternalFilesDir(Environment.DIRECTORY_PICTURES), ALBOM)
         val layoutInspector = LayoutInflater.from(parent.context)
         return PlayListsViewHolder(
             PlaylistItemBinding.inflate(layoutInspector, parent, false),

@@ -13,5 +13,5 @@
     <color name="search_color"> #E6E8EB </color>
     <color name="search_color_night"> #FFFFFFFF </color>
     <color name="progress_color">#6200EE</color>
-
+    <color name="overlay_color">#991A1B22</color>
 </resources>

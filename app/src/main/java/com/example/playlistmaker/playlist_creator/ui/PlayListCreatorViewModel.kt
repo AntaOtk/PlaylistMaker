@@ -2,7 +2,10 @@ package com.example.playlistmaker.playlist_creator.ui
 
 import android.net.Uri
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.playlistmaker.playlist_creator.domain.PlayListCreatorInteractor
+import kotlinx.coroutines.launch
+import java.io.File
 import java.net.URI
 
 class PlayListCreatorViewModel(private val interactor: PlayListCreatorInteractor) : ViewModel() {
@@ -22,16 +25,10 @@ class PlayListCreatorViewModel(private val interactor: PlayListCreatorInteractor
 
 
     fun setName(changedText: String) {
-        if (playListName == changedText) {
-            return
-        }
         this.playListName = changedText
     }
 
     fun setDescription(changedText: String) {
-        if (description == changedText) {
-            return
-        }
         this.description = changedText
     }
 
@@ -46,11 +43,17 @@ class PlayListCreatorViewModel(private val interactor: PlayListCreatorInteractor
         return fileDir
     }
 
-    fun getMessage(): String {
-        return "Плейлист $playListName создан"
+    fun getName(): String {
+        return playListName
     }
 
     fun checkInput(): Boolean {
         return (fileDir != null) || playListName.isNotEmpty() || description.isNotEmpty()
+    }
+
+    fun saveImage(filePath: File, savePlaylist: String, uri: Uri) {
+        viewModelScope.launch {
+            interactor.saveImage(filePath,savePlaylist, uri)
+        }
     }
 }

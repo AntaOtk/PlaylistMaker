@@ -46,6 +46,6 @@ val interactorModule = module {
     }
 
     single<PlayListCreatorInteractor> {
-        PlayListCreatorInteractorImpl(get())
+        PlayListCreatorInteractorImpl(get(),get())
     }
 }

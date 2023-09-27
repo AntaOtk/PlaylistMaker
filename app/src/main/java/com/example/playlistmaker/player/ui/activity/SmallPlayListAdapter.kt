@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.playlistmaker.databinding.SmallPlaylistItemBinding
 import com.example.playlistmaker.library.domain.model.PlayList
+import com.example.playlistmaker.main.ui.MainActivity.Companion.ALBOM
 import java.io.File
 
 class SmallPlayListAdapter(
@@ -15,7 +16,7 @@ class SmallPlayListAdapter(
     RecyclerView.Adapter<SmallPlayListViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SmallPlayListViewHolder {
         val filePath =
-            File(parent.context.getExternalFilesDir(Environment.DIRECTORY_PICTURES), "myalbum")
+            File(parent.context.getExternalFilesDir(Environment.DIRECTORY_PICTURES), ALBOM)
         val layoutInspector = LayoutInflater.from(parent.context)
         return SmallPlayListViewHolder(
             SmallPlaylistItemBinding.inflate(layoutInspector, parent, false),

@@ -6,4 +6,5 @@ interface TrackHistoryRepository {
     fun getTrackList(): List<Track>
     fun setTrack(track: Track)
     fun clear()
+    fun getTrack(): Track
 }

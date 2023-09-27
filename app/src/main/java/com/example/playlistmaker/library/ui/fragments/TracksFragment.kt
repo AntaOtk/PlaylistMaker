@@ -11,16 +11,18 @@ import com.example.playlistmaker.R
 import com.example.playlistmaker.databinding.TracksFragmentBinding
 import com.example.playlistmaker.library.ui.FavoriteState
 import com.example.playlistmaker.library.ui.view_model.TracksViewModel
-import com.example.playlistmaker.player.ui.activity.AudioPlayer
+import com.example.playlistmaker.main.ui.MainActivityViewModel
 import com.example.playlistmaker.search.domain.model.Track
 import com.example.playlistmaker.search.ui.adapter.SearchAdapter
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
+import com.example.playlistmaker.search.util.debounce
+import org.koin.androidx.viewmodel.ext.android.activityViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class TracksFragment : Fragment() {
 
     private val viewModel by viewModel<TracksViewModel>()
+    val hostViewModel by activityViewModel<MainActivityViewModel>()
+
 
     companion object {
         private const val CLICK_DEBOUNCE_DELAY_MILLIS = 100L
@@ -28,14 +30,12 @@ class TracksFragment : Fragment() {
         }
     }
 
+    private lateinit var onTrackClickDebounce: (Track) -> Unit
     private var binding: TracksFragmentBinding? = null
     private val tracks = mutableListOf<Track>()
     private var adapter = SearchAdapter(tracks) {
-        if (clickDebounce()) {
-            findNavController().navigate(R.id.action_libraryFragment_to_audioPlayer, AudioPlayer.createArgs(it))
-        }
+        onTrackClickDebounce(it)
     }
-    private var isClickAllowed = true
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -49,6 +49,14 @@ class TracksFragment : Fragment() {
         binding!!.rvFavorite.adapter = adapter
         viewModel.observeState().observe(viewLifecycleOwner) {
             render(it)
+        }
+        onTrackClickDebounce = debounce(
+            CLICK_DEBOUNCE_DELAY_MILLIS,
+            viewLifecycleOwner.lifecycleScope,
+            false
+        ) { track ->
+            hostViewModel.setCurrentTrack(track)
+            findNavController().navigate(R.id.action_libraryFragment_to_audioPlayer)
         }
     }
 
@@ -80,16 +88,5 @@ class TracksFragment : Fragment() {
         adapter.notifyDataSetChanged()
     }
 
-    private fun clickDebounce(): Boolean {
-        val current = isClickAllowed
-        if (isClickAllowed) {
-            isClickAllowed = false
-            viewLifecycleOwner.lifecycleScope.launch {
-                delay(CLICK_DEBOUNCE_DELAY_MILLIS)
-                isClickAllowed = true
-            }
-        }
-        return current
-    }
 }
 

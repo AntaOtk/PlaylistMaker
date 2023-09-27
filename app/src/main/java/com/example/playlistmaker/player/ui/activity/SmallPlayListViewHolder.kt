@@ -1,6 +1,5 @@
 package com.example.playlistmaker.player.ui.activity
 
-import androidx.core.content.ContextCompat
 import androidx.core.net.toUri
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -19,27 +18,19 @@ class SmallPlayListViewHolder(
 
     fun bind(item: PlayList) {
         binding.plName.text = item.name
-        val addedText = ContextCompat.getString(itemView.context, addText(item.trackCount))
-        binding.plCount.text = "${item.trackCount} ${addedText}"
+        val addedText = itemView.resources.getQuantityString(
+            R.plurals.tracksContOfList,
+            item.trackCount.toInt(), item.trackCount
+        )
+        binding.plCount.text = addedText
         val file = File(filePath, "${item.id}.jpg")
         Glide.with(itemView)
             .load(file.toUri().toString())
             .placeholder(R.drawable.placeholder)
-            .transform(CenterCrop(), RoundedCorners(itemView.resources.getDimensionPixelSize(R.dimen.corner_radius_art)))
+            .transform(
+                CenterCrop(),
+                RoundedCorners(itemView.resources.getDimensionPixelSize(R.dimen.corner_radius_art))
+            )
             .into(binding.plImage)
-    }
-
-    private fun addText(trackCount: Long): Int {
-        val dec = trackCount.toInt() % 100
-        val ones = dec % 10
-        val tens = dec / 10
-        return if (ones == 1 && tens != 1) {
-            R.string.one_track
-        } else if (ones in 2..4 && tens != 1) {
-            R.string.two_tracks
-
-        } else {
-            R.string.tracks
-        }
     }
 }

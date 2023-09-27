@@ -1,8 +1,5 @@
 package com.example.playlistmaker.playlist_creator.ui
 
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
-import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
 import android.text.Editable
@@ -23,11 +20,11 @@ import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.example.playlistmaker.R
 import com.example.playlistmaker.databinding.FragmentPlaylistCreatorBinding
+import com.example.playlistmaker.main.ui.MainActivity.Companion.ALBOM
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.io.File
-import java.io.FileOutputStream
 
 class PlaylistCreatorFragment : Fragment() {
 
@@ -52,7 +49,7 @@ class PlaylistCreatorFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         filePath =
-            File(requireActivity().getExternalFilesDir(Environment.DIRECTORY_PICTURES), "myalbum")
+            File(requireActivity().getExternalFilesDir(Environment.DIRECTORY_PICTURES), ALBOM)
         val pickMedia =
             registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
                 if (uri != null) {
@@ -63,11 +60,11 @@ class PlaylistCreatorFragment : Fragment() {
                 }
             }
         val backAlertDialog = MaterialAlertDialogBuilder(requireActivity())
-            .setTitle("Завершить создание плейлиста?")
-            .setMessage("Все несохраненные данные будут потеряны")
-            .setNegativeButton("Отмена") { _, _ ->
+            .setTitle(R.string.back_alert_title)
+            .setMessage(R.string.back_alert_message)
+            .setNegativeButton(R.string.negative_button) { _, _ ->
             }
-            .setPositiveButton("Завершить") { _, _ ->
+            .setPositiveButton(getString(R.string.positive_button)) { _, _ ->
                 findNavController().navigateUp()
 
             }
@@ -106,52 +103,41 @@ class PlaylistCreatorFragment : Fragment() {
 
         binding.createButton.setOnClickListener {
             lifecycleScope.launch {
-                if(viewModel.getUri() != null)
-                saveImageToPrivateStorage(
-                    viewModel.savePlaylist(filePath.toURI()),
-                    viewModel.getUri()!!
-                ) else viewModel.savePlaylist(filePath.toURI())
-                showToast(viewModel.getMessage())
+                if (viewModel.getUri() != null)
+                    viewModel.saveImage(
+                        filePath,
+                        viewModel.savePlaylist(filePath.toURI()),
+                        viewModel.getUri()!!
+                    ) else viewModel.savePlaylist(filePath.toURI())
+                showToast(viewModel.getName())
                 findNavController().navigateUp()
             }
 
         }
 
         binding.backButton.setOnClickListener {
-            if (viewModel.checkInput()) backAlertDialog.show()  else findNavController().navigateUp()
+            if (viewModel.checkInput()) backAlertDialog.show() else findNavController().navigateUp()
         }
 
-        requireActivity().onBackPressedDispatcher.addCallback(object: OnBackPressedCallback(true) {
+        requireActivity().onBackPressedDispatcher.addCallback(object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
-               if (viewModel.checkInput()) backAlertDialog.show() else findNavController().navigateUp()
-
+                if (viewModel.checkInput()) backAlertDialog.show() else findNavController().navigateUp()
             }
         })
-
     }
 
-    private fun showToast(message: String) {
+    private fun showToast(playListName: String) {
+        val message = getString(R.string.add_playlist_message).format(playListName)
         Toast.makeText(requireActivity(), message, Toast.LENGTH_SHORT).show()
-    }
-
-    private fun saveImageToPrivateStorage(fileName: String, uri: Uri) {
-        if (!filePath.exists()) {
-            filePath.mkdirs()
-        }
-        val file = File(filePath, "${fileName}.jpg")
-        val inputStream = requireActivity().contentResolver.openInputStream(uri)
-        val outputStream = FileOutputStream(file)
-        BitmapFactory
-            .decodeStream(inputStream)
-            .compress(Bitmap.CompressFormat.JPEG, 30, outputStream)
-
-
     }
 
     private fun showPicture(pictureUri: String) {
         Glide.with(requireActivity())
             .load(pictureUri)
-            .transform(CenterCrop(), RoundedCorners(requireActivity().resources.getDimensionPixelSize(R.dimen.audioplayer_corner_radius_art)))
+            .transform(
+                CenterCrop(),
+                RoundedCorners(requireActivity().resources.getDimensionPixelSize(R.dimen.audioplayer_corner_radius_art))
+            )
             .into(binding.playListImage)
     }
 }
