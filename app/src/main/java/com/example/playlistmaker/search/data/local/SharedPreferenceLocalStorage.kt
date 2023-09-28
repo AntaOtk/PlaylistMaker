@@ -22,7 +22,7 @@ class SharedPreferenceLocalStorage(
 
     override fun getLastTrack(): TrackDto {
         val tracks = getTrackList()
-        return tracks[0]
+        return tracks.first()
     }
 
     override fun setTrack(track: TrackDto) {

@@ -37,6 +37,7 @@ class PlayListFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         binding.rvPlaylist.adapter = adapter
         binding.rvPlaylist.layoutManager =
             GridLayoutManager(requireActivity(), 2, GridLayoutManager.VERTICAL, false)

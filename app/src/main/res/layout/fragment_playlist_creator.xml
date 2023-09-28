@@ -53,17 +53,19 @@
     <ImageView
         android:id="@+id/playListImage"
         style="@style/AudioPlayerImage"
-        android:layout_width="312dp"
-        android:layout_height="312dp"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginHorizontal="@dimen/paddingClassic"
         android:layout_marginTop="26dp"
         android:layout_marginBottom="@dimen/paddingClassic"
-        android:scaleType="centerCrop"
+        android:scaleType="center"
         app:layout_constraintBottom_toTopOf="@id/outlinedTextFieldName"
         app:layout_constraintDimensionRatio="h,1:1"
         app:layout_constraintEnd_toEndOf="@id/rightBorder"
         app:layout_constraintStart_toStartOf="@id/leftBorder"
         app:layout_constraintTop_toBottomOf="@id/backButton"
-        app:srcCompat="@drawable/add_picture" />
+        app:srcCompat="@drawable/add_picture"
+        android:background="@drawable/add_picture_background"/>
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/outlinedTextFieldName"
@@ -84,7 +86,6 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:ems="10"
-            android:hint="@string/playlists_name"
             android:imeOptions="actionDone"
             android:importantForAutofill="no"
             android:inputType="text"
@@ -113,8 +114,7 @@
             android:inputType="text"
             android:maxLength="30"
             android:maxLines="1"
-            android:singleLine="true"
-            android:hint="@string/playlists_description" />
+            android:singleLine="true" />
 
     </com.google.android.material.textfield.TextInputLayout>
 

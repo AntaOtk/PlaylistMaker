@@ -2,12 +2,13 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="horizontal"
-    android:padding="@dimen/margin_item_track">
+    android:orientation="horizontal">
 
     <ImageView
         android:id="@+id/pl_image"
-        android:layout_marginHorizontal="@dimen/margin_item_track"
+        android:layout_marginVertical="@dimen/margin_item_track"
+        android:layout_marginStart="13dp"
+        android:layout_marginEnd="@dimen/margin_item_track"
         android:layout_width="45dp"
         android:layout_height="45dp"
         android:scaleType="centerCrop"

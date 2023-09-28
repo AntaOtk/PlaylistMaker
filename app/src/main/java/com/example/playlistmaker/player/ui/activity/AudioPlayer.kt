@@ -5,7 +5,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
@@ -102,13 +101,6 @@ class AudioPlayer : Fragment() {
             bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
         }
 
-        requireActivity().onBackPressedDispatcher.addCallback(object : OnBackPressedCallback(true) {
-            override fun handleOnBackPressed() {
-                findNavController().navigateUp()
-
-            }
-        })
-
         binding.addPlaylistButton.setOnClickListener {
             findNavController().navigate((R.id.action_audioPlayer_to_playlistCreatorFragment))
         }
@@ -166,7 +158,7 @@ class AudioPlayer : Fragment() {
 
     private fun showToast(result: Pair<String, Boolean>) {
         val message =
-            if (result.second) getString(R.string.add_track_message) else getString(R.string.add_track_message)
+            if (result.second) getString(R.string.add_track_message) else getString(R.string.add_track_message_false)
         Toast.makeText(requireContext(), message + " " + result.first, Toast.LENGTH_SHORT).show()
     }
 

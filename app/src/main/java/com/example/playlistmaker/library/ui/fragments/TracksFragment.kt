@@ -21,13 +21,12 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 class TracksFragment : Fragment() {
 
     private val viewModel by viewModel<TracksViewModel>()
-    val hostViewModel by activityViewModel<MainActivityViewModel>()
+    private val hostViewModel by activityViewModel<MainActivityViewModel>()
 
 
     companion object {
         private const val CLICK_DEBOUNCE_DELAY_MILLIS = 100L
-        fun newInstance() = TracksFragment().apply {
-        }
+        fun newInstance() = TracksFragment()
     }
 
     private lateinit var onTrackClickDebounce: (Track) -> Unit
@@ -46,6 +45,7 @@ class TracksFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         binding!!.rvFavorite.adapter = adapter
         viewModel.observeState().observe(viewLifecycleOwner) {
             render(it)

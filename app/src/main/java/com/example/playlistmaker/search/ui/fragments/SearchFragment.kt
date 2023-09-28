@@ -55,7 +55,7 @@ class SearchFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-
+        super.onViewCreated(view, savedInstanceState)
         binding.rvSearch.adapter = adapter
         binding.historySearchList.adapter = adapter
 
@@ -64,6 +64,7 @@ class SearchFragment : Fragment() {
             viewLifecycleOwner.lifecycleScope,
             false
         ) { track ->
+            viewModel.setTrack(track)
             hostViewModel.setCurrentTrack(track)
             findNavController().navigate(
                 R.id.action_searchFragment_to_audioPlayer

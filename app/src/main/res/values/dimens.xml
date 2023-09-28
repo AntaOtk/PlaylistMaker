@@ -32,6 +32,8 @@
     <dimen name="placeholder_message_text_size">19sp</dimen>
     <dimen name="repeat_text_size">14sp</dimen>
     <dimen name="history_text_place">52dp</dimen>
+    <dimen name="create_button_corner_radius">8dp</dimen>
+
 
     <!-- AudioPlayer -->
     <dimen name="audioplayer_trackname_text_size">22sp</dimen>

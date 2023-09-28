@@ -36,7 +36,13 @@ class PlaylistCreatorFragment : Fragment() {
     private var descriptionTextWatcher: TextWatcher? = null
     private var nameTextWatcher: TextWatcher? = null
     private lateinit var filePath: File
+    private lateinit var backAlertDialog: MaterialAlertDialogBuilder
 
+    private val onBackPressedCallback = object : OnBackPressedCallback(true) {
+        override fun handleOnBackPressed() {
+            if (viewModel.checkInput()) backAlertDialog.show() else findNavController().navigateUp()
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -59,7 +65,7 @@ class PlaylistCreatorFragment : Fragment() {
                     Log.d("PhotoPicker", "No media selected")
                 }
             }
-        val backAlertDialog = MaterialAlertDialogBuilder(requireActivity())
+        backAlertDialog = MaterialAlertDialogBuilder(requireActivity())
             .setTitle(R.string.back_alert_title)
             .setMessage(R.string.back_alert_message)
             .setNegativeButton(R.string.negative_button) { _, _ ->
@@ -119,11 +125,18 @@ class PlaylistCreatorFragment : Fragment() {
             if (viewModel.checkInput()) backAlertDialog.show() else findNavController().navigateUp()
         }
 
-        requireActivity().onBackPressedDispatcher.addCallback(object : OnBackPressedCallback(true) {
-            override fun handleOnBackPressed() {
-                if (viewModel.checkInput()) backAlertDialog.show() else findNavController().navigateUp()
-            }
-        })
+        requireActivity().onBackPressedDispatcher.addCallback(
+            onBackPressedCallback
+        )
+
+
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        onBackPressedCallback.isEnabled = false
+        onBackPressedCallback.remove()
+
     }
 
     private fun showToast(playListName: String) {

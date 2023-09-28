@@ -266,13 +266,13 @@
         android:layout_height="match_parent"
         android:background="@drawable/bottom_rectangle"
         android:orientation="vertical"
-        android:paddingHorizontal="@dimen/bottomSheetPadding"
         app:behavior_hideable="true"
         app:behavior_peekHeight="240dp"
         app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
 
         <View
             android:layout_marginTop="@dimen/margin_item_track"
+            android:alpha="0.5"
             android:layout_width="50dp"
             android:layout_height="4dp"
             android:layout_gravity="center"
