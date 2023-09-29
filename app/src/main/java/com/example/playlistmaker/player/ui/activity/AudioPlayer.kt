@@ -106,7 +106,7 @@ class AudioPlayer : Fragment() {
             bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
         }
 
-        track?.let { viewModel.prepare(it) }
+
     }
 
     private fun renderInformation(track: Track) {
@@ -117,7 +117,7 @@ class AudioPlayer : Fragment() {
         binding.countryName.text = track.country
         binding.trackTime.text =
             SimpleDateFormat("mm:ss", Locale.getDefault()).format(track.trackTimeMillis)
-
+        viewModel.prepare(track)
         Glide.with(requireActivity())
             .load(track.artworkUrl100.replaceAfterLast('/', "512x512bb.jpg"))
             .placeholder(R.drawable.placeholder)
