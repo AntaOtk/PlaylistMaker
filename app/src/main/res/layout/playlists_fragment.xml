@@ -42,5 +42,5 @@
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         tools:itemCount="3"
         tools:listitem="@layout/playlist_item"
-        android:layout_marginTop="@dimen/paddingClassic"/>
+        android:layout_marginHorizontal="@dimen/paddingClassic"/>
 </LinearLayout>

@@ -52,4 +52,7 @@
     <dimen name="play_button_top_margin">38dp</dimen>
     <dimen name="padding_progressbar">148dp</dimen>
     <dimen name="bottomSheetPadding">13dp</dimen>
+    <dimen name="pl_image_size">160dp</dimen>
+    <dimen name="small_pl_margin_start">13dp</dimen>
+    <dimen name="small_pl_image_size">45dp</dimen>
 </resources>
