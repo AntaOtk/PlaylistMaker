@@ -110,6 +110,7 @@ class AudioPlayer : Fragment() {
     }
 
     private fun renderInformation(track: Track) {
+        viewModel.prepare(track)
         binding.artist.text = track.artistName
         binding.albumName.text = track.collectionName
         binding.year.text = track.releaseDate.substring(0, 4)
@@ -117,7 +118,6 @@ class AudioPlayer : Fragment() {
         binding.countryName.text = track.country
         binding.trackTime.text =
             SimpleDateFormat("mm:ss", Locale.getDefault()).format(track.trackTimeMillis)
-        viewModel.prepare(track)
         Glide.with(requireActivity())
             .load(track.artworkUrl100.replaceAfterLast('/', "512x512bb.jpg"))
             .placeholder(R.drawable.placeholder)

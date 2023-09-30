@@ -34,7 +34,7 @@ val dataModule = module {
 
     factory { Gson() }
 
-    factory { MediaPlayer() }
+    single { MediaPlayer() }
 
     single<LocalStorage> {
         SharedPreferenceLocalStorage(get(), get())
