@@ -5,6 +5,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.playlistmaker.library.domain.FavoriteTracksInteractor
+import com.example.playlistmaker.library.domain.PlaylistInteractor
+import com.example.playlistmaker.library.domain.model.PlayList
 import com.example.playlistmaker.player.domain.PlayControl
 import com.example.playlistmaker.player.domain.util.PlayerState
 import com.example.playlistmaker.search.domain.model.Track
@@ -15,7 +17,8 @@ import kotlinx.coroutines.launch
 
 class PlayerViewModel(
     private val playerInteractor: PlayControl,
-    private val favoriteInteractor: FavoriteTracksInteractor
+    private val favoriteInteractor: FavoriteTracksInteractor,
+    private val playlistInteractor: PlaylistInteractor
 ) :
     ViewModel() {
     companion object {
@@ -40,8 +43,13 @@ class PlayerViewModel(
     private val stateFavoriteData = MutableLiveData<Boolean>()
     fun observeFavoriteState(): LiveData<Boolean> = stateFavoriteData
 
-    private var timerJob: Job? = null
+    private val playListsLiveData = MutableLiveData<List<PlayList>>()
+    fun observePlaylistState(): LiveData<List<PlayList>> = playListsLiveData
 
+    private val addLiveData = MutableLiveData<Pair<String,Boolean>>()
+    fun observeAddDtate(): LiveData<Pair<String,Boolean>> = addLiveData
+
+    private var timerJob: Job? = null
     private fun startTimer(state: PlayerState) {
         timerJob = viewModelScope.launch(Dispatchers.Default) {
             while (state == PlayerState.PLAYING) {
@@ -90,7 +98,7 @@ class PlayerViewModel(
         }
     }
 
-    fun getChecked(track: Track) {
+    private fun getChecked(track: Track) {
         viewModelScope.launch {
             renderFavoriteState(favoriteInteractor.getChecked(track.trackId))
         }
@@ -98,5 +106,25 @@ class PlayerViewModel(
 
     private fun renderFavoriteState(isChecked: Boolean) {
         stateFavoriteData.postValue(isChecked)
+    }
+
+    private fun renderToastState(result: Pair<String,Boolean>) {
+        addLiveData.postValue(result)
+    }
+
+
+    fun addToPlaylist(track: Track, playList: PlayList) {
+        viewModelScope.launch {
+            renderToastState(Pair(playList.name,playlistInteractor.addTrack(track, playList)))
+        }
+    }
+
+    fun renderPlayLists() {
+        viewModelScope.launch {
+            playlistInteractor.getPlayLists()
+                .collect { playLists ->
+                    playListsLiveData.postValue(playLists)
+                }
+        }
     }
 }

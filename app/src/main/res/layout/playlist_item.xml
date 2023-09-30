@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_marginTop="@dimen/paddingClassic">
+
+    <ImageView
+        android:id="@+id/pl_image"
+        android:layout_width="@dimen/pl_image_size"
+        android:layout_height="@dimen/pl_image_size"
+        android:scaleType="centerCrop"
+        android:layout_gravity="center_horizontal"
+        android:src="@drawable/placeholder"
+        android:importantForAccessibility="no"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <TextView
+        android:id="@+id/pl_name"
+        style="@style/PlayListText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/playlists_name"
+        app:layout_constraintTop_toBottomOf="@id/pl_image"
+        app:layout_constraintStart_toStartOf="@id/pl_image"/>
+
+    <TextView
+        android:id="@+id/pl_count"
+        style="@style/PlayListText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/pl_name"
+        app:layout_constraintStart_toStartOf="@id/pl_image" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

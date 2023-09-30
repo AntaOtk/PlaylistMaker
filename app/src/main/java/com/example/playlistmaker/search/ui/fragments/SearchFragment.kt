@@ -11,38 +11,39 @@ import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import com.example.playlistmaker.R
 import com.example.playlistmaker.databinding.FragmentSearchBinding
-import com.example.playlistmaker.player.ui.activity.AudioPlayer
+import com.example.playlistmaker.main.ui.MainActivityViewModel
 import com.example.playlistmaker.search.domain.model.Track
 import com.example.playlistmaker.search.ui.SearchState
 import com.example.playlistmaker.search.ui.adapter.SearchAdapter
 import com.example.playlistmaker.search.ui.view_model.SearchViewModel
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
+import com.example.playlistmaker.search.util.debounce
+import org.koin.androidx.viewmodel.ext.android.activityViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class SearchFragment : Fragment() {
 
     private val viewModel by viewModel<SearchViewModel>()
+    val hostViewModel by activityViewModel<MainActivityViewModel>()
+
 
     companion object {
         const val INPUT_EDIT_TEXT = "INPUT_EDIT_TEXT"
-        private const val CLICK_DEBOUNCE_DELAY_MILLIS = 1000L
+        private const val CLICK_DEBOUNCE_DELAY_MILLIS = 100L
     }
 
+    private lateinit var onTrackClickDebounce: (Track) -> Unit
     private lateinit var binding: FragmentSearchBinding
     private val tracks = mutableListOf<Track>()
-    private val adapter = SearchAdapter(tracks) {
-        if (clickDebounce()) {
-            viewModel.setTrack(it)
-            AudioPlayer.startActivity(requireContext(), it)
-        }
+    private val adapter = SearchAdapter(tracks) { track ->
+        onTrackClickDebounce(track)
     }
 
-    private var isClickAllowed = true
     private var inputText: String = ""
     private var simpleTextWatcher: TextWatcher? = null
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -54,11 +55,21 @@ class SearchFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-
+        super.onViewCreated(view, savedInstanceState)
         binding.rvSearch.adapter = adapter
         binding.historySearchList.adapter = adapter
 
-
+        onTrackClickDebounce = debounce(
+            CLICK_DEBOUNCE_DELAY_MILLIS,
+            viewLifecycleOwner.lifecycleScope,
+            false
+        ) { track ->
+            viewModel.setTrack(track)
+            hostViewModel.setCurrentTrack(track)
+            findNavController().navigate(
+                R.id.action_searchFragment_to_audioPlayer
+            )
+        }
         binding.inputEditText.setOnFocusChangeListener { _, _ ->
             if (inputText.isEmpty()) viewModel.searchHistory()
         }
@@ -113,18 +124,6 @@ class SearchFragment : Fragment() {
     override fun onDestroy() {
         super.onDestroy()
         simpleTextWatcher?.let { binding.inputEditText.removeTextChangedListener(it) }
-    }
-
-    private fun clickDebounce(): Boolean {
-        val current = isClickAllowed
-        if (isClickAllowed) {
-            isClickAllowed = false
-            viewLifecycleOwner.lifecycleScope.launch {
-                delay(CLICK_DEBOUNCE_DELAY_MILLIS)
-                isClickAllowed = true
-            }
-        }
-        return current
     }
 
     override fun onSaveInstanceState(outState: Bundle) {

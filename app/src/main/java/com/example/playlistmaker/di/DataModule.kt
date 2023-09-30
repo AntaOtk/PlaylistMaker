@@ -4,6 +4,7 @@ import android.content.Context
 import android.media.MediaPlayer
 import androidx.room.Room
 import com.example.playlistmaker.library.data.db.AppDatabase
+import com.example.playlistmaker.playlist_creator.data.local.FilePrivateStorage
 import com.example.playlistmaker.search.data.local.LocalStorage
 import com.example.playlistmaker.search.data.local.SharedPreferenceLocalStorage
 import com.example.playlistmaker.search.data.network.ApiSearch
@@ -33,7 +34,7 @@ val dataModule = module {
 
     factory { Gson() }
 
-    factory { MediaPlayer() }
+    single { MediaPlayer() }
 
     single<LocalStorage> {
         SharedPreferenceLocalStorage(get(), get())
@@ -47,6 +48,19 @@ val dataModule = module {
 
     single {
         Room.databaseBuilder(androidContext(), AppDatabase::class.java, "database.db")
-            .build().trackDao()
+            .build()
     }
+
+    single {
+        val database = get<AppDatabase>()
+        database.trackDao()
+    }
+
+
+    single {
+        val database = get<AppDatabase>()
+        database.playListDao()
+    }
+
+    single { FilePrivateStorage(androidContext()) }
 }

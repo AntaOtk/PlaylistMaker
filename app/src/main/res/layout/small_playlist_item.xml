@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:paddingVertical="@dimen/margin_item_track">
+
+    <ImageView
+        android:id="@+id/pl_image"
+        android:layout_marginStart="@dimen/small_pl_margin_start"
+        android:layout_marginEnd="@dimen/margin_item_track"
+        android:layout_width="@dimen/small_pl_image_size"
+        android:layout_height="@dimen/small_pl_image_size"
+        android:scaleType="centerCrop"
+        android:importantForAccessibility="no" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        >
+
+        <TextView
+            android:id="@+id/pl_name"
+            style="@style/FirstContent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/playlists_name" />
+
+        <TextView
+            android:id="@+id/pl_count"
+            style="@style/SecondContent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            />
+    </LinearLayout>
+</LinearLayout>
+

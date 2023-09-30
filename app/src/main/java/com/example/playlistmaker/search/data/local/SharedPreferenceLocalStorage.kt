@@ -20,6 +20,11 @@ class SharedPreferenceLocalStorage(
         return read()
     }
 
+    override fun getLastTrack(): TrackDto {
+        val tracks = getTrackList()
+        return tracks.first()
+    }
+
     override fun setTrack(track: TrackDto) {
         val tracks = read()
         if (!tracks.remove(track) && tracks.size >= MAXIMUM) tracks.removeAt(

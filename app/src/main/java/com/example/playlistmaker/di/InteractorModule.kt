@@ -1,10 +1,14 @@
 package com.example.playlistmaker.di
 
 import com.example.playlistmaker.library.domain.FavoriteTracksInteractor
+import com.example.playlistmaker.library.domain.PlaylistInteractor
 import com.example.playlistmaker.library.domain.db.FavoriteTracksInteractorImpl
+import com.example.playlistmaker.library.domain.impl.PlaylistInteractorImpl
 import com.example.playlistmaker.player.domain.PlayControl
 import com.example.playlistmaker.player.domain.impl.PlayControlImpl
 import com.example.playlistmaker.player.domain.util.PlayerState
+import com.example.playlistmaker.playlist_creator.domain.PlayListCreatorInteractor
+import com.example.playlistmaker.playlist_creator.domain.PlayListCreatorInteractorImpl
 import com.example.playlistmaker.search.domain.api.TracksInteractor
 import com.example.playlistmaker.search.domain.impl.TracksInteractorImpl
 import com.example.playlistmaker.settings.domain.SettingsInteractor
@@ -29,9 +33,19 @@ val interactorModule = module {
         SharingInteractorImp(get())
     }
 
+    single<PlaylistInteractor> {
+        PlaylistInteractorImpl(get())
+    }
+
     factory<PlayControl> {
         PlayControlImpl(get(), get())
     }
 
-    single<FavoriteTracksInteractor> { FavoriteTracksInteractorImpl(get()) }
+    single<FavoriteTracksInteractor> {
+        FavoriteTracksInteractorImpl(get())
+    }
+
+    single<PlayListCreatorInteractor> {
+        PlayListCreatorInteractorImpl(get(),get())
+    }
 }

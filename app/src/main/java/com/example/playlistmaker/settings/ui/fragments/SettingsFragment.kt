@@ -27,7 +27,7 @@ class SettingsFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-
+        super.onViewCreated(view, savedInstanceState)
         binding.switchTheme.isChecked = viewModel.getTheme()
         binding.switchTheme.setOnCheckedChangeListener { _, checked ->
             viewModel.execute(ActionType.Theme(checked))

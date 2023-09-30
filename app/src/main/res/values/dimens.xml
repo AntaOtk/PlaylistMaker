@@ -7,16 +7,20 @@
     <dimen name="search_field">36dp</dimen>
     <dimen name="margin_item_track">8dp</dimen>
     <dimen name="search_list_padding">12dp</dimen>
+    <dimen name="back_button_margin">12dp</dimen>
     <dimen name="vertical_margin_text_track">14dp</dimen>
     <dimen name="placeholder_message_margin">24dp</dimen>
     <dimen name="top_media_margin">46dp</dimen>
     <dimen name="top_selected_tracks_margin">46dp</dimen>
     <dimen name="head_padding_start">16dp</dimen>
     <dimen name="head_padding_vertical">14dp</dimen>
+    <dimen name="create_image_margin">8dp</dimen>
+
 
     <!-- SIZE -->
     <dimen name="button_corner_radius">16dp</dimen>
     <dimen name="header_size">26sp</dimen>
+    <dimen name="second_header_size">26sp</dimen>
     <dimen name="menu_text_size">16sp</dimen>
     <dimen name="button_text_size">12sp</dimen>
     <dimen name="search_corner_radius">9dp</dimen>
@@ -28,6 +32,8 @@
     <dimen name="placeholder_message_text_size">19sp</dimen>
     <dimen name="repeat_text_size">14sp</dimen>
     <dimen name="history_text_place">52dp</dimen>
+    <dimen name="create_button_corner_radius">8dp</dimen>
+
 
     <!-- AudioPlayer -->
     <dimen name="audioplayer_trackname_text_size">22sp</dimen>
@@ -45,4 +51,8 @@
     <dimen name="margin_horizontal">8dp</dimen>
     <dimen name="play_button_top_margin">38dp</dimen>
     <dimen name="padding_progressbar">148dp</dimen>
+    <dimen name="bottomSheetPadding">13dp</dimen>
+    <dimen name="pl_image_size">160dp</dimen>
+    <dimen name="small_pl_margin_start">13dp</dimen>
+    <dimen name="small_pl_image_size">45dp</dimen>
 </resources>
