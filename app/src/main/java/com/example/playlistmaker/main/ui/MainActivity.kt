@@ -14,6 +14,7 @@ class MainActivity : AppCompatActivity() {
 
     companion object {
         const val ALBOM = "myalbum"
+        const val THEME_KEY = "theme_key"
     }
 
     private lateinit var binding: ActivityMainBinding
@@ -26,17 +27,14 @@ class MainActivity : AppCompatActivity() {
         val navHostFragment =
             supportFragmentManager.findFragmentById(R.id.container_view) as NavHostFragment
         val navController = navHostFragment.navController
-
-        val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottomNavigationView)
-        bottomNavigationView.setupWithNavController(navController)
+        binding.bottomNavigationView.setupWithNavController(navController)
         navController.addOnDestinationChangedListener { _, destination, _ ->
             when (destination.id) {
                 R.id.audioPlayer, R.id.playlistCreatorFragment -> {
-                    bottomNavigationView.visibility = View.GONE
+                   binding.bottomNavigationView.visibility = View.GONE
                 }
-
                 else -> {
-                    bottomNavigationView.visibility = View.VISIBLE
+                    binding.bottomNavigationView.visibility = View.VISIBLE
                 }
             }
         }
