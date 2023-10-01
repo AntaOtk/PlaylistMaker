@@ -6,16 +6,16 @@ import com.example.playlistmaker.search.domain.model.Track
 class TrackMapper() {
     fun trackMap(track: TrackDto): Track {
         return Track(
-            track.trackId,
-            track.trackName,
-            track.artistName,
+            track.trackId ,
+            track.trackName?: "",
+            track.artistName?: "",
             track.trackTimeMillis,
-            track.artworkUrl100,
-            track.collectionName,
-            track.releaseDate,
-            track.primaryGenreName,
-            track.country,
-            track.previewUrl
+            track.artworkUrl100?: "",
+            track.collectionName?: "",
+            track.releaseDate?: "",
+            track.primaryGenreName?: "",
+            track.country?: "",
+            track.previewUrl?: ""
         )
     }
 

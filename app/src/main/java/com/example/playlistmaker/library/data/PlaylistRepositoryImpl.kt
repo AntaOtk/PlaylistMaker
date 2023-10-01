@@ -19,8 +19,21 @@ class PlaylistRepositoryImpl(
         emit(convertFromEntity(playLists))
     }
 
+    override fun getPlayList(playListId: Long): Flow<PlayList> = flow {
+        val playList = dao.getPlayList(playListId).first()
+        emit(convertPayListFromEntity(playList))
+    }
+
+    private fun convertPayListFromEntity(playList: PlayListEntity): PlayList {
+        val tracks = jsonMapper.convertToList(playList.tracks)
+        return playListDbMapper.map(playList,tracks)
+    }
+
     private fun convertFromEntity(playLists: List<PlayListEntity>): List<PlayList> {
-        return playLists.map { playList -> playListDbMapper.map(playList) }
+        return playLists.map { playList ->
+            val tracks = jsonMapper.convertToList(playList.tracks)
+            playListDbMapper.map(playList, tracks)
+        }
     }
 
     override suspend fun addPlaylist(playList: PlayList): Long {
@@ -30,19 +43,20 @@ class PlaylistRepositoryImpl(
 
     override suspend fun addTrack(track: Track, playList: PlayList) {
         ++playList.trackCount
-        playList.tracks = jsonMapper.setTrack(track, playList.tracks)
+        playList.tracks.add(track)
         val playListEntity = convertToTrackEntity(playList)
         dao.updatePlayList(playListEntity)
     }
 
-    override suspend fun getTrackList(playList: PlayList): List<Track> {
-        val tracks = dao.getTrackList(playList.id).first()
+    override suspend fun getTrackList(playListId: Long): List<Track> {
+        val tracks = dao.getTrackList(playListId).first()
         return jsonMapper.convertToList(tracks)
 
     }
 
 
     private fun convertToTrackEntity(playList: PlayList): PlayListEntity {
-        return playListDbMapper.map(playList)
+        val tracks = jsonMapper.convertFromList(playList.tracks)
+        return playListDbMapper.map(playList, tracks)
     }
 }

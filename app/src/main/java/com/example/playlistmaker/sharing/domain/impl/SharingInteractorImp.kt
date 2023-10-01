@@ -16,4 +16,8 @@ class SharingInteractorImp(private val sharingRepository: SharingRepository) : S
     override fun openSupport() {
         sharingRepository.openSupport()
     }
+
+    override fun sharePlayList() {
+        sharingRepository.sharePlayList()
+    }
 }

@@ -30,6 +30,9 @@
         <action
             android:id="@+id/action_libraryFragment_to_audioPlayer"
             app:destination="@id/audioPlayer" />
+        <action
+            android:id="@+id/action_libraryFragment_to_playListFragment"
+            app:destination="@id/playListFragment" />
     </fragment>
     <fragment
         android:id="@+id/audioPlayer"
@@ -46,8 +49,8 @@
         android:label="fragment_playlist_creator"
         tools:layout="@layout/fragment_playlist_creator" />
     <fragment
-        android:id="@+id/playListFragment"
-        android:name="com.example.playlistmaker.library.ui.fragments.PlayListFragment"
+        android:id="@+id/PlayListLibraryFragment"
+        android:name="com.example.playlistmaker.library.ui.fragments.PlayListLibraryFragment"
         android:label="playlists_fragment"
         tools:layout="@layout/playlists_fragment" />
     <fragment
@@ -55,4 +58,13 @@
         android:name="com.example.playlistmaker.library.ui.fragments.TracksFragment"
         android:label="tracks_fragment"
         tools:layout="@layout/tracks_fragment" />
+    <fragment
+        android:id="@+id/playListFragment"
+        android:name="com.example.playlistmaker.playlist.ui.PlayListFragment"
+        android:label="playlist_fragment"
+        tools:layout="@layout/playlist_fragment" >
+        <action
+            android:id="@+id/action_playListFragment_to_audioPlayer"
+            app:destination="@id/audioPlayer" />
+    </fragment>
 </navigation>

@@ -12,7 +12,7 @@ class PlayListCreatorInteractorImpl(private val repository: PlaylistRepository, 
         description: String,
         fileDir: String
     ): Long {
-        val playlist = PlayList(0, playListName, description, fileDir, 0, null)
+        val playlist = PlayList(0, playListName, description, fileDir, 0, mutableListOf())
         return repository.addPlaylist(playlist)
     }
 

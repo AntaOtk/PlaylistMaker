@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.playlistmaker.R
@@ -12,21 +13,27 @@ import com.example.playlistmaker.databinding.PlaylistsFragmentBinding
 import com.example.playlistmaker.library.domain.model.PlayList
 import com.example.playlistmaker.library.ui.PlaylistsState
 import com.example.playlistmaker.library.ui.adapter.PlayListAdapter
-import com.example.playlistmaker.library.ui.view_model.PlaylistViewModel
+import com.example.playlistmaker.library.ui.view_model.PlaylistLibraryViewModel
+import com.example.playlistmaker.playlist.ui.PlayListFragment
+import com.example.playlistmaker.search.util.debounce
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class PlayListFragment : Fragment() {
+class PlayListLibraryFragment : Fragment() {
 
-    private val viewModel by viewModel<PlaylistViewModel>()
+    private val viewModel by viewModel<PlaylistLibraryViewModel>()
 
     companion object {
-        fun newInstance() = PlayListFragment()
+        private const val CLICK_DEBOUNCE_DELAY_MILLIS = 100L
+        fun newInstance() = PlayListLibraryFragment()
     }
 
     private var _binding: PlaylistsFragmentBinding? = null
     private val binding get() = _binding!!
+    private lateinit var onTrackClickDebounce: (PlayList) -> Unit
     private val playlists = mutableListOf<PlayList>()
-    private var adapter = PlayListAdapter(playlists)
+    private var adapter = PlayListAdapter(playlists) {
+        onTrackClickDebounce(it)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -48,6 +55,18 @@ class PlayListFragment : Fragment() {
 
         binding.addButton.setOnClickListener {
             findNavController().navigate(R.id.action_libraryFragment_to_playlistCreatorFragment)
+        }
+
+        onTrackClickDebounce = debounce(
+            CLICK_DEBOUNCE_DELAY_MILLIS,
+            viewLifecycleOwner.lifecycleScope,
+            false
+        ) { playlist ->
+
+            findNavController().navigate(
+                R.id.action_libraryFragment_to_playListFragment,
+                PlayListFragment.createArgs(playlist.id)
+            )
         }
     }
 

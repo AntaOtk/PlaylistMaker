@@ -22,6 +22,10 @@ class SharingRepositoryImpl(
         externalNavigator.openEmail(getSupportEmailData())
     }
 
+    override fun sharePlayList() {
+        externalNavigator.shareLink(getShareAppLink())
+    }
+
     private fun getShareAppLink(): String {
         return context.getString(R.string.message)
     }

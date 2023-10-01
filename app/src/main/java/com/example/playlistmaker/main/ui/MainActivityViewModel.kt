@@ -11,5 +11,7 @@ class MainActivityViewModel : ViewModel() {
     fun setCurrentTrack(track: Track) {
         currentLiveData.postValue(track)
     }
+
     fun getCurrentTrack(): LiveData<Track> = currentLiveData
+
 }

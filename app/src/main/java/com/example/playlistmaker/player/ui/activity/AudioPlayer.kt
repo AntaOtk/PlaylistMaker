@@ -102,6 +102,7 @@ class AudioPlayer : Fragment() {
         }
 
         binding.addPlaylistButton.setOnClickListener {
+            viewModel.mediaPlayerReset()
             findNavController().navigate((R.id.action_audioPlayer_to_playlistCreatorFragment))
             bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
         }

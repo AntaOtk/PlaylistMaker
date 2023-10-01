@@ -9,7 +9,6 @@ class PlayerClientImpl(private var mediaPlayer: MediaPlayer) : PlayerClient {
     private var stateCallback: ((PlayerState) -> Unit)? = null
 
     override fun preparePlayer (url: String) {
-        mediaPlayer.reset()
         mediaPlayer.setDataSource(url)
         mediaPlayer.prepareAsync()
         mediaPlayer.setOnPreparedListener {
@@ -37,5 +36,9 @@ class PlayerClientImpl(private var mediaPlayer: MediaPlayer) : PlayerClient {
     }
     override fun setOnStateChangeListener(callback: (PlayerState) -> Unit) {
         stateCallback = callback
+    }
+
+    override fun reset() {
+        mediaPlayer.reset()
     }
 }

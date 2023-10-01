@@ -7,7 +7,6 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.example.playlistmaker.R
 import com.example.playlistmaker.databinding.ActivityMainBinding
-import com.google.android.material.bottomnavigation.BottomNavigationView
 
 
 class MainActivity : AppCompatActivity() {
@@ -30,9 +29,10 @@ class MainActivity : AppCompatActivity() {
         binding.bottomNavigationView.setupWithNavController(navController)
         navController.addOnDestinationChangedListener { _, destination, _ ->
             when (destination.id) {
-                R.id.audioPlayer, R.id.playlistCreatorFragment -> {
-                   binding.bottomNavigationView.visibility = View.GONE
+                R.id.audioPlayer, R.id.playlistCreatorFragment, R.id.playListFragment -> {
+                    binding.bottomNavigationView.visibility = View.GONE
                 }
+
                 else -> {
                     binding.bottomNavigationView.visibility = View.VISIBLE
                 }
