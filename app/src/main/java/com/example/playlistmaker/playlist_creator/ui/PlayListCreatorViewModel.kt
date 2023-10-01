@@ -8,7 +8,7 @@ import kotlinx.coroutines.launch
 import java.io.File
 import java.net.URI
 
-class PlayListCreatorViewModel(private val interactor: PlayListCreatorInteractor) : ViewModel() {
+open class PlayListCreatorViewModel(private val interactor: PlayListCreatorInteractor) : ViewModel() {
 
     private var playListName: String = ""
     private var description: String = ""

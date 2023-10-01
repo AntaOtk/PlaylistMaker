@@ -57,6 +57,11 @@
     <string name="add_track_message">Добавлено в плейлист </string>
     <string name="add_track_message_false">Трек уже добавлен в плейлист </string>
     <string name="add_playlist_message">Плейлист %s создан</string>
+    <string name="delete_playlist_alert_title">Хотите удалить плейлист «%s»?</string>
+    <string name="yes_button">Да</string>
+    <string name="share_menu_text">Поделиться</string>
+    <string name="update_menu_text">Редактировать информацию</string>
+    <string name="delete_menu_text">Удалить плейлист</string>
 
 
     <plurals name="tracksContOfList">

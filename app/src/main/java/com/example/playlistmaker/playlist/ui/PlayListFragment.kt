@@ -18,7 +18,6 @@ import com.example.playlistmaker.library.domain.model.PlayList
 import com.example.playlistmaker.main.ui.MainActivity
 import com.example.playlistmaker.main.ui.MainActivityViewModel
 import com.example.playlistmaker.search.domain.model.Track
-import com.example.playlistmaker.search.ui.adapter.SearchAdapter
 import com.example.playlistmaker.search.util.debounce
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -44,8 +43,8 @@ class PlayListFragment : Fragment() {
     private val tracks = mutableListOf<Track>()
     private lateinit var onTrackClickDebounce: (Track) -> Unit
     lateinit var playlist: PlayList
-    private val adapter = SearchAdapter(tracks) { track ->
-        onTrackClickDebounce(track);
+    private val adapter = TracksInPlayListAdapter(tracks) { track ->
+        onTrackClickDebounce(track)
     }
 
 
@@ -68,9 +67,7 @@ class PlayListFragment : Fragment() {
         viewModel.observeTracks().observe(viewLifecycleOwner) {
             showContent(it)
         }
-        val trackSheetBehavior = BottomSheetBehavior.from(binding.tracksBottomSheet).apply {
-            state = BottomSheetBehavior.STATE_COLLAPSED
-        }
+
         val bottomSheetBehavior = BottomSheetBehavior.from(binding.playlistBottomSheet).apply {
             state = BottomSheetBehavior.STATE_HIDDEN
         }
@@ -80,9 +77,11 @@ class PlayListFragment : Fragment() {
             override fun onStateChanged(bottomSheet: View, newState: Int) {
                 when (newState) {
                     BottomSheetBehavior.STATE_HIDDEN -> {
+                        binding.rvTrack.visibility = View.VISIBLE
                     }
 
                     else -> {
+                        binding.rvTrack.visibility = View.GONE
                     }
                 }
             }
@@ -94,15 +93,8 @@ class PlayListFragment : Fragment() {
         binding.menuButton.setOnClickListener {
             bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
             showMenu(playlist)
+
         }
-
-        val backAlertDialog = MaterialAlertDialogBuilder(requireActivity())
-            .setTitle(R.string.back_alert_title)
-            .setNegativeButton(R.string.negative_button) { _, _ ->
-            }
-            .setPositiveButton(getString(R.string.positive_button)) { _, _ ->
-
-            }
         viewModel.getPlayList(playListId)
         onTrackClickDebounce = debounce(
             CLICK_DEBOUNCE_DELAY_MILLIS,
@@ -114,7 +106,7 @@ class PlayListFragment : Fragment() {
                 R.id.action_playListFragment_to_audioPlayer
             )
         }
-
+        binding.shareButton.setOnClickListener { viewModel.sharePlayList(playlist) }
         binding.backButton.setOnClickListener { findNavController().navigateUp() }
 
     }
@@ -154,7 +146,7 @@ class PlayListFragment : Fragment() {
         adapter.notifyDataSetChanged()
     }
 
-    fun showMenu(playlist: PlayList) {
+    private fun showMenu(playlist: PlayList) {
         val filePath =
             File(
                 requireActivity().getExternalFilesDir(Environment.DIRECTORY_PICTURES),
@@ -167,12 +159,28 @@ class PlayListFragment : Fragment() {
             .transform(
                 CenterCrop()
             )
-            .into(binding.plImage)
-        binding.plName.text = playlist.name
+            .into(binding.item.plImage)
+        binding.item.plName.text = playlist.name
         val countText = requireActivity().resources.getQuantityString(
             R.plurals.tracksContOfList,
             playlist.trackCount.toInt(), playlist.trackCount
         )
-        binding.plCount.text = countText
+        binding.item.plCount.text = countText
+        val deleteAlertDialog = MaterialAlertDialogBuilder(requireActivity())
+            .setMessage(
+                requireActivity().resources.getString(R.string.delete_playlist_alert_title)
+                    .format(playlist.name)
+            )
+            .setNegativeButton(R.string.negative_button) { _, _ ->
+            }
+            .setPositiveButton(R.string.yes_button) { _, _ ->
+                findNavController().navigateUp()
+                viewModel.deletePlayList(playlist)
+            }
+
+
+        binding.deleteTextMenu.setOnClickListener { deleteAlertDialog.show() }
+        binding.shareTextMenu.setOnClickListener { viewModel.sharePlayList(playlist) }
+        binding.updateTextMenu.setOnClickListener { }
     }
 }

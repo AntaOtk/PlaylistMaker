@@ -52,7 +52,6 @@
             style="@style/PlayListNameStyle"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="@dimen/margin_horizontal"
             android:layout_marginTop="@dimen/title_top_margin"
             android:text="@string/track_title"
             app:layout_constraintBottom_toTopOf="@id/description"
@@ -61,12 +60,10 @@
 
         <TextView
             android:id="@+id/description"
-            style="@style/AudioPlayerArtist"
+            style="@style/PlayListInformationStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="@dimen/margin_horizontal"
             android:layout_marginTop="8dp"
-            android:text="@string/artist"
             app:layout_constraintBottom_toTopOf="@id/tracksTime"
             app:layout_constraintStart_toEndOf="@id/leftBorder"
             app:layout_constraintTop_toBottomOf="@id/title" />
@@ -78,8 +75,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="fill_horizontal"
             android:layout_marginTop="8dp"
-            android:text="0"
-            app:layout_constraintStart_toStartOf="@id/description"
+            app:layout_constraintStart_toEndOf="@id/leftBorder"
             app:layout_constraintTop_toBottomOf="@id/description" />
 
         <TextView
@@ -89,32 +85,32 @@
             android:layout_height="wrap_content"
             android:layout_gravity="fill_horizontal"
             android:layout_weight="0"
-            android:drawableStart="@drawable/divider"
-            android:text="ро"
             app:layout_constraintBaseline_toBaselineOf="@id/tracksTime"
-            app:layout_constraintStart_toEndOf="@id/tracksTime" />
+            app:layout_constraintStart_toEndOf="@id/tracksTime"
+            app:drawableStartCompat="@drawable/divider" />
 
         <ImageView
             android:id="@+id/shareButton"
-            style="@style/HeadStyle"
+            style="@style/PlayListInformationStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/paddingClassic"
             android:contentDescription="@string/app_name"
             android:src="@drawable/share"
             app:layout_constraintStart_toEndOf="@id/leftBorder"
-            app:layout_constraintTop_toBottomOf="@id/tracksTime" />
+            app:layout_constraintTop_toBottomOf="@id/tracksTime"/>
 
         <ImageView
             android:id="@+id/menuButton"
-            style="@style/HeadStyle"
+            style="@style/PlayListInformationStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/paddingClassic"
+            android:layout_marginStart="@dimen/paddingClassic"
             android:contentDescription="@string/app_name"
             android:src="@drawable/menu"
             app:layout_constraintStart_toEndOf="@id/shareButton"
-            app:layout_constraintTop_toBottomOf="@id/tracksTime" />
+            app:layout_constraintTop_toBottomOf="@id/tracksTime"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <LinearLayout
@@ -146,7 +142,7 @@
             tools:listitem="@layout/small_playlist_item" />
     </LinearLayout>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <LinearLayout
         android:id="@+id/playlistBottomSheet"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -163,40 +159,12 @@
             android:layout_gravity="center"
             android:layout_marginTop="@dimen/margin_item_track"
             android:alpha="0.5"
-            android:background="@drawable/bottom_sheet_rectangle"
-            app:layout_constraintTop_toTopOf="@id/playlistBottomSheet"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"/>
-
-        <ImageView
-            android:id="@+id/plImage"
-            android:layout_width="@dimen/small_pl_image_size"
-            android:layout_height="@dimen/small_pl_image_size"
-            android:layout_marginTop="12dp"
-            android:layout_marginStart="@dimen/small_pl_margin_start"
-            android:layout_marginEnd="@dimen/margin_item_track"
-            android:importantForAccessibility="no"
-            android:scaleType="centerCrop"
-            app:layout_constraintTop_toBottomOf="@id/rectangle"
-            app:layout_constraintStart_toStartOf="@id/playlistBottomSheet" />
+            android:background="@drawable/bottom_sheet_rectangle"/>
 
 
-        <TextView
-            android:id="@+id/plName"
-            style="@style/FirstContent"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/playlists_name"
-            app:layout_constraintStart_toEndOf="@id/plImage"
-            app:layout_constraintTop_toTopOf="@id/plImage" />
-
-        <TextView
-            android:id="@+id/plCount"
-            style="@style/SecondContent"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintStart_toEndOf="@id/plImage"
-            app:layout_constraintBottom_toBottomOf="@id/plImage"/>
+        <include
+            android:id="@+id/item"
+            layout="@layout/small_playlist_item"/>
 
 
         <TextView
@@ -206,9 +174,7 @@
             android:layout_height="wrap_content"
             android:paddingVertical="21dp"
             android:layout_marginStart="@dimen/paddingClassic"
-            android:text="Поделиться"
-            app:layout_constraintStart_toStartOf="@id/plImage"
-            app:layout_constraintTop_toBottomOf="@id/plCount"/>
+            android:text="@string/share_menu_text" />
 
         <TextView
             android:id="@+id/updateTextMenu"
@@ -217,9 +183,7 @@
             android:layout_height="wrap_content"
             android:paddingVertical="21dp"
             android:layout_marginStart="@dimen/paddingClassic"
-            android:text="Редактировать информацию"
-            app:layout_constraintStart_toStartOf="@id/plImage"
-            app:layout_constraintTop_toBottomOf="@id/shareTextMenu"/>
+            android:text="@string/update_menu_text" />
 
         <TextView
             android:id="@+id/deleteTextMenu"
@@ -228,8 +192,6 @@
             android:layout_height="wrap_content"
             android:paddingVertical="21dp"
             android:layout_marginStart="@dimen/paddingClassic"
-            android:text="Удалить плейлист"
-            app:layout_constraintStart_toStartOf="@id/plImage"
-            app:layout_constraintTop_toBottomOf="@id/updateTextMenu"/>
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            android:text="@string/delete_menu_text" />
+    </LinearLayout>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

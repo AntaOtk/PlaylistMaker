@@ -24,18 +24,6 @@ class PlaylistRepositoryImpl(
         emit(convertPayListFromEntity(playList))
     }
 
-    private fun convertPayListFromEntity(playList: PlayListEntity): PlayList {
-        val tracks = jsonMapper.convertToList(playList.tracks)
-        return playListDbMapper.map(playList,tracks)
-    }
-
-    private fun convertFromEntity(playLists: List<PlayListEntity>): List<PlayList> {
-        return playLists.map { playList ->
-            val tracks = jsonMapper.convertToList(playList.tracks)
-            playListDbMapper.map(playList, tracks)
-        }
-    }
-
     override suspend fun addPlaylist(playList: PlayList): Long {
         val playListEntity = convertToTrackEntity(playList)
         return dao.insertPlaylist(playListEntity)
@@ -54,9 +42,24 @@ class PlaylistRepositoryImpl(
 
     }
 
+    override suspend fun delete(playlist: PlayList) {
+        val playListEntity = convertToTrackEntity(playlist)
+        dao.delete(playListEntity)
+    }
+
 
     private fun convertToTrackEntity(playList: PlayList): PlayListEntity {
         val tracks = jsonMapper.convertFromList(playList.tracks)
         return playListDbMapper.map(playList, tracks)
+    }
+    private fun convertPayListFromEntity(playList: PlayListEntity): PlayList {
+        val tracks = jsonMapper.convertToList(playList.tracks)
+        return playListDbMapper.map(playList,tracks)
+    }
+    private fun convertFromEntity(playLists: List<PlayListEntity>): List<PlayList> {
+        return playLists.map { playList ->
+            val tracks = jsonMapper.convertToList(playList.tracks)
+            playListDbMapper.map(playList, tracks)
+        }
     }
 }

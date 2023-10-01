@@ -22,7 +22,6 @@ class PlaylistViewModel(
     fun observeTracks(): LiveData<List<Track>> = tracksLiveData
 
     fun getPlayList(playListId: Long) {
-
         viewModelScope.launch {
             interactor.getPlayList(playListId)
                 .collect { playList ->
@@ -52,7 +51,13 @@ class PlaylistViewModel(
         return interactor.getPlayListTime(tracks)
     }
 
-    fun sharePlayList() {
-        sharingInteractor.sharePlayList()
+    fun sharePlayList(playlist: PlayList) {
+        sharingInteractor.sharePlayList(playlist)
+    }
+
+    fun deletePlayList(playlist: PlayList) {
+        viewModelScope.launch {
+            interactor.delete(playlist)
+        }
     }
 }

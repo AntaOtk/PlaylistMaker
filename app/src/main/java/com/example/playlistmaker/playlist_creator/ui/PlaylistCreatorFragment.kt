@@ -26,7 +26,7 @@ import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.io.File
 
-class PlaylistCreatorFragment : Fragment() {
+open class PlaylistCreatorFragment : Fragment() {
 
     private val viewModel by viewModel<PlayListCreatorViewModel>()
 

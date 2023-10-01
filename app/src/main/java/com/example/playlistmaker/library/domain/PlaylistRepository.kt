@@ -12,4 +12,5 @@ interface PlaylistRepository {
     suspend fun addPlaylist(playList: PlayList): Long
     suspend fun addTrack(track: Track, playList: PlayList)
     suspend fun getTrackList(playListId: Long): List<Track>
+    suspend fun delete(playlist: PlayList)
 }

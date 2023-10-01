@@ -18,12 +18,16 @@ class PlayListInteractorImpl(private val repository: PlaylistRepository) : PlayL
 
     override fun getPlayListTime(tracks: List<Track>): Int {
         var playListTime = 0L
-        for (track in tracks){
-            playListTime = track.trackTimeMillis
+        for (track in tracks) {
+            playListTime += track.trackTimeMillis
         }
         val duration = Duration.ofMillis(playListTime)
         val minutes = duration.toMinutes()
         return (minutes).toInt()
+    }
+
+    override suspend fun delete(playlist: PlayList) {
+        repository.delete(playlist)
     }
 
 
