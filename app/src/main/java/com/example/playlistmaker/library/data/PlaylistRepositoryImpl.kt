@@ -36,6 +36,18 @@ class PlaylistRepositoryImpl(
         dao.updatePlayList(playListEntity)
     }
 
+    override suspend fun removeTrack(track: Track, playList: PlayList) {
+        --playList.trackCount
+        playList.tracks.remove(track)
+        val playListEntity = convertToTrackEntity(playList)
+        dao.updatePlayList(playListEntity)
+    }
+
+    override suspend fun updatePlayList(playList: PlayList) {
+        val playListEntity = convertToTrackEntity(playList)
+        dao.updatePlayList(playListEntity)
+    }
+
     override suspend fun getTrackList(playListId: Long): List<Track> {
         val tracks = dao.getTrackList(playListId).first()
         return jsonMapper.convertToList(tracks)

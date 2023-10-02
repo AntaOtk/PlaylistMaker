@@ -9,4 +9,5 @@ interface PlayListInteractor {
     fun getTracks(playList: PlayList):  Flow<List<Track>>
     fun getPlayListTime(tracks: List<Track>): Int
     suspend fun delete(playlist: PlayList)
+    suspend fun removeTrack(track: Track, playList: PlayList)
 }

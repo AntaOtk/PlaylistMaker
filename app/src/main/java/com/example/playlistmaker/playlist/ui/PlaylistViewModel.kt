@@ -21,21 +21,19 @@ class PlaylistViewModel(
     private val tracksLiveData = MutableLiveData<List<Track>>()
     fun observeTracks(): LiveData<List<Track>> = tracksLiveData
 
-    fun getPlayList(playListId: Long) {
+    fun getCurrentPlayList(playList: PlayList) {
+        renderState(playList)
+    }
+
+    fun getUpdatePlayList() {
         viewModelScope.launch {
-            interactor.getPlayList(playListId)
-                .collect { playList ->
-                    renderState(playList)
-                }
+            stateLiveData.value?.let {
+                interactor.getPlayList(it.id)
+                    .collect { playList ->
+                        renderState(playList)
+                    }
+            }
         }
-    }
-
-    private fun renderState(state: PlayList) {
-        stateLiveData.postValue(state)
-    }
-
-    private fun renderTracks(tracks: List<Track>) {
-        tracksLiveData.postValue(tracks)
     }
 
     fun getTracks() {
@@ -53,11 +51,29 @@ class PlaylistViewModel(
 
     fun sharePlayList(playlist: PlayList) {
         sharingInteractor.sharePlayList(playlist)
+
     }
 
     fun deletePlayList(playlist: PlayList) {
         viewModelScope.launch {
             interactor.delete(playlist)
         }
+    }
+
+    fun removeTrack(track: Track, playList: PlayList) {
+        viewModelScope.launch {
+            interactor.removeTrack(track, playList)
+            interactor.getPlayList(playList.id).collect {
+                renderState(it)
+            }
+        }
+    }
+
+    private fun renderState(state: PlayList) {
+        stateLiveData.postValue(state)
+    }
+
+    private fun renderTracks(tracks: List<Track>) {
+        tracksLiveData.postValue(tracks)
     }
 }

@@ -14,13 +14,15 @@ import com.example.playlistmaker.library.domain.model.PlayList
 import com.example.playlistmaker.library.ui.PlaylistsState
 import com.example.playlistmaker.library.ui.adapter.PlayListAdapter
 import com.example.playlistmaker.library.ui.view_model.PlaylistLibraryViewModel
-import com.example.playlistmaker.playlist.ui.PlayListFragment
+import com.example.playlistmaker.main.ui.MainActivityViewModel
 import com.example.playlistmaker.search.util.debounce
+import org.koin.androidx.viewmodel.ext.android.activityViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class PlayListLibraryFragment : Fragment() {
 
     private val viewModel by viewModel<PlaylistLibraryViewModel>()
+    private val hostViewModel by activityViewModel<MainActivityViewModel>()
 
     companion object {
         private const val CLICK_DEBOUNCE_DELAY_MILLIS = 100L
@@ -61,11 +63,10 @@ class PlayListLibraryFragment : Fragment() {
             CLICK_DEBOUNCE_DELAY_MILLIS,
             viewLifecycleOwner.lifecycleScope,
             false
-        ) { playlist ->
-
+        ) { playList ->
+            hostViewModel.setPlayList(playList)
             findNavController().navigate(
                 R.id.action_libraryFragment_to_playListFragment,
-                PlayListFragment.createArgs(playlist.id)
             )
         }
     }
