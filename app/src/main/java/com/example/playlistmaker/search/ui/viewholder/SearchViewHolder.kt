@@ -18,7 +18,7 @@ class SearchViewHolder(private val binding: TrackItemBinding) :
         binding.trackTime.text =
             SimpleDateFormat("mm:ss", Locale.getDefault()).format(item.trackTimeMillis)
         Glide.with(itemView)
-            .load(item.artworkUrl100)
+            .load(item.artworkUrl100.replaceAfterLast('/', "60x60bb.jpg"))
             .placeholder(R.drawable.placeholder)
             .centerCrop()
             .transform(RoundedCorners(itemView.resources.getDimensionPixelSize(R.dimen.corner_radius_art)))

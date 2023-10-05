@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.net.toUri
+import androidx.core.view.doOnNextLayout
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -103,7 +104,6 @@ class PlayListFragment : Fragment() {
         }
         binding.shareButton.setOnClickListener { share() }
         binding.backButton.setOnClickListener { findNavController().navigateUp() }
-
     }
 
     private fun share() {
@@ -160,12 +160,24 @@ class PlayListFragment : Fragment() {
         )
         binding.trackCount.text = countText
         viewModel.getTracks()
+        binding.tracksBottomSheet.doOnNextLayout {
+            val openMenuLocation = IntArray(2)
+            binding.shareButton.getLocationOnScreen(openMenuLocation)
+
+            val openMenuHeightFromBottom =
+                binding.root.height - openMenuLocation[1] - resources.getDimensionPixelSize(R.dimen.margin_item_track)
+
+            val bottomSheetBehavior = BottomSheetBehavior.from(binding.tracksBottomSheet)
+            bottomSheetBehavior.peekHeight = openMenuHeightFromBottom
+        }
     }
 
     private fun showContent(trackList: List<Track>) {
         tracks.clear()
-        tracks.addAll(trackList)
+        tracks.addAll(trackList.reversed())
         adapter.notifyDataSetChanged()
+        if (trackList.isEmpty()) showMistakeDialog()
+
     }
 
     private fun showMenu(playlist: PlayList) {
@@ -190,6 +202,9 @@ class PlayListFragment : Fragment() {
         binding.item.plCount.text = countText
 
         binding.deleteTextMenu.setOnClickListener {
+            BottomSheetBehavior.from(binding.playlistBottomSheet).apply {
+                state = BottomSheetBehavior.STATE_HIDDEN
+            }
             MaterialAlertDialogBuilder(requireActivity(), R.style.AlertDialogTheme)
                 .setMessage(
                     requireActivity().resources.getString(R.string.delete_playlist_alert_title)
@@ -202,7 +217,12 @@ class PlayListFragment : Fragment() {
                     viewModel.deletePlayList(playlist)
                 }.show()
         }
-        binding.shareTextMenu.setOnClickListener { viewModel.sharePlayList(playlist) }
+        binding.shareTextMenu.setOnClickListener {
+            BottomSheetBehavior.from(binding.playlistBottomSheet).apply {
+                state = BottomSheetBehavior.STATE_HIDDEN
+            }
+            viewModel.sharePlayList(playlist)
+        }
         binding.updateTextMenu.setOnClickListener {
             hostViewModel.setPlayList(playlist)
             findNavController().navigate(R.id.action_playListFragment_to_playlistEditorFragment)

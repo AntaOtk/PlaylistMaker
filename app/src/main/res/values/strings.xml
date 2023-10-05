@@ -68,6 +68,7 @@
     <string name="edit">Редактировать</string>
     <string name="share_mistake">В этом плейлисте нет списка треков, которым можно поделиться</string>
     <string name="ok">Ок</string>
+    <string name="empty_playlist_text">В этом плейлисте нет треков</string>
 
 
     <plurals name="tracksContOfList">

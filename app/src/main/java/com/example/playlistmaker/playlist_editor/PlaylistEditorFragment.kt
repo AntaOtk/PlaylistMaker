@@ -30,8 +30,6 @@ class PlaylistEditorFragment : PlaylistCreatorFragment() {
         viewModel.observeSaveState().observe(viewLifecycleOwner) {
             rengerSave(it)
         }
-
-        //val file = File("${playList.imageUrl}/${playList.id}.jpg")
         val filePath =
             File(
                 requireActivity().getExternalFilesDir(Environment.DIRECTORY_PICTURES),
@@ -57,6 +55,4 @@ class PlaylistEditorFragment : PlaylistCreatorFragment() {
     override fun goBack() {
         findNavController().navigateUp()
     }
-
-
 }

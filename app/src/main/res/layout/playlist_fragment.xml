@@ -120,7 +120,6 @@
         android:background="@drawable/bottom_rectangle"
         android:orientation="vertical"
         app:behavior_hideable="false"
-        app:behavior_peekHeight="256dp"
         app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
 
         <View
@@ -130,6 +129,12 @@
             android:layout_marginTop="@dimen/margin_item_track"
             android:alpha="0.5"
             android:background="@drawable/bottom_sheet_rectangle" />
+
+        <TextView
+            android:id="@+id/emptyPlaylistMessage"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"/>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvTrack"
