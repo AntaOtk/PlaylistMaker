@@ -29,17 +29,12 @@ class PlayListFragment : Fragment() {
     private val viewModel by viewModel<PlaylistViewModel>()
     private val hostViewModel by activityViewModel<MainActivityViewModel>()
 
-    companion object {
-        private const val CLICK_DEBOUNCE_DELAY_MILLIS = 100L
-    }
-
     private var _binding: PlaylistFragmentBinding? = null
     private val binding get() = _binding!!
     private val tracks = mutableListOf<Track>()
     private lateinit var onTrackClickDebounce: (Track) -> Unit
     lateinit var playlist: PlayList
     private lateinit var adapter: TracksInPlayListAdapter
-
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -210,7 +205,7 @@ class PlayListFragment : Fragment() {
                     requireActivity().resources.getString(R.string.delete_playlist_alert_title)
                         .format(playlist.name)
                 )
-                .setNegativeButton(R.string.negative_button) { _, _ ->
+                .setNegativeButton(R.string.no_button) { _, _ ->
                 }
                 .setPositiveButton(R.string.yes_button) { _, _ ->
                     findNavController().navigateUp()
@@ -221,12 +216,14 @@ class PlayListFragment : Fragment() {
             BottomSheetBehavior.from(binding.playlistBottomSheet).apply {
                 state = BottomSheetBehavior.STATE_HIDDEN
             }
-            viewModel.sharePlayList(playlist)
+            share()
         }
         binding.updateTextMenu.setOnClickListener {
             hostViewModel.setPlayList(playlist)
             findNavController().navigate(R.id.action_playListFragment_to_playlistEditorFragment)
         }
     }
-
+    companion object {
+        private const val CLICK_DEBOUNCE_DELAY_MILLIS = 100L
+    }
 }

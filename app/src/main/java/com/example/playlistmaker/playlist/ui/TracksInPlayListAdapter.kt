@@ -28,7 +28,7 @@ class TracksInPlayListAdapter(
         }
         holder.itemView.setOnLongClickListener {
             deleteAlertDialog
-                .setNegativeButton(R.string.negative_button) { _, _ ->
+                .setNegativeButton(R.string.no_button) { _, _ ->
                 }
                 .setPositiveButton(R.string.yes_button) { _, _ ->
                     longClickListener.invoke(data[position])

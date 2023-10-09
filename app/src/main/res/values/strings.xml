@@ -69,6 +69,7 @@
     <string name="share_mistake">В этом плейлисте нет списка треков, которым можно поделиться</string>
     <string name="ok">Ок</string>
     <string name="empty_playlist_text">В этом плейлисте нет треков</string>
+    <string name="no_button">Нет</string>
 
 
     <plurals name="tracksContOfList">
