@@ -5,7 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.playlistmaker.library.domain.FavoriteTracksInteractor
-import com.example.playlistmaker.library.domain.PlaylistInteractor
+import com.example.playlistmaker.library.domain.PlaylistLibraryInteractor
 import com.example.playlistmaker.library.domain.model.PlayList
 import com.example.playlistmaker.player.domain.PlayControl
 import com.example.playlistmaker.player.domain.util.PlayerState
@@ -18,7 +18,7 @@ import kotlinx.coroutines.launch
 class PlayerViewModel(
     private val playerInteractor: PlayControl,
     private val favoriteInteractor: FavoriteTracksInteractor,
-    private val playlistInteractor: PlaylistInteractor
+    private val playlistInteractor: PlaylistLibraryInteractor
 ) :
     ViewModel() {
     companion object {
@@ -126,5 +126,9 @@ class PlayerViewModel(
                     playListsLiveData.postValue(playLists)
                 }
         }
+    }
+
+    fun mediaPlayerReset() {
+        playerInteractor.reset()
     }
 }

@@ -10,4 +10,5 @@ interface PlayerClient {
     fun getCurrentPosition(): Int
     fun release()
     fun setOnStateChangeListener(callback: (PlayerState) -> Unit)
+    fun reset()
 }

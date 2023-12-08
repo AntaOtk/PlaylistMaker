@@ -13,14 +13,8 @@ class JsonMapper(
         return if (!jsonList.isNullOrEmpty()) gson.fromJson(jsonList, listOfMyClassObject) else mutableListOf()
     }
 
-    fun setTrack(track: Track, jsonList: String?): String {
-        val tracks = convertToList(jsonList)
-        tracks.add(0, track)
-        return write(tracks)
-    }
 
-
-    private fun write(tracks: MutableList<Track>): String {
+    fun convertFromList(tracks: MutableList<Track>): String {
         return gson.toJson(tracks)
     }
 }

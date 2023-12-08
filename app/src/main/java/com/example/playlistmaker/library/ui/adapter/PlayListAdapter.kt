@@ -10,7 +10,10 @@ import com.example.playlistmaker.library.ui.view_holder.PlayListsViewHolder
 import com.example.playlistmaker.main.ui.MainActivity.Companion.ALBOM
 import java.io.File
 
-class PlayListAdapter(val data: List<PlayList>) :
+class PlayListAdapter(
+    private val data: List<PlayList>,
+    private val clickListener: (PlayList) -> Unit
+) :
     RecyclerView.Adapter<PlayListsViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PlayListsViewHolder {
         val filePath =
@@ -24,6 +27,9 @@ class PlayListAdapter(val data: List<PlayList>) :
 
     override fun onBindViewHolder(holder: PlayListsViewHolder, position: Int) {
         holder.bind(data[position])
+        holder.itemView.setOnClickListener {
+            clickListener.invoke(data[position])
+        }
     }
 
     override fun getItemCount(): Int {

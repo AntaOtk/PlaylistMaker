@@ -7,7 +7,10 @@ import com.example.playlistmaker.databinding.TrackItemBinding
 import com.example.playlistmaker.search.domain.model.Track
 import com.example.playlistmaker.search.ui.viewholder.SearchViewHolder
 
-class SearchAdapter(private val data: List<Track>, private val clickListener: (Track) -> Unit) :
+class SearchAdapter(
+    private val data: List<Track>,
+    private val clickListener: (Track) -> Unit
+) :
     RecyclerView.Adapter<SearchViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SearchViewHolder {

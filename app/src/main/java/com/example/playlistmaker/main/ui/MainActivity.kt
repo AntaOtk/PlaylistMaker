@@ -7,16 +7,9 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.example.playlistmaker.R
 import com.example.playlistmaker.databinding.ActivityMainBinding
-import com.google.android.material.bottomnavigation.BottomNavigationView
 
 
 class MainActivity : AppCompatActivity() {
-
-    companion object {
-        const val ALBOM = "myalbum"
-        const val THEME_KEY = "theme_key"
-    }
-
     private lateinit var binding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -30,13 +23,18 @@ class MainActivity : AppCompatActivity() {
         binding.bottomNavigationView.setupWithNavController(navController)
         navController.addOnDestinationChangedListener { _, destination, _ ->
             when (destination.id) {
-                R.id.audioPlayer, R.id.playlistCreatorFragment -> {
-                   binding.bottomNavigationView.visibility = View.GONE
+                R.id.audioPlayer, R.id.playlistCreatorFragment, R.id.playListFragment -> {
+                    binding.bottomNavigationView.visibility = View.GONE
                 }
+
                 else -> {
                     binding.bottomNavigationView.visibility = View.VISIBLE
                 }
             }
         }
+    }
+    companion object {
+        const val ALBOM = "myalbum"
+        const val THEME_KEY = "theme_key"
     }
 }
