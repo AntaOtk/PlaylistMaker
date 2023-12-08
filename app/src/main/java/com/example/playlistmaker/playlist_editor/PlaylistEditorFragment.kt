@@ -28,7 +28,7 @@ class PlaylistEditorFragment : PlaylistCreatorFragment() {
         binding.headText.text = requireActivity().resources.getString(R.string.edit)
         playList = hostViewModel.getPlayList().value!!
         viewModel.observeSaveState().observe(viewLifecycleOwner) {
-            rengerSave(it)
+            renderSave(it)
         }
         val filePath =
             File(
@@ -43,7 +43,7 @@ class PlaylistEditorFragment : PlaylistCreatorFragment() {
         binding.descriptionET.setText(playList.description)
     }
 
-    fun rengerSave(playList: PlayList) {
+    private fun renderSave(playList: PlayList) {
         hostViewModel.setPlayList(playList)
         findNavController().navigateUp()
     }

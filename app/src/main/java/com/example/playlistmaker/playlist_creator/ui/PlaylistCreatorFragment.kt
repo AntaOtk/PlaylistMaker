@@ -107,6 +107,10 @@ open class PlaylistCreatorFragment : Fragment() {
                 }
             })
     }
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
 
     open fun savePlaylist() {
         viewModel.savePlaylist(filePath)

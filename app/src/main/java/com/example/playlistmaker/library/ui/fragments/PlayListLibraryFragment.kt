@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -23,11 +24,6 @@ class PlayListLibraryFragment : Fragment() {
 
     private val viewModel by viewModel<PlaylistLibraryViewModel>()
     private val hostViewModel by activityViewModel<MainActivityViewModel>()
-
-    companion object {
-        private const val CLICK_DEBOUNCE_DELAY_MILLIS = 100L
-        fun newInstance() = PlayListLibraryFragment()
-    }
 
     private var _binding: PlaylistsFragmentBinding? = null
     private val binding get() = _binding!!
@@ -76,6 +72,11 @@ class PlayListLibraryFragment : Fragment() {
         viewModel.fill()
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
+
     private fun render(state: PlaylistsState) {
         when (state) {
             is PlaylistsState.Content -> showContent(state.items)
@@ -84,18 +85,22 @@ class PlayListLibraryFragment : Fragment() {
     }
 
     private fun showEmpty() {
-        binding.messageText.visibility = View.VISIBLE
-        binding.messageImage.visibility = View.VISIBLE
-        binding.rvPlaylist.visibility = View.GONE
+        binding.messageText.isVisible = true
+        binding.messageImage.isVisible = true
+        binding.rvPlaylist.isVisible = false
 
     }
 
     private fun showContent(items: List<PlayList>) {
-        binding.messageText.visibility = View.GONE
-        binding.messageImage.visibility = View.GONE
-        binding.rvPlaylist.visibility = View.VISIBLE
+        binding.messageText.isVisible = false
+        binding.messageImage.isVisible = false
+        binding.rvPlaylist.isVisible = true
         playlists.clear()
         playlists.addAll(items)
         adapter.notifyDataSetChanged()
+    }
+    companion object {
+        private const val CLICK_DEBOUNCE_DELAY_MILLIS = 100L
+        fun newInstance() = PlayListLibraryFragment()
     }
 }

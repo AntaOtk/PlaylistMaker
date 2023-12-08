@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.net.toUri
 import androidx.core.view.doOnNextLayout
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -69,11 +70,11 @@ class PlayListFragment : Fragment() {
             override fun onStateChanged(bottomSheet: View, newState: Int) {
                 when (newState) {
                     BottomSheetBehavior.STATE_HIDDEN -> {
-                        binding.rvTrack.visibility = View.VISIBLE
+                        binding.rvTrack.isVisible = true
                     }
 
                     else -> {
-                        binding.rvTrack.visibility = View.GONE
+                        binding.rvTrack.isVisible = false
                     }
                 }
             }
@@ -99,6 +100,11 @@ class PlayListFragment : Fragment() {
         }
         binding.shareButton.setOnClickListener { share() }
         binding.backButton.setOnClickListener { findNavController().navigateUp() }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
     private fun share() {
@@ -223,6 +229,7 @@ class PlayListFragment : Fragment() {
             findNavController().navigate(R.id.action_playListFragment_to_playlistEditorFragment)
         }
     }
+
     companion object {
         private const val CLICK_DEBOUNCE_DELAY_MILLIS = 100L
     }

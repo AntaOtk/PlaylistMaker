@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -26,16 +27,11 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 class SearchFragment : Fragment() {
 
     private val viewModel by viewModel<SearchViewModel>()
-    val hostViewModel by activityViewModel<MainActivityViewModel>()
-
-
-    companion object {
-        const val INPUT_EDIT_TEXT = "INPUT_EDIT_TEXT"
-        private const val CLICK_DEBOUNCE_DELAY_MILLIS = 100L
-    }
+    private val hostViewModel by activityViewModel<MainActivityViewModel>()
 
     private lateinit var onTrackClickDebounce: (Track) -> Unit
-    private lateinit var binding: FragmentSearchBinding
+    private var _binding: FragmentSearchBinding? =null
+    private val binding get() = _binding!!
     private val tracks = mutableListOf<Track>()
     private val adapter = SearchAdapter(tracks) { track ->
         onTrackClickDebounce(track)
@@ -50,7 +46,7 @@ class SearchFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = FragmentSearchBinding.inflate(inflater, container, false)
+        _binding = FragmentSearchBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -96,7 +92,7 @@ class SearchFragment : Fragment() {
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 inputText = s?.toString() ?: ""
-                binding.clearButtonIcon.visibility = clearButtonVisibility(s)
+                binding.clearButtonIcon.isVisible = !s.isNullOrEmpty()
                 viewModel.searchDebounce(inputText)
             }
 
@@ -124,6 +120,7 @@ class SearchFragment : Fragment() {
     override fun onDestroy() {
         super.onDestroy()
         simpleTextWatcher?.let { binding.inputEditText.removeTextChangedListener(it) }
+        _binding = null
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
@@ -149,66 +146,63 @@ class SearchFragment : Fragment() {
         }
     }
 
-    private fun clearButtonVisibility(s: CharSequence?): Int {
-        return if (s.isNullOrEmpty()) {
-            View.GONE
-        } else {
-            View.VISIBLE
-        }
-    }
-
     private fun showHistory(trackList: List<Track>) {
-        binding.historySearch.visibility = View.VISIBLE
-        binding.rvSearch.visibility = View.GONE
-        binding.placeholderMessage.visibility = View.GONE
-        binding.progressBar.visibility = View.GONE
+        binding.historySearch.isVisible = true
+        binding.rvSearch.isVisible = false
+        binding.placeholderMessage.isVisible = false
+        binding.progressBar.isVisible = false
         tracks.clear()
         tracks.addAll(trackList)
         adapter.notifyDataSetChanged()
     }
 
     private fun showEmptyHistory() {
-        binding.historySearch.visibility = View.GONE
-        binding.rvSearch.visibility = View.GONE
-        binding.placeholderMessage.visibility = View.GONE
-        binding.progressBar.visibility = View.GONE
+        binding.historySearch.isVisible = false
+        binding.rvSearch.isVisible = false
+        binding.placeholderMessage.isVisible = false
+        binding.progressBar.isVisible = false
     }
 
     private fun showLoading() {
-        binding.historySearch.visibility = View.GONE
-        binding.rvSearch.visibility = View.GONE
-        binding.placeholderMessage.visibility = View.GONE
-        binding.progressBar.visibility = View.VISIBLE
+        binding.historySearch.isVisible = false
+        binding.rvSearch.isVisible = false
+        binding.placeholderMessage.isVisible = false
+        binding.progressBar.isVisible = true
     }
 
     private fun showError(errorMessage: String) {
-        binding.historySearch.visibility = View.GONE
-        binding.repeatButton.visibility = View.VISIBLE
-        binding.rvSearch.visibility = View.GONE
-        binding.placeholderMessage.visibility = View.VISIBLE
-        binding.progressBar.visibility = View.GONE
+        binding.historySearch.isVisible = false
+        binding.repeatButton.isVisible = true
+        binding.rvSearch.isVisible = false
+        binding.placeholderMessage.isVisible = true
+        binding.progressBar.isVisible = false
         binding.placeholderMessageText.text = errorMessage
         binding.placeholderMessageImage.setImageResource(R.drawable.internet_message)
 
     }
 
     private fun showEmpty(emptyMessage: String) {
-        binding.historySearch.visibility = View.GONE
-        binding.repeatButton.visibility = View.GONE
-        binding.rvSearch.visibility = View.GONE
-        binding.placeholderMessage.visibility = View.VISIBLE
-        binding.progressBar.visibility = View.GONE
+        binding.historySearch.isVisible = false
+        binding.repeatButton.isVisible = false
+        binding.rvSearch.isVisible = false
+        binding.placeholderMessage.isVisible = true
+        binding.progressBar.isVisible = false
         binding.placeholderMessageText.text = emptyMessage
         binding.placeholderMessageImage.setImageResource(R.drawable.search_message)
     }
 
     private fun showContent(trackList: List<Track>) {
-        binding.historySearch.visibility = View.GONE
-        binding.rvSearch.visibility = View.VISIBLE
-        binding.placeholderMessage.visibility = View.GONE
-        binding.progressBar.visibility = View.GONE
+        binding.historySearch.isVisible = false
+        binding.rvSearch.isVisible = true
+        binding.placeholderMessage.isVisible = false
+        binding.progressBar.isVisible = false
         tracks.clear()
         tracks.addAll(trackList)
         adapter.notifyDataSetChanged()
+    }
+
+    companion object {
+        const val INPUT_EDIT_TEXT = "INPUT_EDIT_TEXT"
+        private const val CLICK_DEBOUNCE_DELAY_MILLIS = 100L
     }
 }

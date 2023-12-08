@@ -10,12 +10,6 @@ import com.example.playlistmaker.databinding.ActivityMainBinding
 
 
 class MainActivity : AppCompatActivity() {
-
-    companion object {
-        const val ALBOM = "myalbum"
-        const val THEME_KEY = "theme_key"
-    }
-
     private lateinit var binding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -38,5 +32,9 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         }
+    }
+    companion object {
+        const val ALBOM = "myalbum"
+        const val THEME_KEY = "theme_key"
     }
 }

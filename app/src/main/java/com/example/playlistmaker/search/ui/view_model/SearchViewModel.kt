@@ -12,10 +12,6 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 class SearchViewModel(private val tracksInteractor: TracksInteractor) : ViewModel() {
-    companion object {
-        private const val SEARCH_DEBOUNCE_DELAY_MILLIS = 2000L
-    }
-
 
     private val stateLiveData = MutableLiveData<SearchState>()
     fun observeState(): LiveData<SearchState> = stateLiveData
@@ -113,5 +109,8 @@ class SearchViewModel(private val tracksInteractor: TracksInteractor) : ViewMode
                 )
             }
         }
+    }
+    companion object {
+        private const val SEARCH_DEBOUNCE_DELAY_MILLIS = 2000L
     }
 }
