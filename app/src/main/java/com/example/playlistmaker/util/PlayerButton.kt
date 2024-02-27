@@ -11,20 +11,20 @@ import androidx.annotation.AttrRes
 import androidx.annotation.StyleRes
 import androidx.core.graphics.drawable.toBitmap
 import com.example.playlistmaker.R
-import java.lang.StrictMath.min
-
+import kotlin.math.min
 class PlayerButton @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
     @AttrRes defStyleAttr: Int = 0,
-    @StyleRes defStyleRes: Int = R.style.defaultStyle,
+    @StyleRes defStyleRes: Int = 0,
 ) : View(context, attrs, defStyleAttr, defStyleRes) {
     private var imageBitmap: Bitmap?
-    private var imageBitmapPaused: Bitmap?
-    private var imageBitmapPlay: Bitmap?
+    private var pauseButtonImage: Bitmap?
+    private var playButtonImage: Bitmap?
     var onTouchListener: (() -> Unit)? = null
     private var imageRect = RectF(0f, 0f, 0f, 0f)
-    private var isPlayed = false
+    private var isPlaying = false
+
 
     override fun onTouchEvent(event: MotionEvent): Boolean {
         when (event.action) {
@@ -41,8 +41,8 @@ class PlayerButton @JvmOverloads constructor(
     }
 
     fun changeButtonStatus() {
-        isPlayed = !isPlayed
-        imageBitmap = if (isPlayed) imageBitmapPlay else imageBitmapPaused
+        isPlaying = !isPlaying
+        imageBitmap = if (isPlaying) playButtonImage else pauseButtonImage
         invalidate()
 
     }
@@ -55,11 +55,11 @@ class PlayerButton @JvmOverloads constructor(
             defStyleRes
         ).apply {
             try {
-                imageBitmapPaused =
+                pauseButtonImage =
                     getDrawable(R.styleable.CustomButtonView_pausedButtonsResId)?.toBitmap()
-                imageBitmapPlay =
+                playButtonImage =
                     getDrawable(R.styleable.CustomButtonView_playButtonsResId)?.toBitmap()
-                imageBitmap = if (isPlayed) imageBitmapPlay else imageBitmapPaused
+                imageBitmap = pauseButtonImage
             } finally {
                 recycle()
             }
