@@ -68,7 +68,6 @@ class PlayerViewModel(
 
     fun playbackControl() {
         val state = playerInteractor.playbackControl()
-        renderState(state)
         if (state == PlayerState.PLAYING) startTimer(state) else cancelTimer()
 
     }
@@ -80,11 +79,6 @@ class PlayerViewModel(
 
     fun onPause() {
         playerInteractor.pausePlayer()
-        renderState(PlayerState.PAUSED)
-    }
-
-    private fun renderState(state: PlayerState) {
-        stateLiveData.postValue(state)
     }
 
     private fun cancelTimer() {
@@ -127,7 +121,6 @@ class PlayerViewModel(
                 }
         }
     }
-
     fun mediaPlayerReset() {
         playerInteractor.reset()
     }
