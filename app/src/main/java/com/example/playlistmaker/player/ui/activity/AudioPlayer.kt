@@ -13,7 +13,6 @@ import com.example.playlistmaker.R
 import com.example.playlistmaker.databinding.AudioPlayerBinding
 import com.example.playlistmaker.library.domain.model.PlayList
 import com.example.playlistmaker.main.ui.MainActivityViewModel
-import com.example.playlistmaker.player.domain.util.PlayerState
 import com.example.playlistmaker.player.ui.view_model.PlayerViewModel
 import com.example.playlistmaker.search.domain.model.Track
 import com.google.android.material.bottomsheet.BottomSheetBehavior
@@ -57,7 +56,6 @@ class AudioPlayer : Fragment() {
 
         bottomSheetBehavior.addBottomSheetCallback(object :
             BottomSheetBehavior.BottomSheetCallback() {
-
             override fun onStateChanged(bottomSheet: View, newState: Int) {
                 when (newState) {
                     BottomSheetBehavior.STATE_HIDDEN -> {
@@ -76,9 +74,9 @@ class AudioPlayer : Fragment() {
         })
 
         binding.recyclerView.adapter = adapter
-        binding.playButton.setOnClickListener { viewModel.playbackControl() }
+        binding.playButton.onTouchListener = { viewModel.playbackControl() }
         viewModel.observeState().observe(viewLifecycleOwner) {
-            render(it)
+            binding.playButton.changeButtonStatus()
         }
         viewModel.observeProgressTimeState().observe(viewLifecycleOwner) {
             progressTimeViewUpdate(it)
@@ -89,25 +87,20 @@ class AudioPlayer : Fragment() {
         viewModel.observePlaylistState().observe(viewLifecycleOwner) {
             renderPlayList(it)
         }
-
         viewModel.observeAddDtate().observe(viewLifecycleOwner) {
             bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
             showToast(it)
         }
         binding.backButton.setOnClickListener { findNavController().navigateUp() }
-
         binding.likeButton.setOnClickListener { track?.let { it1 -> viewModel.onFavoriteClicked(it1) } }
         binding.addButton.setOnClickListener {
             bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
         }
-
         binding.addPlaylistButton.setOnClickListener {
             viewModel.mediaPlayerReset()
             findNavController().navigate((R.id.action_audioPlayer_to_playlistCreatorFragment))
             bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
         }
-
-
     }
 
     private fun renderInformation(track: Track) {
@@ -137,21 +130,6 @@ class AudioPlayer : Fragment() {
         if (favoriteChecked)
             binding.likeButton.setImageResource(R.drawable.like_button_on)
         else binding.likeButton.setImageResource(R.drawable.like_button_off)
-    }
-
-    private fun render(state: PlayerState) {
-        when (state) {
-            PlayerState.PLAYING -> startPlayer()
-            PlayerState.PAUSED, PlayerState.PREPARED -> pausePlayer()
-        }
-    }
-
-    private fun startPlayer() {
-        binding.playButton.setImageResource(R.drawable.pause_button)
-    }
-
-    private fun pausePlayer() {
-        binding.playButton.setImageResource(R.drawable.play_button)
     }
 
     private fun progressTimeViewUpdate(progressTime: String) {

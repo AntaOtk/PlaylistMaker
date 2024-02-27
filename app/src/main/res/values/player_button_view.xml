@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="CustomButtonView">
+        <attr name="isPlayed"
+            format="boolean" />
+        <attr name="pausedButtonsResId"
+            format="reference" />
+        <attr name="playButtonsResId"
+            format="reference" />
+    </declare-styleable>
+
+    <attr name="buttonsDefStyle"
+        format="reference" />
+
+    <style name="defaultStyle">
+        <item name="pausedButtonsResId">@drawable/play_button</item>
+        <item name="playButtonsResId">@drawable/pause_button</item>
+    </style>
+
+</resources>

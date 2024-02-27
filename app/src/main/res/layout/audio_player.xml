@@ -91,13 +91,12 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@id/playButton" />
 
-        <ImageButton
+        <com.example.playlistmaker.util.PlayerButton
             android:id="@+id/playButton"
-            android:layout_width="wrap_content"
+            android:layout_width="100dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/play_button_top_margin"
             android:background="@null"
-            android:src="@drawable/play_button"
             app:layout_constraintBottom_toTopOf="@id/progressTime"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
