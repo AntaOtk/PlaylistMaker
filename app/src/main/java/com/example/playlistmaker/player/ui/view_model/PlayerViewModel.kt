@@ -34,7 +34,7 @@ class PlayerViewModel(
         }
     }
 
-    private val stateLiveData = MutableLiveData(PlayerState.PREPARED)
+    private val stateLiveData = MutableLiveData<PlayerState>()
     fun observeState(): LiveData<PlayerState> = stateLiveData
 
     private val stateProgressTimeLiveData = MutableLiveData<String>()
