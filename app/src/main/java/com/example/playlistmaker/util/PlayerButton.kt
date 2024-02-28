@@ -23,25 +23,21 @@ class PlayerButton @JvmOverloads constructor(
     private var playButtonImage: Bitmap?
     var onTouchListener: (() -> Unit)? = null
     private var imageRect = RectF(0f, 0f, 0f, 0f)
-    private var isPlaying = false
-
 
     override fun onTouchEvent(event: MotionEvent): Boolean {
         when (event.action) {
-            MotionEvent.ACTION_DOWN -> {
+            MotionEvent.ACTION_DOWN-> {
                 return true
             }
             MotionEvent.ACTION_UP -> {
                 onTouchListener?.invoke()
-                changeButtonStatus()
                 return true
             }
         }
         return super.onTouchEvent(event)
     }
 
-    fun changeButtonStatus() {
-        isPlaying = !isPlaying
+    fun changeButtonStatus(isPlaying: Boolean) {
         imageBitmap = if (isPlaying) playButtonImage else pauseButtonImage
         invalidate()
 
