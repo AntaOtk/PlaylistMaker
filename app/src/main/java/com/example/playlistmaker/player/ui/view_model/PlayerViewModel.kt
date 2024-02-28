@@ -46,8 +46,8 @@ class PlayerViewModel(
     private val playListsLiveData = MutableLiveData<List<PlayList>>()
     fun observePlaylistState(): LiveData<List<PlayList>> = playListsLiveData
 
-    private val addLiveData = MutableLiveData<Pair<String,Boolean>>()
-    fun observeAddDtate(): LiveData<Pair<String,Boolean>> = addLiveData
+    private val addLiveData = MutableLiveData<Pair<String, Boolean>>()
+    fun observeAddDtate(): LiveData<Pair<String, Boolean>> = addLiveData
 
     private var timerJob: Job? = null
     private fun startTimer(state: PlayerState) {
@@ -68,6 +68,7 @@ class PlayerViewModel(
 
     fun playbackControl() {
         val state = playerInteractor.playbackControl()
+        renderState(state)
         if (state == PlayerState.PLAYING) startTimer(state) else cancelTimer()
 
     }
@@ -79,6 +80,11 @@ class PlayerViewModel(
 
     fun onPause() {
         playerInteractor.pausePlayer()
+        renderState(PlayerState.PAUSED)
+    }
+
+    private fun renderState(state: PlayerState) {
+        stateLiveData.postValue(state)
     }
 
     private fun cancelTimer() {
@@ -102,14 +108,14 @@ class PlayerViewModel(
         stateFavoriteData.postValue(isChecked)
     }
 
-    private fun renderToastState(result: Pair<String,Boolean>) {
+    private fun renderToastState(result: Pair<String, Boolean>) {
         addLiveData.postValue(result)
     }
 
 
     fun addToPlaylist(track: Track, playList: PlayList) {
         viewModelScope.launch {
-            renderToastState(Pair(playList.name,playlistInteractor.addTrack(track, playList)))
+            renderToastState(Pair(playList.name, playlistInteractor.addTrack(track, playList)))
         }
     }
 
@@ -121,6 +127,7 @@ class PlayerViewModel(
                 }
         }
     }
+
     fun mediaPlayerReset() {
         playerInteractor.reset()
     }

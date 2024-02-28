@@ -13,6 +13,7 @@ import com.example.playlistmaker.R
 import com.example.playlistmaker.databinding.AudioPlayerBinding
 import com.example.playlistmaker.library.domain.model.PlayList
 import com.example.playlistmaker.main.ui.MainActivityViewModel
+import com.example.playlistmaker.player.domain.util.PlayerState
 import com.example.playlistmaker.player.ui.view_model.PlayerViewModel
 import com.example.playlistmaker.search.domain.model.Track
 import com.google.android.material.bottomsheet.BottomSheetBehavior
@@ -76,7 +77,7 @@ class AudioPlayer : Fragment() {
         binding.recyclerView.adapter = adapter
         binding.playButton.onTouchListener = { viewModel.playbackControl() }
         viewModel.observeState().observe(viewLifecycleOwner) {
-            binding.playButton.changeButtonStatus()
+            render(it)
         }
         viewModel.observeProgressTimeState().observe(viewLifecycleOwner) {
             progressTimeViewUpdate(it)
@@ -105,6 +106,7 @@ class AudioPlayer : Fragment() {
 
     private fun renderInformation(track: Track) {
         viewModel.prepare(track)
+        binding.title.text = track.trackName
         binding.artist.text = track.artistName
         binding.albumName.text = track.collectionName
         binding.year.text = track.releaseDate.substring(0, 4)
@@ -130,6 +132,21 @@ class AudioPlayer : Fragment() {
         if (favoriteChecked)
             binding.likeButton.setImageResource(R.drawable.like_button_on)
         else binding.likeButton.setImageResource(R.drawable.like_button_off)
+    }
+
+    private fun render(state: PlayerState) {
+        when (state) {
+            PlayerState.PLAYING -> startPlayer()
+            PlayerState.PAUSED, PlayerState.PREPARED -> pausePlayer()
+        }
+    }
+
+    private fun startPlayer() {
+        binding.playButton.changeButtonStatus(true)
+    }
+
+    private fun pausePlayer() {
+        binding.playButton.changeButtonStatus(false)
     }
 
     private fun progressTimeViewUpdate(progressTime: String) {
