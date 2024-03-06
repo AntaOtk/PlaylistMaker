@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="CustomButtonView">
+        <attr name="pausedButtonsResId"
+            format="reference" />
+        <attr name="playButtonsResId"
+            format="reference" />
+    </declare-styleable>
+</resources>

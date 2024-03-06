@@ -34,7 +34,7 @@ class PlayerViewModel(
         }
     }
 
-    private val stateLiveData = MutableLiveData(PlayerState.PREPARED)
+    private val stateLiveData = MutableLiveData<PlayerState>()
     fun observeState(): LiveData<PlayerState> = stateLiveData
 
     private val stateProgressTimeLiveData = MutableLiveData<String>()
@@ -46,8 +46,8 @@ class PlayerViewModel(
     private val playListsLiveData = MutableLiveData<List<PlayList>>()
     fun observePlaylistState(): LiveData<List<PlayList>> = playListsLiveData
 
-    private val addLiveData = MutableLiveData<Pair<String,Boolean>>()
-    fun observeAddDtate(): LiveData<Pair<String,Boolean>> = addLiveData
+    private val addLiveData = MutableLiveData<Pair<String, Boolean>>()
+    fun observeAddDtate(): LiveData<Pair<String, Boolean>> = addLiveData
 
     private var timerJob: Job? = null
     private fun startTimer(state: PlayerState) {
@@ -108,14 +108,14 @@ class PlayerViewModel(
         stateFavoriteData.postValue(isChecked)
     }
 
-    private fun renderToastState(result: Pair<String,Boolean>) {
+    private fun renderToastState(result: Pair<String, Boolean>) {
         addLiveData.postValue(result)
     }
 
 
     fun addToPlaylist(track: Track, playList: PlayList) {
         viewModelScope.launch {
-            renderToastState(Pair(playList.name,playlistInteractor.addTrack(track, playList)))
+            renderToastState(Pair(playList.name, playlistInteractor.addTrack(track, playList)))
         }
     }
 

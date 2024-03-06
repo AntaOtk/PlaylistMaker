@@ -1,5 +1,7 @@
 PlaylistMaker.
 Учебное прилодение для практики по андроид-разработке с 0.
+минииальная версия sdk 28
+
 Основной функционал:
 -Поиск треков с использованием api Utunes
 -Хранение истории поиска треков c использованием SharedPreference
@@ -9,5 +11,4 @@ PlaylistMaker.
 -Смена темы приложения
 -Возможность отправки информации (работа со сторонними приложениями)
 В приложении использаваны:
-
 MVVM, Retrofit, JSON, Jetpack Navigation Component, Clean Architecture, LiveData, Room, Koin

@@ -57,7 +57,6 @@ class AudioPlayer : Fragment() {
 
         bottomSheetBehavior.addBottomSheetCallback(object :
             BottomSheetBehavior.BottomSheetCallback() {
-
             override fun onStateChanged(bottomSheet: View, newState: Int) {
                 when (newState) {
                     BottomSheetBehavior.STATE_HIDDEN -> {
@@ -76,7 +75,7 @@ class AudioPlayer : Fragment() {
         })
 
         binding.recyclerView.adapter = adapter
-        binding.playButton.setOnClickListener { viewModel.playbackControl() }
+        binding.playButton.onTouchListener = { viewModel.playbackControl() }
         viewModel.observeState().observe(viewLifecycleOwner) {
             render(it)
         }
@@ -89,29 +88,25 @@ class AudioPlayer : Fragment() {
         viewModel.observePlaylistState().observe(viewLifecycleOwner) {
             renderPlayList(it)
         }
-
         viewModel.observeAddDtate().observe(viewLifecycleOwner) {
             bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
             showToast(it)
         }
         binding.backButton.setOnClickListener { findNavController().navigateUp() }
-
         binding.likeButton.setOnClickListener { track?.let { it1 -> viewModel.onFavoriteClicked(it1) } }
         binding.addButton.setOnClickListener {
             bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
         }
-
         binding.addPlaylistButton.setOnClickListener {
             viewModel.mediaPlayerReset()
             findNavController().navigate((R.id.action_audioPlayer_to_playlistCreatorFragment))
             bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
         }
-
-
     }
 
     private fun renderInformation(track: Track) {
         viewModel.prepare(track)
+        binding.title.text = track.trackName
         binding.artist.text = track.artistName
         binding.albumName.text = track.collectionName
         binding.year.text = track.releaseDate.substring(0, 4)
@@ -147,11 +142,11 @@ class AudioPlayer : Fragment() {
     }
 
     private fun startPlayer() {
-        binding.playButton.setImageResource(R.drawable.pause_button)
+        binding.playButton.changeButtonStatus(true)
     }
 
     private fun pausePlayer() {
-        binding.playButton.setImageResource(R.drawable.play_button)
+        binding.playButton.changeButtonStatus(false)
     }
 
     private fun progressTimeViewUpdate(progressTime: String) {
