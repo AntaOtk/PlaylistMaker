@@ -15,7 +15,7 @@ class PlayControlImpl(private val mediaPlayer: PlayerClient, private var playerS
     override fun playbackControl(): PlayerState {
         when (playerState) {
             PlayerState.PLAYING -> pausePlayer()
-            PlayerState.PAUSED, PlayerState.PREPARED -> startPlayer()
+            PlayerState.PAUSED, PlayerState.INIT, PlayerState.COMPLETED-> startPlayer()
         }
         return playerState
     }
@@ -35,7 +35,7 @@ class PlayControlImpl(private val mediaPlayer: PlayerClient, private var playerS
     }
 
     override fun getProgressTime(): String {
-        return if (playerState == PlayerState.PREPARED) TimeFormatter.ZERO_TIME else TimeFormatter.format(
+        return if (playerState == PlayerState.COMPLETED) TimeFormatter.ZERO_TIME else TimeFormatter.format(
             mediaPlayer.getCurrentPosition()
         )
     }

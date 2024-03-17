@@ -21,7 +21,7 @@ import org.koin.dsl.module
 
 val interactorModule = module {
 
-    factory { PlayerState.PREPARED }
+    factory { PlayerState.INIT }
 
     single<TracksInteractor> {
         TracksInteractorImpl(get(), get())
@@ -48,7 +48,7 @@ val interactorModule = module {
     }
 
     single<PlayListCreatorInteractor> {
-        PlayListCreatorInteractorImpl(get(),get())
+        PlayListCreatorInteractorImpl(get(), get())
     }
 
     single<PlayListInteractor> { PlayListInteractorImpl(get()) }
