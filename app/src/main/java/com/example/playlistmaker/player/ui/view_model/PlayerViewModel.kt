@@ -30,11 +30,11 @@ class PlayerViewModel(
             stateLiveData.postValue(state)
             val progressTime = playerInteractor.getProgressTime()
             stateProgressTimeLiveData.postValue(progressTime)
-            if (state == PlayerState.PREPARED) cancelTimer()
+            if (state == PlayerState.COMPLETED) cancelTimer()
         }
     }
 
-    private val stateLiveData = MutableLiveData<PlayerState>()
+    private val stateLiveData = MutableLiveData(PlayerState.INIT)
     fun observeState(): LiveData<PlayerState> = stateLiveData
 
     private val stateProgressTimeLiveData = MutableLiveData<String>()

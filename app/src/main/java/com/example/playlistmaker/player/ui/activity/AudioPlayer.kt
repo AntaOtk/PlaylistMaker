@@ -137,7 +137,8 @@ class AudioPlayer : Fragment() {
     private fun render(state: PlayerState) {
         when (state) {
             PlayerState.PLAYING -> startPlayer()
-            PlayerState.PAUSED, PlayerState.PREPARED -> pausePlayer()
+            PlayerState.PAUSED, PlayerState.COMPLETED -> pausePlayer()
+            PlayerState.INIT -> Unit
         }
     }
 

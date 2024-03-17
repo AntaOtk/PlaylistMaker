@@ -12,10 +12,10 @@ class PlayerClientImpl(private var mediaPlayer: MediaPlayer) : PlayerClient {
         mediaPlayer.setDataSource(url)
         mediaPlayer.prepareAsync()
         mediaPlayer.setOnPreparedListener {
-            stateCallback?.invoke(PlayerState.PREPARED)
+            stateCallback?.invoke(PlayerState.INIT)
         }
         mediaPlayer.setOnCompletionListener {
-            stateCallback?.invoke(PlayerState.PREPARED)
+            stateCallback?.invoke(PlayerState.COMPLETED)
         }
     }
 
