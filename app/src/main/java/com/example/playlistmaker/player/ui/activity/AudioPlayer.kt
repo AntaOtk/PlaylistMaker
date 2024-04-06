@@ -1,17 +1,20 @@
 package com.example.playlistmaker.player.ui.activity
 
+import android.Manifest
 import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.content.ServiceConnection
 import android.net.ConnectivityManager
+import android.os.Build
 import android.os.Bundle
 import android.os.IBinder
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
@@ -56,6 +59,16 @@ class AudioPlayer : Fragment() {
         }
     }
 
+    private val requestPermissionLauncher = registerForActivityResult(
+        ActivityResultContracts.RequestPermission()
+    ) { isGranted: Boolean ->
+        if (isGranted) {
+            bindMusicService()
+        } else {
+            Toast.makeText(requireContext(), "Can't bind service!", Toast.LENGTH_LONG).show()
+        }
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -80,7 +93,11 @@ class AudioPlayer : Fragment() {
             this.track = currentTrack
             renderInformation(currentTrack)
             viewModel.getChecked(currentTrack)
-            bindMusicService(currentTrack)
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                requestPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
+            } else {
+                bindMusicService()
+            }
         }
         binding.playButton.onTouchListener = { viewModel.onPlayerButtonClicked() }
         val bottomSheetBehavior = BottomSheetBehavior.from(binding.playlistsBottomSheet).apply {
@@ -130,9 +147,11 @@ class AudioPlayer : Fragment() {
         }
     }
 
-    private fun bindMusicService(track: Track) {
+    private fun bindMusicService() {
         val intent = Intent(requireContext(), MediaPlayerService::class.java).apply {
-            putExtra("song_url", track.previewUrl)
+            putExtra("song_url", track?.previewUrl)
+            putExtra("song_title", track?.trackName)
+            putExtra("song_artist",track?.artistName)
         }
         requireContext().bindService(intent, serviceConnection, Context.BIND_AUTO_CREATE)
     }

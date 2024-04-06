@@ -1,7 +1,11 @@
 package com.example.playlistmaker.player.services
 
+import android.annotation.SuppressLint
 import android.app.Notification
+import android.app.NotificationChannel
+import android.app.NotificationManager
 import android.app.Service
+import android.content.Context
 import android.content.Intent
 import android.content.pm.ServiceInfo
 import android.media.MediaPlayer
@@ -9,7 +13,7 @@ import android.os.Binder
 import android.os.Build
 import android.os.IBinder
 import androidx.core.app.NotificationCompat
-import com.example.playlistmaker.R
+import androidx.core.app.ServiceCompat
 import com.example.playlistmaker.player.domain.util.PlayerState
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -30,6 +34,8 @@ class MediaPlayerService : Service(), AudioPlayerControl {
     private val playerState = _playerState.asStateFlow()
 
     private var songUrl = ""
+    private var songTitle = ""
+    private var songArtist = ""
 
     private var mediaPlayer: MediaPlayer? = null
 
@@ -52,14 +58,37 @@ class MediaPlayerService : Service(), AudioPlayerControl {
     override fun onBind(intent: Intent?): IBinder {
         songUrl = intent?.getStringExtra("song_url") ?: ""
         initMediaPlayer()
+        createNotificationChannel()
+        ServiceCompat.startForeground(
+            this,
+            SERVICE_NOTIFICATION_ID,
+            createServiceNotification(),
+            getForegroundServiceTypeConstant()
+        )
         return binder
+    }
+
+    @SuppressLint("ObsoleteSdkInt")
+    private fun createNotificationChannel() {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
+            return
+        }
+
+        val channel = NotificationChannel(
+            NOTIFICATION_CHANNEL_ID,
+            "Music service",
+            NotificationManager.IMPORTANCE_DEFAULT
+        )
+        channel.description = "Service for playing music"
+        val notificationManager =
+            getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        notificationManager.createNotificationChannel(channel)
     }
 
     private fun createServiceNotification(): Notification {
         return NotificationCompat.Builder(this, NOTIFICATION_CHANNEL_ID)
-            .setContentTitle("Music foreground service")
-            .setContentText("Our service is working right now!")
-            .setSmallIcon(R.drawable.ic_launcher_foreground)
+            .setContentTitle("Playlist Maker")
+            .setContentText("$songArtist - $songTitle")
             .setPriority(NotificationCompat.PRIORITY_DEFAULT)
             .setCategory(NotificationCompat.CATEGORY_SERVICE)
             .build()
@@ -88,6 +117,7 @@ class MediaPlayerService : Service(), AudioPlayerControl {
         mediaPlayer?.setOnCompletionListener {
             timerJob?.cancel()
             _playerState.value = PlayerState.Finished()
+            ServiceCompat.stopForeground(this, ServiceCompat.STOP_FOREGROUND_REMOVE)
         }
     }
 
