@@ -32,7 +32,7 @@ class MediaPlayerService : Service(), AudioPlayerControl {
     private val binder = MusicServiceBinder()
     private val _playerState = MutableStateFlow<PlayerState>(PlayerState.Default())
     private val playerState = _playerState.asStateFlow()
-
+    var notificationStatus = false
     private var songUrl = ""
     private var songTitle = ""
     private var songArtist = ""
@@ -50,6 +50,25 @@ class MediaPlayerService : Service(), AudioPlayerControl {
         }
     }
 
+    override fun showNotification(){
+        if (_playerState.value is PlayerState.Playing) {
+            ServiceCompat.startForeground(
+                this,
+                SERVICE_NOTIFICATION_ID,
+                createServiceNotification(),
+                getForegroundServiceTypeConstant()
+            )
+            notificationStatus = true
+        }
+    }
+
+    override fun hideNotification(){
+        if (notificationStatus){
+            ServiceCompat.stopForeground(this, ServiceCompat.STOP_FOREGROUND_REMOVE)
+            notificationStatus = !notificationStatus
+        }
+    }
+
     override fun onCreate() {
         super.onCreate()
         mediaPlayer = MediaPlayer()
@@ -59,12 +78,7 @@ class MediaPlayerService : Service(), AudioPlayerControl {
         songUrl = intent?.getStringExtra("song_url") ?: ""
         initMediaPlayer()
         createNotificationChannel()
-        ServiceCompat.startForeground(
-            this,
-            SERVICE_NOTIFICATION_ID,
-            createServiceNotification(),
-            getForegroundServiceTypeConstant()
-        )
+
         return binder
     }
 
@@ -117,7 +131,7 @@ class MediaPlayerService : Service(), AudioPlayerControl {
         mediaPlayer?.setOnCompletionListener {
             timerJob?.cancel()
             _playerState.value = PlayerState.Finished()
-            ServiceCompat.stopForeground(this, ServiceCompat.STOP_FOREGROUND_REMOVE)
+            hideNotification()
         }
     }
 

@@ -43,6 +43,15 @@ class PlayerViewModel(
         }
     }
 
+
+    fun showNotification(){
+        audioPlayerControl?.showNotification()
+    }
+
+    fun hideNotification(){
+        audioPlayerControl?.hideNotification()
+    }
+
     fun onPlayerButtonClicked() {
         if (stateLiveData.value is PlayerState.Playing) {
             audioPlayerControl?.pausePlayer()

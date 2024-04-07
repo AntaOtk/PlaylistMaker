@@ -30,6 +30,7 @@
             android:background="@drawable/edittextbeckground"
             android:drawableStart="@drawable/small_search"
             android:hint="@string/search_button"
+            android:textCursorDrawable="@drawable/color_cursor"
             android:imeOptions="actionDone"
             android:inputType="text"
             android:maxLength="30"

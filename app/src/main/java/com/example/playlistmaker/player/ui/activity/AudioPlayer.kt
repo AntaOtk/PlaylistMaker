@@ -85,6 +85,7 @@ class AudioPlayer : Fragment() {
             IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION),
             ContextCompat.RECEIVER_NOT_EXPORTED,
         )
+        viewModel.hideNotification()
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -207,6 +208,7 @@ class AudioPlayer : Fragment() {
     override fun onPause() {
         super.onPause()
         requireContext().unregisterReceiver(connectionBroadcastReceiver)
+        viewModel.showNotification()
     }
 
     override fun onDestroyView() {

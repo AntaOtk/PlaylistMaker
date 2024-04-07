@@ -59,9 +59,6 @@ open class PlaylistCreatorFragment : Fragment() {
         viewModel.observeStateLiveData().observe(viewLifecycleOwner) {
             renderSave(it)
         }
-        viewModel.observeStateLiveData().observe(viewLifecycleOwner) {
-            renderSave(it)
-        }
         binding.playListImage.setOnClickListener {
             pickMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
         }
