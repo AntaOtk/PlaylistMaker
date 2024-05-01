@@ -4,9 +4,6 @@ import com.example.playlistmaker.library.domain.FavoriteTracksInteractor
 import com.example.playlistmaker.library.domain.PlaylistLibraryInteractor
 import com.example.playlistmaker.library.domain.db.FavoriteTracksInteractorImpl
 import com.example.playlistmaker.library.domain.impl.PlaylistLibraryInteractorImpl
-import com.example.playlistmaker.player.domain.PlayControl
-import com.example.playlistmaker.player.domain.impl.PlayControlImpl
-import com.example.playlistmaker.player.domain.util.PlayerState
 import com.example.playlistmaker.playlist.domain.PlayListInteractor
 import com.example.playlistmaker.playlist.domain.PlayListInteractorImpl
 import com.example.playlistmaker.playlist_creator.domain.PlayListCreatorInteractor
@@ -20,9 +17,6 @@ import com.example.playlistmaker.sharing.domain.impl.SharingInteractorImp
 import org.koin.dsl.module
 
 val interactorModule = module {
-
-    factory { PlayerState.INIT }
-
     single<TracksInteractor> {
         TracksInteractorImpl(get(), get())
     }
@@ -37,10 +31,6 @@ val interactorModule = module {
 
     single<PlaylistLibraryInteractor> {
         PlaylistLibraryInteractorImpl(get())
-    }
-
-    factory<PlayControl> {
-        PlayControlImpl(get(), get())
     }
 
     single<FavoriteTracksInteractor> {

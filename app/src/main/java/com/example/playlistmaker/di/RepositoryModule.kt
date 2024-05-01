@@ -7,8 +7,6 @@ import com.example.playlistmaker.library.data.PlaylistRepositoryImpl
 import com.example.playlistmaker.library.data.TrackDbMapper
 import com.example.playlistmaker.library.domain.FavoriteTracksRepository
 import com.example.playlistmaker.library.domain.PlaylistRepository
-import com.example.playlistmaker.player.data.impl.PlayerClientImpl
-import com.example.playlistmaker.player.domain.PlayerClient
 import com.example.playlistmaker.playlist_creator.data.local.FileRepositoryImpl
 import com.example.playlistmaker.playlist_creator.domain.FileRepository
 import com.example.playlistmaker.search.data.TrackHistoryRepositoryImpl
@@ -46,10 +44,6 @@ val repositoryModule = module {
 
     single<SharingRepository> {
         SharingRepositoryImpl(get(), androidContext())
-    }
-
-    factory<PlayerClient> {
-        PlayerClientImpl(get())
     }
 
     single<FavoriteTracksRepository> {

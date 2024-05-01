@@ -1,6 +1,8 @@
 package com.example.playlistmaker.search.ui.fragments
 
 import android.content.Context
+import android.content.IntentFilter
+import android.net.ConnectivityManager
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -9,6 +11,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
+import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
@@ -21,6 +24,7 @@ import com.example.playlistmaker.search.ui.SearchState
 import com.example.playlistmaker.search.ui.adapter.SearchAdapter
 import com.example.playlistmaker.search.ui.view_model.SearchViewModel
 import com.example.playlistmaker.search.util.debounce
+import com.example.playlistmaker.util.ConnectionBroadcastReceiver
 import org.koin.androidx.viewmodel.ext.android.activityViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -30,7 +34,7 @@ class SearchFragment : Fragment() {
     private val hostViewModel by activityViewModel<MainActivityViewModel>()
 
     private lateinit var onTrackClickDebounce: (Track) -> Unit
-    private var _binding: FragmentSearchBinding? =null
+    private var _binding: FragmentSearchBinding? = null
     private val binding get() = _binding!!
     private val tracks = mutableListOf<Track>()
     private val adapter = SearchAdapter(tracks) { track ->
@@ -39,6 +43,7 @@ class SearchFragment : Fragment() {
 
     private var inputText: String = ""
     private var simpleTextWatcher: TextWatcher? = null
+    private val connectionBroadcastReceiver = ConnectionBroadcastReceiver()
 
 
     override fun onCreateView(
@@ -48,6 +53,16 @@ class SearchFragment : Fragment() {
     ): View {
         _binding = FragmentSearchBinding.inflate(inflater, container, false)
         return binding.root
+    }
+
+    override fun onResume() {
+        super.onResume()
+        ContextCompat.registerReceiver(
+            requireContext(),
+            connectionBroadcastReceiver,
+            IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION),
+            ContextCompat.RECEIVER_NOT_EXPORTED,
+        )
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -114,13 +129,18 @@ class SearchFragment : Fragment() {
             }
             false
         }
+    }
 
+    override fun onPause() {
+        super.onPause()
+        requireContext().unregisterReceiver(connectionBroadcastReceiver)
     }
 
     override fun onDestroy() {
         super.onDestroy()
         simpleTextWatcher?.let { binding.inputEditText.removeTextChangedListener(it) }
         _binding = null
+
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
