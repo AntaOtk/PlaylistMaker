@@ -9,15 +9,14 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Icon
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -68,14 +67,15 @@ fun TrackCard(track: Track, clickListener: (Track) -> Unit) {
             )
             Column(modifier = Modifier.weight(1f)) {
                 Text(
-                    modifier = Modifier.padding(start = 16.dp),
-                    style = MaterialTheme.typography.body1,
+                    modifier = Modifier.padding(start = 16.dp).padding(vertical = 4.dp),
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.secondary,
                     text = track.trackName
                 )
                 Text(
                     modifier = Modifier.padding(start = 16.dp),
-                    style = MaterialTheme.typography.body2,
-                    color = colorResource(id = R.color.gray_color),
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurface,
                     text = "${track.artistName} -  ${track.trackTimeMillis}"
                 )
             }
@@ -83,7 +83,7 @@ fun TrackCard(track: Track, clickListener: (Track) -> Unit) {
                 modifier = Modifier.align(Alignment.CenterVertically),
                 painter = painterResource(id = R.drawable.forward),
                 contentDescription = null,
-                tint = MaterialTheme.colors.onBackground
+                tint = MaterialTheme.colorScheme.onBackground
             )
 
         }
