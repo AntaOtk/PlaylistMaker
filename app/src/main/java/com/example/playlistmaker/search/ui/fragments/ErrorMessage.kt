@@ -2,6 +2,7 @@ package com.example.playlistmaker.search.ui.fragments
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonColors
@@ -18,7 +19,7 @@ import com.example.playlistmaker.R
 
 @Composable
 fun EmptyMessage(
-    modifier: Modifier = Modifier,
+    modifier: Modifier = Modifier.fillMaxSize(),
     messageText: String
 ) {
     Column {
@@ -39,7 +40,7 @@ fun EmptyMessage(
 
 @Composable
 fun ErrorConnectionMessage(
-    modifier: Modifier = Modifier,
+    modifier: Modifier = Modifier.fillMaxSize(),
     messageText: String,
     onButtonClick: () -> Unit
 ) {
@@ -69,7 +70,7 @@ fun ErrorConnectionMessage(
             )
         ) {
             Text(
-                text = stringResource(id = R.string.no_interrnet_conection),
+                text = stringResource(id = R.string.repeat),
                 style = MaterialTheme.typography.displayMedium.copy(
                     color = MaterialTheme.colorScheme.surfaceTint
                 )

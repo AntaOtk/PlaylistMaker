@@ -8,15 +8,10 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Shapes
 import androidx.compose.material.Switch
 import androidx.compose.material.SwitchDefaults
 import androidx.compose.material.Text
-import androidx.compose.material.TopAppBar
-import androidx.compose.material.Typography
-import androidx.compose.material.darkColors
-import androidx.compose.material.lightColors
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
@@ -24,14 +19,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.example.playlistmaker.R
 import com.example.playlistmaker.library.ui.fragments.YPTopBar
 import com.example.playlistmaker.settings.ui.view_model.SettingsViewModel
 import com.example.playlistmaker.settings.util.ActionType
+import com.example.playlistmaker.theme.AppTheme
 
 @Composable
 fun SettingsScreen(viewModel: SettingsViewModel) {
@@ -60,7 +53,7 @@ fun SettingsScreenContent(
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .background(MaterialTheme.colors.background)
+                .background(MaterialTheme.colorScheme.background)
                 .padding(16.dp)
         ) {
             YPTopBar(title = stringResource(id = R.string.settings_button))
@@ -70,7 +63,7 @@ fun SettingsScreenContent(
                     Switch(
                         checked = darkThemeEnabled,
                         onCheckedChange = onThemeSwitch,
-                        colors = SwitchDefaults.colors(checkedThumbColor = MaterialTheme.colors.primary)
+                        colors = SwitchDefaults.colors(checkedThumbColor = MaterialTheme.colorScheme.onSurface)
                     )
                 }
             )
@@ -82,7 +75,7 @@ fun SettingsScreenContent(
                         Icon(
                             painter = painterResource(id = R.drawable.share),
                             contentDescription = null,
-                            tint = MaterialTheme.colors.onBackground
+                            tint = MaterialTheme.colorScheme.onSurface
                         )
                     }
                 }
@@ -95,7 +88,7 @@ fun SettingsScreenContent(
                         Icon(
                             painter = painterResource(id = R.drawable.support),
                             contentDescription = null,
-                            tint = MaterialTheme.colors.onBackground
+                            tint = MaterialTheme.colorScheme.onSurface
                         )
                     }
                 }
@@ -108,7 +101,7 @@ fun SettingsScreenContent(
                         Icon(
                             painter = painterResource(id = R.drawable.forward),
                             contentDescription = null,
-                            tint = MaterialTheme.colors.onBackground
+                            tint = MaterialTheme.colorScheme.onSurface
                         )
                     }
                 }
@@ -133,24 +126,9 @@ fun SettingsItem(
             modifier = Modifier
                 .weight(1f)
                 .padding(start = 16.dp),
-            style = MaterialTheme.typography.body1,
-            color = MaterialTheme.colors.onBackground
+            style = MaterialTheme.typography.titleSmall,
+            color = MaterialTheme.colorScheme.onBackground
         )
         trailingContent()
     }
-}
-
-@Composable
-fun AppTheme(darkTheme: Boolean, content: @Composable () -> Unit) {
-    MaterialTheme(
-        colors = if (darkTheme) darkColors() else lightColors(),
-        typography = Typography(
-            body1 = TextStyle(
-                fontWeight = FontWeight.Normal,
-                fontSize = 16.sp
-            )
-        ),
-        shapes = Shapes(),
-        content = content
-    )
 }

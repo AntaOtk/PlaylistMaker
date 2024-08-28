@@ -11,8 +11,7 @@ import kotlinx.coroutines.launch
 
 class PlaylistLibraryViewModel(val interactor: PlaylistLibraryInteractor) : ViewModel() {
 
-
-    private val _stateLiveData = MutableLiveData<PlaylistsState>()
+    private val _stateLiveData = MutableLiveData<PlaylistsState>(PlaylistsState.Empty)
     val stateLiveData: LiveData<PlaylistsState> = _stateLiveData
 
     fun fill() {

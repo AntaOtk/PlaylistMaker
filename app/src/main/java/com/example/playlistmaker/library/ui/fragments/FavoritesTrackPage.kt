@@ -13,28 +13,29 @@ import com.example.playlistmaker.R
 import com.example.playlistmaker.library.ui.FavoriteState
 import com.example.playlistmaker.library.ui.view_model.TracksViewModel
 import com.example.playlistmaker.search.domain.model.Track
+import com.example.playlistmaker.search.ui.fragments.EmptyMessage
 import com.example.playlistmaker.search.ui.fragments.TrackItemList
 
 @Composable
 fun FavoriteTracksPage(
+    modifier: Modifier = Modifier.fillMaxSize(),
     tracksViewModel: TracksViewModel,
     onTrackClick: (Track) -> Unit,
 ) {
     val state by tracksViewModel.stateFavoriteLiveData.observeAsState(FavoriteState.Empty)
-
+    tracksViewModel.fill()
     when (state) {
         is FavoriteState.Content -> {
             val tracks = (state as FavoriteState.Content).tracks
             TrackItemList(
+                modifier,
                 tracks,
                 onTrackClick
             )
         }
 
         is FavoriteState.Empty -> {
-            Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                Text(text = stringResource(id = R.string.tracks_message))
-            }
+            EmptyMessage(messageText = stringResource(id = R.string.tracks_message))
         }
     }
 }

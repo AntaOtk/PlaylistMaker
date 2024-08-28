@@ -1,5 +1,6 @@
 package com.example.playlistmaker.search.ui.fragments
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -9,6 +10,8 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -17,8 +20,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
-import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
@@ -29,7 +30,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.TileMode
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -52,14 +52,23 @@ fun SearchScreen(
     onTrackClickDebounce: (Track) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val currentData by viewModel.stateData.observeAsState()
+    val currentData by viewModel.stateData.observeAsState(SearchState.Default)
+    var text by remember { mutableStateOf("") }
     Column {
         YPTopBar(stringResource(id = R.string.search_button))
-        SearchTextField(viewModel)
+        SearchTextField(
+            text = text,
+            hint = stringResource(R.string.search_button),
+            onTextChange = { inputText ->
+                viewModel.onTextChanged(inputText)
+                viewModel.searchDebounce()
+                text = inputText
+            })
         when (currentData) {
             is SearchState.Content -> TrackItemList(
-                (currentData as SearchState.Content).tracks,
-                onTrackClickDebounce
+                modifier = modifier.fillMaxSize(),
+                trackList = (currentData as SearchState.Content).tracks,
+                clickListener = onTrackClickDebounce
             )
 
             is SearchState.Empty -> EmptyMessage(
@@ -73,101 +82,66 @@ fun SearchScreen(
 
             is SearchState.Loading -> LoadingView()
             is SearchState.EmptyInput -> HistoryScreen(
-                (currentData as SearchState.EmptyInput).tracks,
-                onTrackClickDebounce
+                modifier = modifier,
+                trackList = (currentData as SearchState.EmptyInput).tracks,
+                clickListener = onTrackClickDebounce,
+                onButtonClick = { viewModel.clear() }
             )
 
-            else -> BasePage()
+            else -> Unit
         }
     }
 }
 
 @Composable
-fun BasePage() {
-    Column() {
-        Text(text = stringResource(id = R.string.clear_history))
-    }
-}
-
-@Composable
-fun HistoryScreen(trackList: List<Track>, clickListener: (Track) -> Unit) {
-    Column {
-        TrackItemList(
-            trackList = trackList,
-            clickListener
-        )
-
+fun HistoryScreen(
+    modifier: Modifier,
+    trackList: List<Track>,
+    clickListener: (Track) -> Unit,
+    onButtonClick: () -> Unit
+) {
+    Log.d("my history", trackList.toString())
+    if (trackList.isNotEmpty()) {
+        Column() {
+            Text(
+                modifier = modifier.align(Alignment.CenterHorizontally),
+                color = MaterialTheme.colorScheme.secondary,
+                text = stringResource(id = R.string.clear_history)
+            )
+            TrackItemList(
+                trackList = trackList,
+                clickListener = clickListener
+            )
+            Button(
+                modifier = modifier
+                    .align(Alignment.CenterHorizontally)
+                    .padding(top = 24.dp),
+                onClick = onButtonClick,
+                colors = ButtonColors(
+                    containerColor = MaterialTheme.colorScheme.onBackground,
+                    contentColor = MaterialTheme.colorScheme.background,
+                    disabledContentColor = Color.Unspecified,
+                    disabledContainerColor = Color.Unspecified
+                )
+            ) {
+                Text(
+                    text = stringResource(id = R.string.clear_history),
+                    style = MaterialTheme.typography.displayMedium.copy(
+                        color = MaterialTheme.colorScheme.surfaceTint
+                    )
+                )
+            }
+        }
     }
 }
 
 @Composable
 fun LoadingView() {
-    Box(modifier = Modifier
-        .fillMaxSize()
-        .padding(16.dp), contentAlignment = Alignment.Center) {
-        CircularProgressIndicator()
-    }
-
-}
-
-@Composable
-fun SearchTextField(viewModel: SearchViewModel) {
-    var text by remember { mutableStateOf(TextFieldValue("")) }
     Box(
         modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 16.dp)
-            .clip(RoundedCornerShape(8.dp))
-            .background(colorResource(id = R.color.hell_gray_color))
+            .fillMaxSize()
+            .padding(16.dp), contentAlignment = Alignment.Center
     ) {
-        TextField(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(36.dp),
-            value = text,
-            onValueChange = {
-                viewModel.onTextChanged(it.text)
-                viewModel.searchDebounce()
-                text = it
-            },
-            textStyle = TextStyle.Default.copy(fontSize = 28.sp, color = Color.Black),
-            leadingIcon = {
-                Icon(
-                    painter = painterResource(id = R.drawable.search),
-                    contentDescription = null,
-                    tint = colorResource(id = R.color.gray_color)
-                )
-            },
-            trailingIcon = {
-                if (text.text.isNotEmpty()) {
-                    IconButton(onClick = { viewModel.clear() }) {
-                        Icon(
-                            painter = painterResource(id = R.drawable.cross),
-                            contentDescription = null,
-                            tint = colorResource(id = R.color.gray_color)
-                        )
-                    }
-                }
-            },
-            placeholder = {
-                Text(
-                    text = stringResource(id = R.string.search_button),
-                    color = colorResource(id = R.color.hell_gray_color)
-                )
-            },
-            keyboardOptions = KeyboardOptions.Default.copy(
-                imeAction = ImeAction.Done,
-                keyboardType = KeyboardType.Text
-            ),
-            colors = TextFieldDefaults.colors(
-                focusedContainerColor = MaterialTheme.colorScheme.surface,
-                unfocusedContainerColor = MaterialTheme.colorScheme.surface,
-                disabledContainerColor = MaterialTheme.colorScheme.surface,
-                focusedTextColor = MaterialTheme.colorScheme.onTertiary,
-                unfocusedTextColor = MaterialTheme.colorScheme.onTertiary,
-
-            ),
-            singleLine = true,
-        )
+        CircularProgressIndicator()
     }
 }

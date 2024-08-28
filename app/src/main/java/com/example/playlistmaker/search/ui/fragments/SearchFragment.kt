@@ -43,8 +43,8 @@ class SearchFragment : Fragment() {
             setContent {
                 AppTheme(darkTheme = isSystemInDarkTheme()) {
                     SearchScreen(
-                        viewModel,
-                        debounce(
+                        viewModel = viewModel,
+                        onTrackClickDebounce = debounce(
                             CLICK_DEBOUNCE_DELAY_MILLIS,
                             viewLifecycleOwner.lifecycleScope,
                             false
@@ -54,7 +54,8 @@ class SearchFragment : Fragment() {
                             findNavController().navigate(
                                 R.id.action_searchFragment_to_audioPlayer
                             )
-                        })
+                        }
+                    )
                 }
             }
         }

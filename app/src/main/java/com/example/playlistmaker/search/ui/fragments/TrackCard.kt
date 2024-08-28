@@ -29,9 +29,15 @@ import com.example.playlistmaker.search.domain.model.Track
 
 
 @Composable
-fun TrackItemList(trackList: List<Track>, clickListener: (Track) -> Unit) {
-    for (track in trackList) {
-        TrackCard(track, clickListener)
+fun TrackItemList(
+    modifier: Modifier = Modifier,
+    trackList: List<Track>,
+    clickListener: (Track) -> Unit
+) {
+    Column(modifier) {
+        for (track in trackList) {
+            TrackCard(track, clickListener)
+        }
     }
 }
 

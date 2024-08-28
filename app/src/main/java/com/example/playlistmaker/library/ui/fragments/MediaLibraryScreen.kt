@@ -18,7 +18,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Tab
 import androidx.compose.material3.TabRow
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
@@ -61,12 +60,13 @@ fun MediaLibraryScreen(
         YPTopBar(title = stringResource(id = R.string.library_button))
         TabRow(
             selectedTabIndex = selectedTabIndex,
+            containerColor = MaterialTheme.colorScheme.background,
             modifier = Modifier.fillMaxWidth()
         ) {
             Tab(
                 selected = pagerState.currentPage == 0,
-                selectedContentColor = MaterialTheme.colorScheme.background,
-                unselectedContentColor = MaterialTheme.colorScheme.background,
+                selectedContentColor = MaterialTheme.colorScheme.onTertiary,
+                unselectedContentColor = MaterialTheme.colorScheme.secondary,
                 onClick = {
                     scope.launch {
                         pagerState.animateScrollToPage(0)
@@ -77,8 +77,8 @@ fun MediaLibraryScreen(
 
             Tab(
                 selected = pagerState.currentPage == 1,
-                selectedContentColor = MaterialTheme.colorScheme.primary,
-                unselectedContentColor = MaterialTheme.colorScheme.onBackground,
+                selectedContentColor = MaterialTheme.colorScheme.onTertiary,
+                unselectedContentColor = MaterialTheme.colorScheme.secondary,
                 onClick = {
                     scope.launch {
                         pagerState.animateScrollToPage(1)
@@ -106,72 +106,6 @@ fun MediaLibraryScreen(
                     onNewPlaylistClick = onNewPlaylistClick,
                 )
             }
-        }
-    }
-}
-
-
-@Composable
-fun PlaylistsPage(
-    viewModel: PlaylistLibraryViewModel,
-    onPlaylistClick: (PlayList) -> Unit,
-    onNewPlaylistClick: () -> Unit,
-) {
-    val state by viewModel.stateLiveData.observeAsState(PlaylistsState.Empty)
-
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(horizontal = 16.dp)
-    ) {
-
-        AddPlayListButton(
-            onNewPlaylistClick = onNewPlaylistClick
-        )
-        when (state) {
-            is PlaylistsState.Content -> {
-                val playlists = (state as PlaylistsState.Content).items
-                PlaylistsGrid(playlists = playlists, onPlaylistClick = onPlaylistClick)
-            }
-
-            PlaylistsState.Empty -> {
-                EmptyPlayLists()
-            }
-        }
-    }
-}
-
-@Composable
-fun AddPlayListButton(
-    onNewPlaylistClick: () -> Unit
-) {
-    val backgroundColor = MaterialTheme.colorScheme.background
-    val textColor = MaterialTheme.colorScheme.secondary
-    val fontFamily = FontFamily(Font(R.font.ys_display_medium))
-
-    Box(
-        modifier = Modifier.fillMaxWidth(),
-        contentAlignment = Alignment.Center
-    ) {
-        Button(
-            onClick = onNewPlaylistClick,
-            colors = ButtonDefaults.buttonColors(
-                containerColor = backgroundColor,
-                contentColor = textColor
-            ),
-            shape = RoundedCornerShape(50.dp),
-            modifier = Modifier
-                .wrapContentWidth()
-                .height(56.dp)
-                .wrapContentHeight()
-                .padding(top = 8.dp)
-        ) {
-            Text(
-                text = stringResource(id = R.string.new_playlist),
-                fontFamily = fontFamily,
-                fontSize = 14.sp,
-                textAlign = TextAlign.Center
-            )
         }
     }
 }
