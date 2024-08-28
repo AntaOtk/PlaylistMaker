@@ -1,10 +1,21 @@
 package com.example.playlistmaker.player.ui.activity
 
+import android.Manifest
+import android.content.ComponentName
+import android.content.Context
+import android.content.Intent
+import android.content.IntentFilter
+import android.content.ServiceConnection
+import android.net.ConnectivityManager
+import android.os.Build
 import android.os.Bundle
+import android.os.IBinder
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
@@ -14,8 +25,10 @@ import com.example.playlistmaker.databinding.AudioPlayerBinding
 import com.example.playlistmaker.library.domain.model.PlayList
 import com.example.playlistmaker.main.ui.MainActivityViewModel
 import com.example.playlistmaker.player.domain.util.PlayerState
+import com.example.playlistmaker.player.services.MediaPlayerService
 import com.example.playlistmaker.player.ui.view_model.PlayerViewModel
 import com.example.playlistmaker.search.domain.model.Track
+import com.example.playlistmaker.util.ConnectionBroadcastReceiver
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import org.koin.androidx.viewmodel.ext.android.activityViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -26,13 +39,34 @@ class AudioPlayer : Fragment() {
 
     private val viewModel by viewModel<PlayerViewModel>()
     private val hostViewModel by activityViewModel<MainActivityViewModel>()
-
+    private val connectionBroadcastReceiver = ConnectionBroadcastReceiver()
     private var _binding: AudioPlayerBinding? = null
     private val binding get() = _binding!!
     private val playlists = mutableListOf<PlayList>()
     var track: Track? = null
     private val adapter = SmallPlayListAdapter(playlists) {
         track?.let { it1 -> viewModel.addToPlaylist(it1, it) }
+    }
+
+    private val serviceConnection = object : ServiceConnection {
+        override fun onServiceConnected(name: ComponentName?, service: IBinder?) {
+            val binder = service as MediaPlayerService.MusicServiceBinder
+            viewModel.setAudioPlayerControl(binder.getService())
+        }
+
+        override fun onServiceDisconnected(name: ComponentName?) {
+            viewModel.removeAudioPlayerControl()
+        }
+    }
+
+    private val requestPermissionLauncher = registerForActivityResult(
+        ActivityResultContracts.RequestPermission()
+    ) { isGranted: Boolean ->
+        if (isGranted) {
+            bindMusicService()
+        } else {
+            Toast.makeText(requireContext(), "Can't bind service!", Toast.LENGTH_LONG).show()
+        }
     }
 
     override fun onCreateView(
@@ -43,14 +77,30 @@ class AudioPlayer : Fragment() {
         return binding.root
     }
 
+    override fun onResume() {
+        super.onResume()
+        ContextCompat.registerReceiver(
+            requireContext(),
+            connectionBroadcastReceiver,
+            IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION),
+            ContextCompat.RECEIVER_NOT_EXPORTED,
+        )
+        viewModel.hideNotification()
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         hostViewModel.getCurrentTrack().observe(viewLifecycleOwner) { currentTrack ->
             this.track = currentTrack
             renderInformation(currentTrack)
+            viewModel.getChecked(currentTrack)
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                requestPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
+            } else {
+                bindMusicService()
+            }
         }
-
-
+        binding.playButton.onTouchListener = { viewModel.onPlayerButtonClicked() }
         val bottomSheetBehavior = BottomSheetBehavior.from(binding.playlistsBottomSheet).apply {
             state = BottomSheetBehavior.STATE_HIDDEN
         }
@@ -73,14 +123,9 @@ class AudioPlayer : Fragment() {
             override fun onSlide(bottomSheet: View, slideOffset: Float) {
             }
         })
-
         binding.recyclerView.adapter = adapter
-        binding.playButton.onTouchListener = { viewModel.playbackControl() }
         viewModel.observeState().observe(viewLifecycleOwner) {
             render(it)
-        }
-        viewModel.observeProgressTimeState().observe(viewLifecycleOwner) {
-            progressTimeViewUpdate(it)
         }
         viewModel.observeFavoriteState().observe(viewLifecycleOwner) {
             favoriteRender(it)
@@ -98,14 +143,25 @@ class AudioPlayer : Fragment() {
             bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
         }
         binding.addPlaylistButton.setOnClickListener {
-            viewModel.mediaPlayerReset()
             findNavController().navigate((R.id.action_audioPlayer_to_playlistCreatorFragment))
             bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
         }
     }
 
+    private fun bindMusicService() {
+        val intent = Intent(requireContext(), MediaPlayerService::class.java).apply {
+            putExtra("song_url", track?.previewUrl)
+            putExtra("song_title", track?.trackName)
+            putExtra("song_artist",track?.artistName)
+        }
+        requireContext().bindService(intent, serviceConnection, Context.BIND_AUTO_CREATE)
+    }
+
+    private fun unbindMusicService() {
+        requireContext().unbindService(serviceConnection)
+    }
+
     private fun renderInformation(track: Track) {
-        viewModel.prepare(track)
         binding.title.text = track.trackName
         binding.artist.text = track.artistName
         binding.albumName.text = track.collectionName
@@ -135,19 +191,8 @@ class AudioPlayer : Fragment() {
     }
 
     private fun render(state: PlayerState) {
-        when (state) {
-            PlayerState.PLAYING -> startPlayer()
-            PlayerState.PAUSED, PlayerState.COMPLETED -> pausePlayer()
-            PlayerState.INIT -> Unit
-        }
-    }
-
-    private fun startPlayer() {
-        binding.playButton.changeButtonStatus(true)
-    }
-
-    private fun pausePlayer() {
-        binding.playButton.changeButtonStatus(false)
+        binding.playButton.changeButtonStatus(state.buttonState)
+        progressTimeViewUpdate(state.progress)
     }
 
     private fun progressTimeViewUpdate(progressTime: String) {
@@ -162,6 +207,12 @@ class AudioPlayer : Fragment() {
 
     override fun onPause() {
         super.onPause()
-        viewModel.onPause()
+        requireContext().unregisterReceiver(connectionBroadcastReceiver)
+        viewModel.showNotification()
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        unbindMusicService()
     }
 }
