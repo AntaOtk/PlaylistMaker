@@ -1,28 +1,22 @@
 package com.example.playlistmaker.search.ui.fragments
 
-import android.content.Context
 import android.os.Bundle
-import android.text.Editable
 import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.inputmethod.EditorInfo
-import android.view.inputmethod.InputMethodManager
-import androidx.compose.runtime.Composable
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.ui.platform.ComposeView
-import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.example.playlistmaker.R
-import com.example.playlistmaker.databinding.FragmentSearchBinding
 import com.example.playlistmaker.main.ui.MainActivityViewModel
 import com.example.playlistmaker.search.domain.model.Track
-import com.example.playlistmaker.search.ui.SearchState
 import com.example.playlistmaker.search.ui.adapter.SearchAdapter
 import com.example.playlistmaker.search.ui.view_model.SearchViewModel
 import com.example.playlistmaker.search.util.debounce
+import com.example.playlistmaker.theme.AppTheme
 import org.koin.androidx.viewmodel.ext.android.activityViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -47,7 +41,21 @@ class SearchFragment : Fragment() {
     ): View {
         return ComposeView(requireContext()).apply {
             setContent {
-                SearchScreen(viewModel)
+                AppTheme(darkTheme = isSystemInDarkTheme()) {
+                    SearchScreen(
+                        viewModel,
+                        debounce(
+                            CLICK_DEBOUNCE_DELAY_MILLIS,
+                            viewLifecycleOwner.lifecycleScope,
+                            false
+                        ) { track ->
+                            viewModel.setTrack(track)
+                            hostViewModel.setCurrentTrack(track)
+                            findNavController().navigate(
+                                R.id.action_searchFragment_to_audioPlayer
+                            )
+                        })
+                }
             }
         }
     }

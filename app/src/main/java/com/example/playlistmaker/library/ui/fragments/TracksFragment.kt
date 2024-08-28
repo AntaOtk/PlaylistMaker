@@ -18,7 +18,7 @@ import com.example.playlistmaker.search.util.debounce
 import org.koin.androidx.viewmodel.ext.android.activityViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class TracksFragment : Fragment() {
+/*class TracksFragment : Fragment() {
 
     private val viewModel by viewModel<TracksViewModel>()
     private val hostViewModel by activityViewModel<MainActivityViewModel>()
@@ -31,6 +31,7 @@ class TracksFragment : Fragment() {
     private var adapter = SearchAdapter(tracks) {
         onTrackClickDebounce(it)
     }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -64,6 +65,7 @@ class TracksFragment : Fragment() {
         super.onDestroyView()
         _binding = null
     }
+
     private fun render(state: FavoriteState) {
         when (state) {
             is FavoriteState.Content -> showContent(state.tracks)
@@ -86,9 +88,11 @@ class TracksFragment : Fragment() {
         tracks.addAll(trackList)
         adapter.notifyDataSetChanged()
     }
+
     companion object {
         private const val CLICK_DEBOUNCE_DELAY_MILLIS = 100L
         fun newInstance() = TracksFragment()
     }
 }
 
+ */

@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.playlistmaker.library.domain.FavoriteTracksInteractor
 import com.example.playlistmaker.library.ui.FavoriteState
 import com.example.playlistmaker.search.domain.model.Track
+import com.example.playlistmaker.search.ui.SearchState
 import kotlinx.coroutines.launch
 
 class TracksViewModel(private val interactor: FavoriteTracksInteractor) : ViewModel() {
@@ -20,8 +21,8 @@ class TracksViewModel(private val interactor: FavoriteTracksInteractor) : ViewMo
         }
     }
 
-    private val stateFavoriteLiveData = MutableLiveData<FavoriteState>()
-    fun observeState(): LiveData<FavoriteState> = stateFavoriteLiveData
+    private val _stateFavoriteLiveData = MutableLiveData<FavoriteState>()
+    val stateFavoriteLiveData: LiveData<FavoriteState> = _stateFavoriteLiveData
 
     private fun processResult(tracks: List<Track>):FavoriteState {
         return if (tracks.isEmpty()) {
@@ -32,6 +33,6 @@ class TracksViewModel(private val interactor: FavoriteTracksInteractor) : ViewMo
     }
 
     private fun renderState(state: FavoriteState) {
-        stateFavoriteLiveData.postValue(state)
+        _stateFavoriteLiveData.postValue(state)
     }
 }

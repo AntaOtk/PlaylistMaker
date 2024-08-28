@@ -12,8 +12,8 @@ import kotlinx.coroutines.launch
 class PlaylistLibraryViewModel(val interactor: PlaylistLibraryInteractor) : ViewModel() {
 
 
-    private val stateLiveData = MutableLiveData<PlaylistsState>()
-    fun observeState(): LiveData<PlaylistsState> = stateLiveData
+    private val _stateLiveData = MutableLiveData<PlaylistsState>()
+    val stateLiveData: LiveData<PlaylistsState> = _stateLiveData
 
     fun fill() {
         viewModelScope.launch {
@@ -33,7 +33,7 @@ class PlaylistLibraryViewModel(val interactor: PlaylistLibraryInteractor) : View
     }
 
     private fun renderState(state: PlaylistsState) {
-        stateLiveData.postValue(state)
+        _stateLiveData.postValue(state)
     }
 }
 

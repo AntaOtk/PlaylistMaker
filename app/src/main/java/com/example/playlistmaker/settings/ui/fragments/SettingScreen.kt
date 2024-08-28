@@ -29,6 +29,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.playlistmaker.R
+import com.example.playlistmaker.library.ui.fragments.YPTopBar
 import com.example.playlistmaker.settings.ui.view_model.SettingsViewModel
 import com.example.playlistmaker.settings.util.ActionType
 
@@ -62,19 +63,7 @@ fun SettingsScreenContent(
                 .background(MaterialTheme.colors.background)
                 .padding(16.dp)
         ) {
-            TopAppBar(
-                title = {
-                    Text(
-                        text = stringResource(id = R.string.settings_button),
-                        color = MaterialTheme.colors.onBackground,
-                        fontSize = 22.sp
-                    )
-                },
-                backgroundColor = MaterialTheme.colors.background,
-                modifier = Modifier.fillMaxWidth(),
-                elevation = 0.dp
-            )
-
+            YPTopBar(title = stringResource(id = R.string.settings_button))
             SettingsItem(
                 text = stringResource(id = R.string.them_setting),
                 trailingContent = {
