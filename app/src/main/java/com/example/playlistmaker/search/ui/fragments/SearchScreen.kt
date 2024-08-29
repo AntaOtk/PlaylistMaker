@@ -83,7 +83,6 @@ fun HistoryScreen(
     clickListener: (Track) -> Unit,
     onButtonClick: () -> Unit
 ) {
-    Log.d("my history", trackList.toString())
     if (trackList.isNotEmpty()) {
         Column() {
             Text(

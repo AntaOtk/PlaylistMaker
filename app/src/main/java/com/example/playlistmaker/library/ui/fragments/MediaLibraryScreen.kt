@@ -75,7 +75,6 @@ fun MediaLibraryScreen(
                 onClick = {
                     scope.launch {
                         pagerState.animateScrollToPage(0)
-                        Log.d("my panic", pagerState.currentPage.toString())
                     }
                 },
                 text = { Text(text = stringResource(id = R.string.my_tracks)) }
@@ -86,7 +85,6 @@ fun MediaLibraryScreen(
                 onClick = {
                     scope.launch {
                         pagerState.animateScrollToPage(1)
-                        Log.d("my panic", pagerState.currentPage.toString())
                     }
                 },
                 text = { Text(text = stringResource(id = R.string.playlists)) },

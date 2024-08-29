@@ -1,10 +1,12 @@
 package com.example.playlistmaker.search.ui.fragments
 
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -70,24 +72,26 @@ fun TrackCard(track: Track, clickListener: (Track) -> Unit) {
                 failure = placeholder(R.drawable.placeholder),
                 contentDescription = track.trackName
             )
-            Column(modifier = Modifier
-                .padding(start = 16.dp)
-                .weight(5f)) {
+            Column(
+                modifier = Modifier
+                    .fillMaxHeight()
+                    .padding(start = 16.dp)
+                    .weight(5f),
+                verticalArrangement = Arrangement.SpaceAround
+            ) {
                 Text(
-                    modifier = Modifier.weight(1f),
                     style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.secondary,
-                    text = track.trackName
+                    text = track.trackName,
+                    overflow = TextOverflow.Ellipsis,
+                    maxLines = 1
                 )
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                    modifier = Modifier.weight(1f)
-                ) {
+                Row() {
                     Text(
                         modifier = Modifier.weight(2f, fill = false),
                         style = MaterialTheme.typography.bodySmall,
                         color = MaterialTheme.colorScheme.onSurface,
-                        text = "${track.artistName}",
+                        text = track.artistName,
                         overflow = TextOverflow.Ellipsis,
                         maxLines = 1
                     )
