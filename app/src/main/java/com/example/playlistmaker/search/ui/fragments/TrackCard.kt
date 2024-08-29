@@ -123,7 +123,7 @@ fun TrackCard(track: Track, clickListener: (Track) -> Unit) {
                     .width(24.dp),
                 painter = painterResource(id = R.drawable.forward),
                 contentDescription = null,
-                tint = MaterialTheme.colorScheme.secondary
+                tint = MaterialTheme.colorScheme.onSurface
             )
 
         }
