@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -89,7 +90,6 @@ fun AddPlayListButton(
     val backgroundColor = MaterialTheme.colorScheme.secondary
     val textColor = MaterialTheme.colorScheme.background
     val fontFamily = FontFamily(Font(R.font.ys_display_medium))
-
     Box(
         modifier = Modifier.fillMaxWidth(),
         contentAlignment = Alignment.Center

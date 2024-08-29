@@ -29,6 +29,9 @@ class SearchViewModel(private val tracksInteractor: TracksInteractor) : ViewMode
         _text.value = newText
     }
 
+    fun repeatSearch(){
+        latestSearchText?.let { search(it) }
+    }
     fun searchDebounce() {
         if (latestSearchText == text.value) {
             return
@@ -64,7 +67,7 @@ class SearchViewModel(private val tracksInteractor: TracksInteractor) : ViewMode
     }
 
 
-    private fun search(newSearchText: String) {
+    fun search(newSearchText: String) {
         if (newSearchText.isNotEmpty()) {
             renderState(
                 SearchState.Loading

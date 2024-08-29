@@ -1,39 +1,32 @@
 package com.example.playlistmaker.library.ui.fragments
 
+import android.util.Log
 import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.wrapContentHeight
-import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material.TabRowDefaults.Divider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Tab
 import androidx.compose.material3.TabRow
+import androidx.compose.material3.TabRowDefaults
+import androidx.compose.material3.TabRowDefaults.tabIndicatorOffset
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.Font
-import androidx.compose.ui.text.font.FontFamily
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.example.playlistmaker.R
 import com.example.playlistmaker.library.domain.model.PlayList
-import com.example.playlistmaker.library.ui.PlaylistsState
 import com.example.playlistmaker.library.ui.view_model.PlaylistLibraryViewModel
 import com.example.playlistmaker.library.ui.view_model.TracksViewModel
 import com.example.playlistmaker.search.domain.model.Track
@@ -49,8 +42,8 @@ fun MediaLibraryScreen(
     onNewPlaylistClick: () -> Unit
 ) {
     val scope = rememberCoroutineScope()
-    val pagerState = rememberPagerState(pageCount = { 2 })
-    val selectedTabIndex = remember { pagerState.currentPage }
+    val pagerState = rememberPagerState(pageCount = { 2 }, initialPage = 0)
+    val selectedTabIndex = remember { mutableIntStateOf(pagerState.currentPage) }
 
     Column(
         modifier = Modifier
@@ -59,35 +52,47 @@ fun MediaLibraryScreen(
     ) {
         YPTopBar(title = stringResource(id = R.string.library_button))
         TabRow(
-            selectedTabIndex = selectedTabIndex,
+            modifier = Modifier.fillMaxWidth(),
+            selectedTabIndex = selectedTabIndex.intValue,
             containerColor = MaterialTheme.colorScheme.background,
-            modifier = Modifier.fillMaxWidth()
+            contentColor = MaterialTheme.colorScheme.secondary,
+            indicator = { tabPositions ->
+                TabRowDefaults.Indicator(
+                    Modifier.tabIndicatorOffset(tabPositions[pagerState.currentPage]),
+                    color = MaterialTheme.colorScheme.onTertiary,
+                    height = 2.dp
+                )
+            },
+            divider = {
+                Divider(
+                    color = Color.Transparent,
+                    thickness = 0.dp
+                )
+            }
         ) {
             Tab(
-                selected = pagerState.currentPage == 0,
-                selectedContentColor = MaterialTheme.colorScheme.onTertiary,
-                unselectedContentColor = MaterialTheme.colorScheme.secondary,
+                selected = selectedTabIndex.intValue == 0,
                 onClick = {
                     scope.launch {
                         pagerState.animateScrollToPage(0)
+                        Log.d("my panic", pagerState.currentPage.toString())
                     }
                 },
                 text = { Text(text = stringResource(id = R.string.my_tracks)) }
             )
 
             Tab(
-                selected = pagerState.currentPage == 1,
-                selectedContentColor = MaterialTheme.colorScheme.onTertiary,
-                unselectedContentColor = MaterialTheme.colorScheme.secondary,
+                selected = selectedTabIndex.intValue == 1,
                 onClick = {
                     scope.launch {
                         pagerState.animateScrollToPage(1)
+                        Log.d("my panic", pagerState.currentPage.toString())
                     }
                 },
                 text = { Text(text = stringResource(id = R.string.playlists)) },
             )
         }
-
+        Spacer(modifier = Modifier.fillMaxWidth().height(8.dp))
         HorizontalPager(
             state = pagerState,
             modifier = Modifier

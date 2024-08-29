@@ -1,12 +1,14 @@
 package com.example.playlistmaker.search.ui.fragments
 
+import android.content.IntentFilter
+import android.net.ConnectivityManager
 import android.os.Bundle
-import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.ui.platform.ComposeView
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -17,6 +19,7 @@ import com.example.playlistmaker.search.ui.adapter.SearchAdapter
 import com.example.playlistmaker.search.ui.view_model.SearchViewModel
 import com.example.playlistmaker.search.util.debounce
 import com.example.playlistmaker.theme.AppTheme
+import com.example.playlistmaker.util.ConnectionBroadcastReceiver
 import org.koin.androidx.viewmodel.ext.android.activityViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -31,8 +34,7 @@ class SearchFragment : Fragment() {
         onTrackClickDebounce(track)
     }
 
-    private var inputText: String = ""
-    private var simpleTextWatcher: TextWatcher? = null
+    private val connectionBroadcastReceiver = ConnectionBroadcastReceiver()
 
 
     override fun onCreateView(
@@ -59,6 +61,21 @@ class SearchFragment : Fragment() {
                 }
             }
         }
+    }
+
+    override fun onPause() {
+        super.onPause()
+        requireContext().unregisterReceiver(connectionBroadcastReceiver)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        ContextCompat.registerReceiver(
+            requireContext(),
+            connectionBroadcastReceiver,
+            IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION),
+            ContextCompat.RECEIVER_NOT_EXPORTED,
+        )
     }
 
 //    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

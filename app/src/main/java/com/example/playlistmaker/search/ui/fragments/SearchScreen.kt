@@ -3,7 +3,10 @@ package com.example.playlistmaker.search.ui.fragments
 import android.util.Log
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonColors
@@ -28,7 +31,6 @@ import com.example.playlistmaker.search.domain.model.Track
 import com.example.playlistmaker.search.ui.SearchState
 import com.example.playlistmaker.search.ui.view_model.SearchViewModel
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SearchScreen(
     viewModel: SearchViewModel,
@@ -39,14 +41,14 @@ fun SearchScreen(
     var text by remember { mutableStateOf("") }
     Column {
         YPTopBar(stringResource(id = R.string.search_button))
-        SearchTextField(
-            text = text,
+        SearchTextField(text = text,
             hint = stringResource(R.string.search_button),
             onTextChange = { inputText ->
                 viewModel.onTextChanged(inputText)
                 viewModel.searchDebounce()
                 text = inputText
             })
+        Spacer(modifier = Modifier.fillMaxWidth().height(8.dp))
         when (currentData) {
             is SearchState.Content -> TrackItemList(
                 modifier = modifier.fillMaxSize(),
@@ -55,21 +57,19 @@ fun SearchScreen(
             )
 
             is SearchState.Empty -> EmptyMessage(
-                modifier,
-                (currentData as SearchState.Empty).message
+                messageText = (currentData as SearchState.Empty).message
             )
 
-            is SearchState.Error -> ErrorConnectionMessage(
-                modifier, (currentData as SearchState.Error).errorMessage
-            ) { viewModel.searchDebounce() }
+            is SearchState.Error -> ErrorConnectionMessage(messageText = (currentData as SearchState.Error).errorMessage,
+                onButtonClick = {
+                    viewModel.repeatSearch() })
 
             is SearchState.Loading -> LoadingView()
-            is SearchState.EmptyInput -> HistoryScreen(
-                modifier = modifier,
+
+            is SearchState.EmptyInput -> HistoryScreen(modifier = modifier,
                 trackList = (currentData as SearchState.EmptyInput).tracks,
                 clickListener = onTrackClickDebounce,
-                onButtonClick = { viewModel.clear() }
-            )
+                onButtonClick = { viewModel.clear() })
 
             else -> Unit
         }
@@ -94,8 +94,7 @@ fun HistoryScreen(
                 text = stringResource(id = R.string.clear_history)
             )
             TrackItemList(
-                trackList = trackList,
-                clickListener = clickListener
+                trackList = trackList, clickListener = clickListener
             )
             Button(
                 modifier = modifier

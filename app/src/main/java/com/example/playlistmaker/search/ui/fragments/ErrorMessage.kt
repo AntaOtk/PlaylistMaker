@@ -2,7 +2,10 @@ package com.example.playlistmaker.search.ui.fragments
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonColors
@@ -14,6 +17,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.example.playlistmaker.R
 
@@ -22,15 +26,17 @@ fun EmptyMessage(
     modifier: Modifier = Modifier.fillMaxSize(),
     messageText: String
 ) {
-    Column {
+    Column(modifier) {
+        Spacer(modifier = Modifier.fillMaxWidth().height(48.dp))
         Image(
-            modifier = modifier.align(Alignment.CenterHorizontally),
+            modifier = Modifier.align(Alignment.CenterHorizontally),
             painter = painterResource(id = R.drawable.search_message),
             contentDescription = null,
         )
         Text(
-            modifier = modifier.align(Alignment.CenterHorizontally),
+            modifier = Modifier.align(Alignment.CenterHorizontally),
             text = messageText,
+            textAlign = TextAlign.Center,
             style = MaterialTheme.typography.displayMedium.copy(
                 MaterialTheme.colorScheme.secondary
             )
@@ -44,21 +50,22 @@ fun ErrorConnectionMessage(
     messageText: String,
     onButtonClick: () -> Unit
 ) {
-    Column {
+    Column(modifier) {
         Image(
-            modifier = modifier.align(Alignment.CenterHorizontally),
+            modifier = Modifier.align(Alignment.CenterHorizontally),
             painter = painterResource(id = R.drawable.internet_message),
             contentDescription = null,
         )
         Text(
-            modifier = modifier.align(Alignment.CenterHorizontally),
+            modifier = Modifier.align(Alignment.CenterHorizontally),
             text = messageText,
+            textAlign = TextAlign.Center,
             style = MaterialTheme.typography.displayMedium.copy(
                 MaterialTheme.colorScheme.secondary
             )
         )
         Button(
-            modifier = modifier
+            modifier = Modifier
                 .align(Alignment.CenterHorizontally)
                 .padding(top = 24.dp),
             onClick = onButtonClick,

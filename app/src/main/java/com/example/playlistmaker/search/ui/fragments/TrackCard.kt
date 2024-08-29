@@ -4,10 +4,12 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -18,6 +20,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
@@ -25,6 +28,8 @@ import com.bumptech.glide.integration.compose.GlideImage
 import com.bumptech.glide.integration.compose.placeholder
 import com.example.playlistmaker.R
 import com.example.playlistmaker.search.domain.model.Track
+import java.text.SimpleDateFormat
+import java.util.Locale
 
 
 @Composable
@@ -65,25 +70,56 @@ fun TrackCard(track: Track, clickListener: (Track) -> Unit) {
                 failure = placeholder(R.drawable.placeholder),
                 contentDescription = track.trackName
             )
-            Column(modifier = Modifier.weight(1f)) {
+            Column(modifier = Modifier
+                .padding(start = 16.dp)
+                .weight(5f)) {
                 Text(
-                    modifier = Modifier.padding(start = 16.dp).padding(vertical = 4.dp),
+                    modifier = Modifier.weight(1f),
                     style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.secondary,
                     text = track.trackName
                 )
-                Text(
-                    modifier = Modifier.padding(start = 16.dp),
-                    style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onSurface,
-                    text = "${track.artistName} -  ${track.trackTimeMillis}"
-                )
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    modifier = Modifier.weight(1f)
+                ) {
+                    Text(
+                        modifier = Modifier.weight(2f, fill = false),
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurface,
+                        text = "${track.artistName}",
+                        overflow = TextOverflow.Ellipsis,
+                        maxLines = 1
+                    )
+                    Spacer(modifier = Modifier.width(4.dp))
+                    Icon(
+                        painter = painterResource(id = R.drawable.divider),
+                        contentDescription = null,
+                        tint = MaterialTheme.colorScheme.onSurface,
+                        modifier = Modifier
+                            .size(8.dp)
+                            .align(Alignment.CenterVertically)
+                    )
+                    Spacer(modifier = Modifier.width(4.dp))
+                    Text(
+                        modifier = Modifier.weight(1f),
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurface,
+                        text = SimpleDateFormat(
+                            "mm:ss",
+                            Locale.getDefault()
+                        ).format(track.trackTimeMillis)
+                    )
+
+                }
             }
             Icon(
-                modifier = Modifier.align(Alignment.CenterVertically),
+                modifier = Modifier
+                    .align(Alignment.CenterVertically)
+                    .width(24.dp),
                 painter = painterResource(id = R.drawable.forward),
                 contentDescription = null,
-                tint = MaterialTheme.colorScheme.onBackground
+                tint = MaterialTheme.colorScheme.secondary
             )
 
         }
@@ -94,7 +130,31 @@ fun TrackCard(track: Track, clickListener: (Track) -> Unit) {
 @Preview()
 @Composable()
 fun ItemsPreview() {
-    TrackCard(track = Track(
-        12, "3232", "1231", 2222, "3232", "3232", "3232", "3232", "3232", "3232"
-    ), { track -> 1 })
+    Column {
+        TrackCard(track = Track(
+            12,
+            "3232",
+            "123112311231123112311231123112311231123112311231",
+            2222,
+            "3232",
+            "3232",
+            "3232",
+            "3232",
+            "3232",
+            "3232"
+        ), { track -> 1 })
+        TrackCard(track = Track(
+            12,
+            "3232",
+            "1231121231",
+            2222,
+            "3232",
+            "3232",
+            "3232",
+            "3232",
+            "3232",
+            "3232"
+        ), { track -> 1 })
+    }
+
 }

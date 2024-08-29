@@ -50,7 +50,7 @@ class MediaPlayerService : Service(), AudioPlayerControl {
         }
     }
 
-    override fun showNotification(){
+    override fun showNotification() {
         if (_playerState.value is PlayerState.Playing) {
             ServiceCompat.startForeground(
                 this,
@@ -62,8 +62,8 @@ class MediaPlayerService : Service(), AudioPlayerControl {
         }
     }
 
-    override fun hideNotification(){
-        if (notificationStatus){
+    override fun hideNotification() {
+        if (notificationStatus) {
             ServiceCompat.stopForeground(this, ServiceCompat.STOP_FOREGROUND_REMOVE)
             notificationStatus = !notificationStatus
         }
