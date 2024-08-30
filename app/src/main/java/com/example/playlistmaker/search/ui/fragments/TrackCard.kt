@@ -77,7 +77,7 @@ fun TrackCard(track: Track, clickListener: (Track) -> Unit) {
                     .fillMaxHeight()
                     .padding(start = 16.dp)
                     .weight(5f),
-                verticalArrangement = Arrangement.SpaceAround
+                verticalArrangement = Arrangement.Center
             ) {
                 Text(
                     style = MaterialTheme.typography.bodyMedium,
