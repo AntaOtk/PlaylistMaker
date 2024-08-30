@@ -12,9 +12,14 @@ import android.media.MediaPlayer
 import android.os.Binder
 import android.os.Build
 import android.os.IBinder
+import android.util.Log
 import androidx.core.app.NotificationCompat
 import androidx.core.app.ServiceCompat
+import com.example.playlistmaker.R
 import com.example.playlistmaker.player.domain.util.PlayerState
+import com.example.playlistmaker.player.ui.activity.AudioPlayer.Companion.TRACK_ARTIST
+import com.example.playlistmaker.player.ui.activity.AudioPlayer.Companion.TRACK_TITLE
+import com.example.playlistmaker.player.ui.activity.AudioPlayer.Companion.TRACK_URL
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -75,7 +80,9 @@ class MediaPlayerService : Service(), AudioPlayerControl {
     }
 
     override fun onBind(intent: Intent?): IBinder {
-        songUrl = intent?.getStringExtra("song_url") ?: ""
+        songUrl = intent?.getStringExtra(TRACK_URL) ?: ""
+        songTitle = intent?.getStringExtra(TRACK_TITLE) ?: ""
+        songArtist = intent?.getStringExtra(TRACK_ARTIST) ?: ""
         initMediaPlayer()
         createNotificationChannel()
 
@@ -90,7 +97,7 @@ class MediaPlayerService : Service(), AudioPlayerControl {
 
         val channel = NotificationChannel(
             NOTIFICATION_CHANNEL_ID,
-            "Music service",
+            this.resources.getString(R.string.app_name),
             NotificationManager.IMPORTANCE_DEFAULT
         )
         channel.description = "Service for playing music"
@@ -100,8 +107,9 @@ class MediaPlayerService : Service(), AudioPlayerControl {
     }
 
     private fun createServiceNotification(): Notification {
+        Log.d("S","i work")
         return NotificationCompat.Builder(this, NOTIFICATION_CHANNEL_ID)
-            .setContentTitle("Playlist Maker")
+            .setContentTitle(this.resources.getString(R.string.app_name))
             .setContentText("$songArtist - $songTitle")
             .setPriority(NotificationCompat.PRIORITY_DEFAULT)
             .setCategory(NotificationCompat.CATEGORY_SERVICE)

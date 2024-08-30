@@ -149,10 +149,11 @@ class AudioPlayer : Fragment() {
     }
 
     private fun bindMusicService() {
+        val track = hostViewModel.getCurrentTrack().value
         val intent = Intent(requireContext(), MediaPlayerService::class.java).apply {
-            putExtra("song_url", track?.previewUrl)
-            putExtra("song_title", track?.trackName)
-            putExtra("song_artist",track?.artistName)
+            putExtra(TRACK_URL, track?.previewUrl)
+            putExtra(TRACK_TITLE, track?.trackName)
+            putExtra(TRACK_ARTIST, track?.artistName)
         }
         requireContext().bindService(intent, serviceConnection, Context.BIND_AUTO_CREATE)
     }
@@ -214,5 +215,12 @@ class AudioPlayer : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         unbindMusicService()
+    }
+
+    companion object {
+        const val TRACK_URL = "song_url"
+        const val TRACK_TITLE = "song_title"
+        const val TRACK_ARTIST = "song_artist"
+
     }
 }
