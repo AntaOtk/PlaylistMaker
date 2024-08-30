@@ -12,7 +12,7 @@ import androidx.compose.ui.unit.sp
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun YPTopBar(title: String){
+fun YPTopBar(title: String) {
     TopAppBar(
         title = {
             Text(

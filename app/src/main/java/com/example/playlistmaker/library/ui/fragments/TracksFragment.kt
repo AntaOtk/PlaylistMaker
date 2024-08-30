@@ -1,23 +1,5 @@
 package com.example.playlistmaker.library.ui.fragments
 
-import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import androidx.fragment.app.Fragment
-import androidx.lifecycle.lifecycleScope
-import androidx.navigation.fragment.findNavController
-import com.example.playlistmaker.R
-import com.example.playlistmaker.databinding.TracksFragmentBinding
-import com.example.playlistmaker.library.ui.FavoriteState
-import com.example.playlistmaker.library.ui.view_model.TracksViewModel
-import com.example.playlistmaker.main.ui.MainActivityViewModel
-import com.example.playlistmaker.search.domain.model.Track
-import com.example.playlistmaker.search.ui.adapter.SearchAdapter
-import com.example.playlistmaker.search.util.debounce
-import org.koin.androidx.viewmodel.ext.android.activityViewModel
-import org.koin.androidx.viewmodel.ext.android.viewModel
-
 /*class TracksFragment : Fragment() {
 
     private val viewModel by viewModel<TracksViewModel>()

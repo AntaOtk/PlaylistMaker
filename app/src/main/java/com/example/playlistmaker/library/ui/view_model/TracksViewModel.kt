@@ -7,7 +7,6 @@ import androidx.lifecycle.viewModelScope
 import com.example.playlistmaker.library.domain.FavoriteTracksInteractor
 import com.example.playlistmaker.library.ui.FavoriteState
 import com.example.playlistmaker.search.domain.model.Track
-import com.example.playlistmaker.search.ui.SearchState
 import kotlinx.coroutines.launch
 
 class TracksViewModel(private val interactor: FavoriteTracksInteractor) : ViewModel() {
@@ -16,7 +15,7 @@ class TracksViewModel(private val interactor: FavoriteTracksInteractor) : ViewMo
     private val _stateFavoriteLiveData = MutableLiveData<FavoriteState>()
     val stateFavoriteLiveData: LiveData<FavoriteState> = _stateFavoriteLiveData
 
-    fun  fill() {
+    fun fill() {
         viewModelScope.launch {
             interactor.getTracks()
                 .collect { tracks ->
@@ -25,7 +24,7 @@ class TracksViewModel(private val interactor: FavoriteTracksInteractor) : ViewMo
         }
     }
 
-    private fun processResult(tracks: List<Track>):FavoriteState {
+    private fun processResult(tracks: List<Track>): FavoriteState {
         return if (tracks.isEmpty()) {
             FavoriteState.Empty
         } else {

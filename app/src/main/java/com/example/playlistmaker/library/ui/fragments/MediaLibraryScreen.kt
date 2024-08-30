@@ -1,6 +1,5 @@
 package com.example.playlistmaker.library.ui.fragments
 
-import android.util.Log
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -90,7 +89,9 @@ fun MediaLibraryScreen(
                 text = { Text(text = stringResource(id = R.string.playlists)) },
             )
         }
-        Spacer(modifier = Modifier.fillMaxWidth().height(8.dp))
+        Spacer(modifier = Modifier
+            .fillMaxWidth()
+            .height(8.dp))
         HorizontalPager(
             state = pagerState,
             modifier = Modifier

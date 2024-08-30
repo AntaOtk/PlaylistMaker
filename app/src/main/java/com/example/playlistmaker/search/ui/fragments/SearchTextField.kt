@@ -77,12 +77,10 @@ fun SearchTextField(
                         innerTextField()
                     }
                     if (text.isNotEmpty()) {
-                        Icon(
-                            painter = painterResource(id = R.drawable.cross),
+                        Icon(painter = painterResource(id = R.drawable.cross),
                             contentDescription = "Clear Icon",
                             tint = MaterialTheme.colorScheme.onSurfaceVariant,
-                            modifier = Modifier.clickable { onTextChange("") }
-                        )
+                            modifier = Modifier.clickable { onTextChange("") })
                     }
                 }
             },

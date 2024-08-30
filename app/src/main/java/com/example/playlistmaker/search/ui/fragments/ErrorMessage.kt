@@ -27,7 +27,9 @@ fun EmptyMessage(
     messageText: String
 ) {
     Column(modifier) {
-        Spacer(modifier = Modifier.fillMaxWidth().height(48.dp))
+        Spacer(modifier = Modifier
+            .fillMaxWidth()
+            .height(48.dp))
         Image(
             modifier = Modifier.align(Alignment.CenterHorizontally),
             painter = painterResource(id = R.drawable.search_message),
