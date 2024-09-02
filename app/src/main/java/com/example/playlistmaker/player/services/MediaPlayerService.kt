@@ -12,7 +12,6 @@ import android.media.MediaPlayer
 import android.os.Binder
 import android.os.Build
 import android.os.IBinder
-import android.util.Log
 import androidx.core.app.NotificationCompat
 import androidx.core.app.ServiceCompat
 import com.example.playlistmaker.R
@@ -94,11 +93,10 @@ class MediaPlayerService : Service(), AudioPlayerControl {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
             return
         }
-
         val channel = NotificationChannel(
             NOTIFICATION_CHANNEL_ID,
             this.resources.getString(R.string.app_name),
-            NotificationManager.IMPORTANCE_DEFAULT
+            NotificationManager.IMPORTANCE_MIN
         )
         channel.description = "Service for playing music"
         val notificationManager =
@@ -107,11 +105,12 @@ class MediaPlayerService : Service(), AudioPlayerControl {
     }
 
     private fun createServiceNotification(): Notification {
-        Log.d("S","i work")
+        val contentString = "$songArtist - $songTitle"
         return NotificationCompat.Builder(this, NOTIFICATION_CHANNEL_ID)
             .setContentTitle(this.resources.getString(R.string.app_name))
-            .setContentText("$songArtist - $songTitle")
-            .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+            .setContentText(contentString)
+            .setSmallIcon(R.drawable.ic_launcher_foreground)
+            .setPriority(NotificationCompat.PRIORITY_HIGH)
             .setCategory(NotificationCompat.CATEGORY_SERVICE)
             .build()
     }

@@ -1,5 +1,6 @@
 package com.example.playlistmaker.search.ui.fragments
 
+import android.util.Log
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -42,18 +43,25 @@ fun SearchScreen(
         SearchTextField(text = text,
             hint = stringResource(R.string.search_button),
             onTextChange = { inputText ->
-                viewModel.onTextChanged(inputText)
-                viewModel.searchDebounce()
                 text = inputText
+            },
+            onFocusEvent = {
+                viewModel.onTextChanged(text)
+                viewModel.searchDebounce()
             })
-        Spacer(modifier = Modifier
-            .fillMaxWidth()
-            .height(8.dp))
+        Spacer(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(8.dp)
+        )
         when (currentData) {
             is SearchState.Content -> TrackItemList(
                 modifier = modifier.fillMaxSize(),
                 trackList = (currentData as SearchState.Content).tracks,
-                clickListener = onTrackClickDebounce
+                clickListener = {
+                    text = ""
+                    onTrackClickDebounce.invoke(it)
+                }
             )
 
             is SearchState.Empty -> EmptyMessage(
@@ -91,7 +99,7 @@ fun HistoryScreen(
                     .align(Alignment.CenterHorizontally)
                     .padding(8.dp),
                 color = MaterialTheme.colorScheme.secondary,
-                text = stringResource(id = R.string.clear_history)
+                text = stringResource(id = R.string.you_search)
             )
             TrackItemList(
                 trackList = trackList, clickListener = clickListener

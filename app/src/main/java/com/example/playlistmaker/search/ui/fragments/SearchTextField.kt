@@ -17,6 +17,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.focus.onFocusEvent
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
@@ -31,14 +32,16 @@ fun SearchTextField(
     modifier: Modifier = Modifier,
     text: String = "",
     hint: String = "",
-    onTextChange: (String) -> Unit
+    onTextChange: (String) -> Unit,
+    onFocusEvent: () -> Unit
 ) {
     Box {
         BasicTextField(
             modifier = modifier
                 .padding(horizontal = 16.dp)
                 .clip(RoundedCornerShape(8.dp))
-                .background(MaterialTheme.colorScheme.surfaceVariant),
+                .background(MaterialTheme.colorScheme.surfaceVariant)
+                .onFocusEvent { onFocusEvent.invoke() },
             value = text,
             onValueChange = onTextChange,
             singleLine = true,

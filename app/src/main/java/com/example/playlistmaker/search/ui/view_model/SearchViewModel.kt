@@ -64,6 +64,7 @@ class SearchViewModel(private val tracksInteractor: TracksInteractor) : ViewMode
 
     fun clear() {
         tracksInteractor.clear()
+        searchHistory()
     }
 
 
