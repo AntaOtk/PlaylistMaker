@@ -8,6 +8,8 @@ import com.example.playlistmaker.search.domain.model.Track
 
 class MainActivityViewModel : ViewModel() {
 
+
+
     private val currentLiveData = MutableLiveData<Track>()
     fun setCurrentTrack(track: Track) {
         currentLiveData.postValue(track)

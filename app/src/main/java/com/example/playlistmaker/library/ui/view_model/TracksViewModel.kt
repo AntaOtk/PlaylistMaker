@@ -11,7 +11,11 @@ import kotlinx.coroutines.launch
 
 class TracksViewModel(private val interactor: FavoriteTracksInteractor) : ViewModel() {
 
-    fun  fill() {
+
+    private val _stateFavoriteLiveData = MutableLiveData<FavoriteState>()
+    val stateFavoriteLiveData: LiveData<FavoriteState> = _stateFavoriteLiveData
+
+    fun fill() {
         viewModelScope.launch {
             interactor.getTracks()
                 .collect { tracks ->
@@ -20,10 +24,7 @@ class TracksViewModel(private val interactor: FavoriteTracksInteractor) : ViewMo
         }
     }
 
-    private val stateFavoriteLiveData = MutableLiveData<FavoriteState>()
-    fun observeState(): LiveData<FavoriteState> = stateFavoriteLiveData
-
-    private fun processResult(tracks: List<Track>):FavoriteState {
+    private fun processResult(tracks: List<Track>): FavoriteState {
         return if (tracks.isEmpty()) {
             FavoriteState.Empty
         } else {
@@ -32,6 +33,6 @@ class TracksViewModel(private val interactor: FavoriteTracksInteractor) : ViewMo
     }
 
     private fun renderState(state: FavoriteState) {
-        stateFavoriteLiveData.postValue(state)
+        _stateFavoriteLiveData.postValue(state)
     }
 }

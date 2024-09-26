@@ -25,14 +25,14 @@
         android:id="@+id/switch_theme"
         style="@style/MenuSettingStyle"
         android:layout_marginTop="20dp"
-        android:text="@string/thema_setting"
+        android:text="@string/them_setting"
         android:checked="false"
         />
 
     <TextView
         android:id="@+id/share_button"
         style="@style/MenuSettingStyle"
-        android:text="@string/teilen_setting"
+        android:text="@string/share_setting"
         app:drawableEndCompat="@drawable/share" />
 
     <TextView

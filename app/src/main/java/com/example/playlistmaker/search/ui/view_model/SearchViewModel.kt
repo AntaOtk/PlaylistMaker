@@ -9,29 +9,38 @@ import com.example.playlistmaker.search.domain.model.Track
 import com.example.playlistmaker.search.ui.SearchState
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
 class SearchViewModel(private val tracksInteractor: TracksInteractor) : ViewModel() {
 
-    private val stateLiveData = MutableLiveData<SearchState>()
-    fun observeState(): LiveData<SearchState> = stateLiveData
+    private val _text = MutableStateFlow("")
+    val text: StateFlow<String> = _text.asStateFlow()
+    private val _stateLiveData = MutableLiveData<SearchState>()
+    val stateData: LiveData<SearchState> = _stateLiveData
 
     private var latestSearchText: String? = null
 
     private var searchJob: Job? = null
 
+    fun onTextChanged(newText: String) {
+        _text.value = newText
+    }
 
-    fun searchDebounce(changedText: String) {
-        if (latestSearchText == changedText) {
+    fun repeatSearch(){
+        latestSearchText?.let { search(it) }
+    }
+    fun searchDebounce() {
+        if (latestSearchText == text.value) {
             return
         }
-        this.latestSearchText = changedText
-
-
+        this.latestSearchText = text.value
         searchJob?.cancel()
         searchJob = viewModelScope.launch {
             delay(SEARCH_DEBOUNCE_DELAY_MILLIS)
-            search(changedText)
+            search(text.value)
         }
     }
 
@@ -45,7 +54,7 @@ class SearchViewModel(private val tracksInteractor: TracksInteractor) : ViewMode
                     history
                 )
             ) else renderState(
-            SearchState.AllEmpty
+            SearchState.Default
         )
     }
 
@@ -55,10 +64,11 @@ class SearchViewModel(private val tracksInteractor: TracksInteractor) : ViewMode
 
     fun clear() {
         tracksInteractor.clear()
+        searchHistory()
     }
 
 
-    private fun search(newSearchText: String) {
+    fun search(newSearchText: String) {
         if (newSearchText.isNotEmpty()) {
             renderState(
                 SearchState.Loading
@@ -76,7 +86,7 @@ class SearchViewModel(private val tracksInteractor: TracksInteractor) : ViewMode
     }
 
     private fun renderState(state: SearchState) {
-        stateLiveData.postValue(state)
+        _stateLiveData.postValue(state)
     }
 
     private fun processResult(foundTrack: List<Track>?, errorMessage: String?) {
@@ -110,6 +120,7 @@ class SearchViewModel(private val tracksInteractor: TracksInteractor) : ViewMode
             }
         }
     }
+
     companion object {
         private const val SEARCH_DEBOUNCE_DELAY_MILLIS = 2000L
     }

@@ -10,7 +10,7 @@ import android.widget.Toast
 class ConnectionBroadcastReceiver : BroadcastReceiver() {
 
     override fun onReceive(context: Context?, intent: Intent?) {
-        if (isConnected(context)) {
+        if (!isConnected(context)) {
             Toast.makeText(context, "Отствует Подклюяение к интернету", Toast.LENGTH_LONG).show()
         }
     }

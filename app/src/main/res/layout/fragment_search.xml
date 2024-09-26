@@ -27,7 +27,7 @@
             style="@style/EditTextStyle"
             android:layout_width="match_parent"
             android:layout_height="36dp"
-            android:background="@drawable/edittextbeckground"
+            android:background="@drawable/edittext_beckground"
             android:drawableStart="@drawable/small_search"
             android:hint="@string/search_button"
             android:textCursorDrawable="@drawable/color_cursor"

@@ -1,29 +1,7 @@
 package com.example.playlistmaker.library.ui.fragments
 
-import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import androidx.core.view.isVisible
-import androidx.fragment.app.Fragment
-import androidx.lifecycle.lifecycleScope
-import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.GridLayoutManager
-import com.example.playlistmaker.R
-import com.example.playlistmaker.databinding.PlaylistsFragmentBinding
-import com.example.playlistmaker.library.domain.model.PlayList
-import com.example.playlistmaker.library.ui.PlaylistsState
-import com.example.playlistmaker.library.ui.adapter.PlayListAdapter
-import com.example.playlistmaker.library.ui.view_model.PlaylistLibraryViewModel
-import com.example.playlistmaker.main.ui.MainActivityViewModel
-import com.example.playlistmaker.search.util.debounce
-import org.koin.androidx.viewmodel.ext.android.activityViewModel
-import org.koin.androidx.viewmodel.ext.android.viewModel
+/*class PlayListLibraryFragment : Fragment() {
 
-class PlayListLibraryFragment : Fragment() {
-
-    private val viewModel by viewModel<PlaylistLibraryViewModel>()
-    private val hostViewModel by activityViewModel<MainActivityViewModel>()
 
     private var _binding: PlaylistsFragmentBinding? = null
     private val binding get() = _binding!!
@@ -99,8 +77,10 @@ class PlayListLibraryFragment : Fragment() {
         playlists.addAll(items)
         adapter.notifyDataSetChanged()
     }
+
     companion object {
         private const val CLICK_DEBOUNCE_DELAY_MILLIS = 100L
         fun newInstance() = PlayListLibraryFragment()
     }
 }
+*/

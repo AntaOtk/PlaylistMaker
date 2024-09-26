@@ -14,7 +14,11 @@ import android.os.Build
 import android.os.IBinder
 import androidx.core.app.NotificationCompat
 import androidx.core.app.ServiceCompat
+import com.example.playlistmaker.R
 import com.example.playlistmaker.player.domain.util.PlayerState
+import com.example.playlistmaker.player.ui.activity.AudioPlayer.Companion.TRACK_ARTIST
+import com.example.playlistmaker.player.ui.activity.AudioPlayer.Companion.TRACK_TITLE
+import com.example.playlistmaker.player.ui.activity.AudioPlayer.Companion.TRACK_URL
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -50,7 +54,7 @@ class MediaPlayerService : Service(), AudioPlayerControl {
         }
     }
 
-    override fun showNotification(){
+    override fun showNotification() {
         if (_playerState.value is PlayerState.Playing) {
             ServiceCompat.startForeground(
                 this,
@@ -62,8 +66,8 @@ class MediaPlayerService : Service(), AudioPlayerControl {
         }
     }
 
-    override fun hideNotification(){
-        if (notificationStatus){
+    override fun hideNotification() {
+        if (notificationStatus) {
             ServiceCompat.stopForeground(this, ServiceCompat.STOP_FOREGROUND_REMOVE)
             notificationStatus = !notificationStatus
         }
@@ -75,7 +79,9 @@ class MediaPlayerService : Service(), AudioPlayerControl {
     }
 
     override fun onBind(intent: Intent?): IBinder {
-        songUrl = intent?.getStringExtra("song_url") ?: ""
+        songUrl = intent?.getStringExtra(TRACK_URL) ?: ""
+        songTitle = intent?.getStringExtra(TRACK_TITLE) ?: ""
+        songArtist = intent?.getStringExtra(TRACK_ARTIST) ?: ""
         initMediaPlayer()
         createNotificationChannel()
 
@@ -87,11 +93,10 @@ class MediaPlayerService : Service(), AudioPlayerControl {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
             return
         }
-
         val channel = NotificationChannel(
             NOTIFICATION_CHANNEL_ID,
-            "Music service",
-            NotificationManager.IMPORTANCE_DEFAULT
+            this.resources.getString(R.string.app_name),
+            NotificationManager.IMPORTANCE_MIN
         )
         channel.description = "Service for playing music"
         val notificationManager =
@@ -100,10 +105,12 @@ class MediaPlayerService : Service(), AudioPlayerControl {
     }
 
     private fun createServiceNotification(): Notification {
+        val contentString = "$songArtist - $songTitle"
         return NotificationCompat.Builder(this, NOTIFICATION_CHANNEL_ID)
-            .setContentTitle("Playlist Maker")
-            .setContentText("$songArtist - $songTitle")
-            .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+            .setContentTitle(this.resources.getString(R.string.app_name))
+            .setContentText(contentString)
+            .setSmallIcon(R.drawable.ic_launcher_foreground)
+            .setPriority(NotificationCompat.PRIORITY_HIGH)
             .setCategory(NotificationCompat.CATEGORY_SERVICE)
             .build()
     }
